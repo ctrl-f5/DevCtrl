@@ -1,0 +1,22 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\Item\ItemType" table="item_types">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="itemtypes_autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
+        <field name="description" column="description" type="text" nullable="true" unique="false" />
+
+        <one-to-many field="itemTypeProperties" target-entity="DevCtrl\Domain\Item\ItemTypeProperty" mapped-by="itemType">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+    </entity>
+</doctrine-mapping>

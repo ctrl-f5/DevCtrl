@@ -1,0 +1,27 @@
+<div class="page-header"><h1><?php echo $this->project->getName(); ?></h1></div>
+
+<?php $this->page = 'users'; ?>
+<?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
+
+<div class="btn-group">
+    <a class="btn" href="<?php echo $this->url('dev-ctrl', array(
+        'controller' => 'project',
+        'action' => 'add-user',
+        'id' => $this->project->getId(),
+    )); ?>">add user</a>
+</div>
+<p></p>
+<table class="table table-striped">
+    <tr>
+        <th>username</th>
+        <th>level</th>
+        <th>actions</th>
+    </tr>
+    <?php foreach ($this->project->getLinkedUsers() as $u): ?>
+    <tr>
+        <td><?php echo $u->getUser()->getAuthUser()->getUsername(); ?></td>
+        <td><?php echo $u->getLevel(); ?></td>
+        <td><a class="btn btn-primary" href="">edit</a> <a class="btn btn-danger" href="">unlink</a></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

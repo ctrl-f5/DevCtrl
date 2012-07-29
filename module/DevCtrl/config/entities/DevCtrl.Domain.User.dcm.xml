@@ -1,0 +1,21 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\User" table="users">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="users_autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="firstname" column="firstname" type="string" length="255" nullable="false" unique="false" />
+        <field name="lastname" column="lastname" type="string" length="255" nullable="false" unique="false" />
+
+        <one-to-many field="linkedProjects" target-entity="DevCtrl\Domain\ProjectUserLink" mapped-by="user_id" />
+
+        <one-to-one field="authUser" target-entity="Auth\Domain\User">
+            <join-column name="auth_user_id" referenced-column-name="id" />
+        </one-to-one>
+    </entity>
+</doctrine-mapping>

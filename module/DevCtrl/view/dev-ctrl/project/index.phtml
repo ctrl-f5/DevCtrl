@@ -1,0 +1,31 @@
+<h1>Projects
+    <small>displaying <strong><?php echo count($this->projects); ?></strong> projects</small>
+</h1>
+
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>state</th>
+            <th>created by</th>
+            <th>creation date</th>
+            <th>actions</th>
+        </tr>
+        <?php /** @var $p \DevCtrl\Domain\Project */ ?>
+        <?php foreach ($this->projects as $p): ?>
+        <tr>
+            <td><?php echo $p->getId(); ?></td>
+            <td><?php echo $p->getName(); ?></td>
+            <td><?php echo $p->getState(); ?></td>
+            <td><?php echo $p->getCreatedByUser()->getUsername(); ?></td>
+            <td><?php echo $p->getDateCreated()->format('d-m-Y'); ?></td>
+            <td><a class="btn btn-info" href="<?php echo $this->url('dev-ctrl', array(
+                'controller' => 'project',
+                'action' => 'detail',
+                'id' => $p->getId()
+            )); ?>">detail</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

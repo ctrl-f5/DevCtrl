@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="Auth\Domain\User" table="auth_users">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="users_seq" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="username" column="username" type="string" length="255" nullable="false" unique="false" />
+        <field name="password" column="password" type="string" length="255" nullable="false" />
+
+    </entity>
+</doctrine-mapping>

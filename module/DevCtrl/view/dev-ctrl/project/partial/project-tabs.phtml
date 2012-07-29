@@ -1,0 +1,18 @@
+<ul class="nav nav-tabs">
+    <li<?php if ($this->page == 'info') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+        'controller' => 'project',
+        'action' => 'detail',
+        'id' => $this->project->getId()
+    )); ?>">Info</a></li>
+    <li<?php if ($this->page == 'items') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+        'controller' => 'project',
+        'action' => 'items',
+        'id' => $this->project->getId()
+    )); ?>">Items</a></li>
+    <li<?php if ($this->page == 'sprints') echo ' class="active"'; ?>><a href="#">Sprints</a></li>
+    <li<?php if ($this->page == 'users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+        'controller' => 'project',
+        'action' => 'users',
+        'id' => $this->project->getId()
+    )); ?>">Users</a></li>
+</ul>

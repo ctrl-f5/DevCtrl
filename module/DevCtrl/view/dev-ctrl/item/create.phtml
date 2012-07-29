@@ -1,0 +1,103 @@
+<?php $project = $this->project; /** @var $project \DevCtrl\Domain\Project */ ?>
+<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<h1>New item
+    <small>for <strong><?php echo $project->getName(); ?></strong></small>
+</h1>
+
+<form class="form-horizontal" method="post" id="item-form" action="<?php echo $this->url('item_create', array(
+    'controller' => 'item',
+    'action' => 'create',
+    'project' => $project->getId(),
+    'item-type' => $itemType->getId(),
+)); ?>">
+    <fieldset class="part-1">
+        <legend>Configure your item</legend>
+        <div class="control-group">
+            <label class="control-label">title</label>
+            <div class="controls">
+                <input type="text" class="input-xxlarge required" name="title" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">description</label>
+            <div class="controls">
+                <textarea class="input-xxlarge" name="title"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">users</label>
+            <div class="controls">
+                <select class="input-xxlarge" name="user" size="5" multiple="multiple">
+                    <?php foreach ($project->getLinkedUsers() as $u): ?>
+                    <option value="<?php echo $u->getUser()->getId(); ?>"><?php echo $u->getUser()->getAuthUser()->getUsername(); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <p class="help-block">Ctrl+Click to select multiple users</p>
+                <p class="help-block">This list only contains users linked to this project</p>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a class="btn btn-primary" href="#" id="show-item-type-property-controls">next</a>
+            <a class="btn" href="<?php echo $this->url('default/id', array(
+                'controller' => 'project',
+                'action' => 'items',
+                'id' => $this->project->getId(),
+            )); ?>">cancel</a>
+        </div>
+    </fieldset>
+
+    <fieldset id="item-type-property-controls-container">
+        <legend>Additional fields for this item type</legend>
+        <?php foreach ($itemType->getItemTypeProperties() as $p): ?>
+        <div class="control-group">
+            <label class="control-label"><?php echo $p->getProperty()->getName(); ?></label>
+            <div class="controls">
+                <input type="text"
+                       class="input-xxlarge required <?php if ($p->getRequired()) echo 'required'; ?>"
+                       name="item-type-property[<?php echo $p->getProperty()->getId(); ?>]" />
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="save">
+            <a class="btn" href="<?php echo $this->url('default/id', array(
+                'controller' => 'project',
+                'action' => 'items',
+                'id' => $this->project->getId(),
+            )); ?>">cancel</a>
+
+        </div>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+$(function () {
+    var propertyContainer = $('#item-type-property-controls-container');
+    propertyContainer.hide();
+
+    $('#show-item-type-property-controls').live('click', function () {
+        if (!propertyContainer.is(':visible')) {
+            if (Ctrl.forms().isValid($('form#item-form .part-1'))) {
+                $(this).closest('.form-actions').hide();
+                propertyContainer.show();
+                $('form#item-form .form-actions .alert').remove();
+            } else {
+                $('form#item-form .form-actions').prepend(
+                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
+                );
+            }
+        }
+    });
+
+    $('form#item-form').live('submit', function () {
+        if (Ctrl.forms().isValid($(this))) {
+            $('form#item-form .form-actions .alert').remove();
+        } else {
+            $('form#item-form .form-actions').prepend(
+                $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
+            );
+        }
+        return false;
+    });
+});
+</script>
