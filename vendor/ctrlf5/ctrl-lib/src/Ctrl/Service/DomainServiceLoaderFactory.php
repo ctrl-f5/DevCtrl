@@ -6,7 +6,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Configuration;
+use Zend\ServiceManager\Config;
 use Zend\EventManager\EventManagerAwareInterface;
 use Ctrl\ServiceManager\EntityManagerAwareInterface;
 
@@ -19,7 +19,7 @@ class DomainServiceLoaderFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Configuration');
-        $serviceConfig = new Configuration(
+        $serviceConfig = new Config(
             isset($config['domain_services']) ? $config['domain_services'] : array()
         );
 

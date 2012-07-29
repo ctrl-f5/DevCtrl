@@ -1,5 +1,5 @@
 {
-    "hash": "1990f8048e0a2096dd96e3d2ad05c632",
+    "hash": "de24553d4404b30d4e6b09558e477e07",
     "packages": [
         {
             "package": "doctrine/common",
@@ -58,12 +58,6 @@
         {
             "package": "symfony/yaml",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/yaml",
-            "version": "dev-master",
             "source-reference": "v2.1.0-BETA4",
             "commit-date": "1342347231"
         },
@@ -76,8 +70,8 @@
         {
             "package": "zendframework/zendframework",
             "version": "dev-master",
-            "source-reference": "18c8e223f070deb07c17543ed938b54542aa0ed8",
-            "commit-date": "1341596499"
+            "source-reference": "c34e65aca73902b311a374b2f4a0a1d4ee9bf792",
+            "commit-date": "1343248155"
         }
     ],
     "packages-dev": null,
