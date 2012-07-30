@@ -14,6 +14,13 @@ and use composer to install dependencies:
     cd DevCtrl
     php composer.phar install
 
+configure your database connection:
+
+    cd config/autoload
+    cp local.php.dist local.php
+
+edit the newly created local.php config file with your database credentials
+
 Virtual Host
 ------------
 Afterwards, set up a virtual host to point to the public/ directory of the
