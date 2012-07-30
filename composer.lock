@@ -1,6 +1,12 @@
 {
-    "hash": "de24553d4404b30d4e6b09558e477e07",
+    "hash": "5abdd46496d96342d7b03fc4c8b1ca38",
     "packages": [
+        {
+            "package": "ctrl-f5/ctrllib",
+            "version": "dev-master",
+            "source-reference": "87c6db90e9afc5eec95a95e4d5da99e3e3f069c4",
+            "commit-date": "1343606840"
+        },
         {
             "package": "doctrine/common",
             "version": "2.3.x-dev",
@@ -82,6 +88,7 @@
     "stability-flags": {
         "zendframework/zendframework": 20,
         "doctrine/doctrine-orm-module": 20,
-        "doctrine/doctrine-module": 20
+        "doctrine/doctrine-module": 20,
+        "ctrl-f5/ctrllib": 20
     }
 }
