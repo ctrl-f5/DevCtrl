@@ -91,6 +91,7 @@ return array(
             'Project' => 'DevCtrl\Service\ProjectService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
+            'User' => 'DevCtrl\Service\UserService',
         ),
     ),
     'service_manager' => array(

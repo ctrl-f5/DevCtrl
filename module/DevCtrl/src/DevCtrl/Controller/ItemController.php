@@ -35,31 +35,33 @@ class ItemController extends AbstractController
 
         /** @var $itemService \DevCtrl\Service\ItemService */
         $itemService = $this->getDomainService('Item');
-        //$itemService->create
 
         if ($this->getRequest()->isPost()) {
 
-            $userId = 1; //TODO: get current user id
+            $userId = 1; //TODO fetch correct user
+            $user = $userService = $this->getDomainService('User')->getById($userId);
 
-            /** @var $userService UserService */
-            $userService = $this->getDomainService('user');
-            $user = $userService->getById($userId);
+            $item = $itemService->createItem(
+                $this->params()->fromPost('title'),
+                $user,
+                $project,
+                $itemType,
+                $this->params()->fromPost('item-type-property')
+            );
+
+            $itemService->getEntityManager()->persist($item);
+            $itemService->getEntityManager()->flush();
+
+            return $this->redirect()->toRoute('default/id', array(
+                'controller' => 'project',
+                'action' => 'items',
+                'id' => $project->getId()
+            ));
         }
 
         return new ViewModel(array(
             'project' => $project,
             'itemType' => $itemType
         ));
-    }
-
-    public function itemTypePropertyControlsAction()
-    {
-        /** @var $itemType \DevCtrl\Domain\Item\ItemType */
-        $itemType = $this->getDomainService('itemType')->getById($this->params()->fromQuery('id'));
-        $view = new ViewModel(array(
-            'itemType' => $itemType
-        ));
-        $view->setTerminal(true);
-        return $view;
     }
 }

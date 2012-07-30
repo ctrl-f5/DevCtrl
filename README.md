@@ -4,7 +4,7 @@ DevCtrl
 Installation
 ------------
 
-Using Composer (recommended)
+Using Composer
 ----------------------------
 The recommended way to get a working copy of this project is to clone the repository
 and use composer to install dependencies:

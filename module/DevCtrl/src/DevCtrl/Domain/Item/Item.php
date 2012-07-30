@@ -51,10 +51,30 @@ class Item
      */
     protected $assignedUsers;
 
-    public function __construct()
+    /**
+     * @param $title
+     * @param Domain\User $createdBy
+     * @param Domain\Project $project
+     * @param ItemType $itemType
+     * @param ItemPropertyValue[] $propertyValues
+     * @throws Domain\DomainException
+     */
+    public function __construct($title, Domain\User $createdBy, Domain\Project $project, ItemType $itemType, $propertyValues)
     {
-        $this->properties = new Domain\Collection();
+        $this->title = $title;
+        $this->createdByUser = $createdBy;
+        $this->project = $project;
+        $this->itemType = $itemType;
+
+        $this->propertyValues = new Domain\Collection();
         $this->assignedUsers = new Domain\Collection();
+
+        foreach ($propertyValues as $pv) {
+            $this->addPropertyValue($pv);
+        }
+        if (!$this->hasAllRequiredItemTypePropertyValues()) {
+            throw new Domain\DomainException('item is missing a required property value');
+        }
     }
 
     public function setAssignedUsers($assignedUsers)
@@ -159,16 +179,6 @@ class Item
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\ItemType $itemType
-     * @return Item
-     */
-    public function setItemType($itemType)
-    {
-        $this->itemType = $itemType;
-        return $this;
-    }
-
-    /**
      * @return \DevCtrl\Domain\Item\ItemType
      */
     public function getItemType()
@@ -187,19 +197,38 @@ class Item
         return $this->propertyValues;
     }
 
-    public function setPropertyValue(Property $property, $value)
+    public function getPropertyValue(Property $property)
     {
         foreach ($this->getPropertyValues() as $pv) {
             if ($pv->getProperty() === $property) {
-                $pv->setValue($value);
+                return $pv;
             }
         }
+        throw new Domain\DomainException('Item has no ItemPropertyValue for the given Property');
     }
 
     public function addPropertyValue(ItemPropertyValue $itemPropertyValue)
     {
         $this->propertyValues[] = $itemPropertyValue;
+        $itemPropertyValue->setItem($this);
         return $this;
+    }
+
+    protected function hasAllRequiredItemTypePropertyValues()
+    {
+        foreach ($this->getItemType()->getItemTypeProperties() as $itp) {
+            $val = null;
+            foreach ($this->getPropertyValues() as $pv) {
+                if ($pv->getProperty() === $itp->getProperty()) {
+                    $val = $pv->getValue();
+                    break;
+                }
+            }
+            if ($itp->getRequired() && !$val) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

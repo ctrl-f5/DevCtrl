@@ -36,6 +36,14 @@
                 <p class="help-block">This list only contains users linked to this project</p>
             </div>
         </div>
+        <?php if ($itemType->getTimed()): ?>
+        <div class="control-group">
+            <label class="control-label">estimated required time</label>
+            <div class="controls">
+                <input type="text" class="input-small required" name="time_required" />
+            </div>
+        </div>
+        <?php endif; ?>
         <div class="form-actions">
             <a class="btn btn-primary" href="#" id="show-item-type-property-controls">next</a>
             <a class="btn" href="<?php echo $this->url('default/id', array(
@@ -53,7 +61,7 @@
             <label class="control-label"><?php echo $p->getProperty()->getName(); ?></label>
             <div class="controls">
                 <input type="text"
-                       class="input-xxlarge required <?php if ($p->getRequired()) echo 'required'; ?>"
+                       class="input-xxlarge <?php if ($p->getRequired()) echo 'required'; ?>"
                        name="item-type-property[<?php echo $p->getProperty()->getId(); ?>]" />
             </div>
         </div>
@@ -96,8 +104,9 @@ $(function () {
             $('form#item-form .form-actions').prepend(
                 $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
             );
+            return false;
         }
-        return false;
+        return true;
     });
 });
 </script>

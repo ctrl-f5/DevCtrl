@@ -22,13 +22,18 @@ class ItemType
     protected $description;
 
     /**
+     * @var bool
+     */
+    protected $timed = false;
+
+    /**
      * @var Domain\Collection|ItemTypeProperty[]
      */
     protected $itemTypeProperties;
 
     public function __construct()
     {
-        $this->itemTypeProperties = Domain\Collection;
+        $this->itemTypeProperties = new Domain\Collection();
     }
 
     /**
@@ -114,5 +119,23 @@ class ItemType
     public function getItemTypeProperties()
     {
         return $this->itemTypeProperties;
+    }
+
+    /**
+     * @param boolean $timed
+     * @return ItemType
+     */
+    public function setTimed($timed)
+    {
+        $this->timed = (bool)$timed;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getTimed()
+    {
+        return (bool)$this->timed;
     }
 }

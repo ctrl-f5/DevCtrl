@@ -11,6 +11,7 @@
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
+        <field name="timed" column="is_timed" type="boolean" nullable="false" unique="false" />
 
         <one-to-many field="itemTypeProperties" target-entity="DevCtrl\Domain\Item\ItemTypeProperty" mapped-by="itemType">
             <cascade>
