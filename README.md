@@ -14,14 +14,22 @@ and use composer to install dependencies:
     cd DevCtrl
     php composer.phar install
 
-configure your database connection:
+Install database
+----------------
+create and empty database and configure your database connection for the application:
 
     cd config/autoload
     cp local.php.dist local.php
 
-edit the newly created local.php config file with your database credentials
+edit the newly created local.php config file with your database credentials.
 
-database files can be found in the build/db/ directory
+The database is managed by phing and db deploy.
+create the build.properties file and execute phing migrate
+
+    cd build
+    cp build.properties.dist build.properties
+    vim build.properties
+    phing migrate
 
 Virtual Host
 ------------
