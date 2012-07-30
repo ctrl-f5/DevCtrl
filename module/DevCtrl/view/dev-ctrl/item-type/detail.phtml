@@ -1,0 +1,25 @@
+<div class="page-header"><h1><?php echo $this->itemType->getName(); ?></h1></div>
+
+<?php $this->page = 'info'; ?>
+<?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
+
+<div class="btn-group">
+    <a class="btn" href="#">new</a>
+</div>
+<p></p>
+<table class="table table-bordered">
+    <tr>
+        <th>name</th>
+        <td colspan="3"><?php echo $this->itemType->getName(); ?></td>
+    </tr>
+    <tr>
+        <th>description</th>
+        <td colspan="3"><?php echo $this->itemType->getDescription(); ?><</td>
+    </tr>
+    <tr>
+        <th>is timed</th>
+        <td><?php echo $this->itemType->getTimed() ? 'yes' : 'no' ?></td>
+        <th>has state</th>
+        <td><?php echo $this->itemType->getHasState() ? 'yes' : 'no' ?></td>
+    </tr>
+</table>

@@ -60,6 +60,22 @@ return array(
                     ),
                 ),
             ),
+            'item_state_order_change' => array(
+                'type'    => 'Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route'    => '/item-type/state-order-change/[:id]/[:state-id]/[:direction]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                        'state-id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'DevCtrl\Controller',
+                        'controller'    => 'item-type',
+                        'action'        => 'state-order-change',
+                    ),
+                ),
+            ),
             'home' => array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
@@ -84,6 +100,7 @@ return array(
             'DevCtrl\Controller\Index' => 'DevCtrl\Controller\IndexController',
             'DevCtrl\Controller\Project' => 'DevCtrl\Controller\ProjectController',
             'DevCtrl\Controller\Item' => 'DevCtrl\Controller\ItemController',
+            'DevCtrl\Controller\ItemType' => 'DevCtrl\Controller\ItemTypeController',
         ),
     ),
     'domain_services' => array(

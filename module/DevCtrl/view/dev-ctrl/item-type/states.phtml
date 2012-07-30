@@ -1,0 +1,58 @@
+<?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1><?php echo $itemType->getName(); ?></h1></div>
+
+<?php $this->page = 'states'; ?>
+<?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
+
+<div class="btn-group">
+    <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
+        'controller' => 'item-type',
+        'action' => 'create-state',
+        'id' => $itemType->getId(),
+    )); ?>">New state</a>
+</div>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>type</th>
+            <th>order</th>
+            <th>change order</th>
+            <th>actions</th>
+        </tr>
+        <?php foreach ($itemType->getStates() as $s): ?>
+        <tr>
+            <td><?php echo $s->getId(); ?></td>
+            <td><?php echo $s->getName(); ?></td>
+            <td><?php echo $s->getType(); ?></td>
+            <td><?php echo $s->getOrder(); ?></td>
+            <td>
+                <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
+                    'id' => $itemType->getId(),
+                    'state-id' => $s->getId(),
+                    'direction' => 'up',
+                )); ?>"><i class="icon-circle-arrow-up"></i></a>
+                <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
+                    'id' => $itemType->getId(),
+                    'state-id' => $s->getId(),
+                    'direction' => 'down',
+                )); ?>"><i class="icon-circle-arrow-down"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'item-type',
+                    'action' => 'detail',
+                    'id' => $itemType->getId()
+                )); ?>">edit</a>
+                <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'item-type',
+                    'action' => 'detail',
+                    'id' => $itemType->getId()
+                )); ?>">delete</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

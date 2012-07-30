@@ -12,8 +12,18 @@
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
         <field name="timed" column="is_timed" type="boolean" nullable="false" unique="false" />
+        <field name="hasState" column="has_state" type="boolean" nullable="false" unique="false" />
 
         <one-to-many field="itemTypeProperties" target-entity="DevCtrl\Domain\Item\ItemTypeProperty" mapped-by="itemType">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="states" target-entity="DevCtrl\Domain\Item\State" mapped-by="itemType">
+            <order-by>
+                <order-by-field name="order" direction="ASC" />
+            </order-by>
             <cascade>
                 <cascade-persist/>
             </cascade>

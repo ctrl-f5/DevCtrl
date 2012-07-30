@@ -20,6 +20,10 @@
             <join-column name="created_by_user_id" referenced-column-name="id" />
         </one-to-one>
 
+        <one-to-one field="state" target-entity="DevCtrl\Domain\Item\State">
+            <join-column name="state_id" referenced-column-name="id" />
+        </one-to-one>
+
         <one-to-one field="project" target-entity="DevCtrl\Domain\Project">
             <join-column name="project_id" referenced-column-name="id" />
         </one-to-one>

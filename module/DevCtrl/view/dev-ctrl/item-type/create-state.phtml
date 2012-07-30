@@ -1,0 +1,57 @@
+<?php use DevCtrl\Domain\Item\State; ?>
+<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<h1>New item state
+    <small>for <strong><?php echo $itemType->getName(); ?></strong></small>
+</h1>
+
+<form class="form-horizontal" method="post" id="item-type-state-form" action="<?php echo $this->url('default/id', array(
+    'controller' => 'item-type',
+    'action' => 'create-state',
+    'id' => $itemType->getId(),
+)); ?>">
+    <fieldset>
+        <legend>Configure your item state</legend>
+        <div class="control-group">
+            <label class="control-label">name</label>
+            <div class="controls">
+                <input type="text" class="input-xxlarge required" name="name" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">type</label>
+            <div class="controls">
+                <select class="input-large" name="type">
+                    <option value="<?php echo State::TYPE_OPEN ?>">open</option>
+                    <option value="<?php echo State::TYPE_CLOSED ?>">closed</option>
+                    <option value="<?php echo State::TYPE_BLOCKED ?>">blocked</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="save">
+            <a class="btn" href="<?php echo $this->url('default/id', array(
+                'controller' => 'item-type',
+                'action' => 'states',
+                'id' => $itemType->getId(),
+            )); ?>">cancel</a>
+        </div>
+    </fieldset>
+
+</form>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('form#item-type-state-form').live('submit', function () {
+            if (Ctrl.forms().isValid($(this))) {
+                $('form#item-form .form-actions .alert').remove();
+            } else {
+                $('form#item-form .form-actions').prepend(
+                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
+                );
+                return false;
+            }
+            return true;
+        });
+    });
+</script>
