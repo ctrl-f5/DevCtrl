@@ -14,7 +14,7 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
-            'Ctrl' => './vendor/ctrlf5/ctrl-lib/'
+            'Ctrl' => './vendor/ctrl-f5/ctrllib/'
         ),
     ),
     'view_manager' => array(

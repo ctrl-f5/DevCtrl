@@ -20,7 +20,7 @@
             <td><?php echo $p->getState(); ?></td>
             <td><?php echo $p->getCreatedByUser()->getUsername(); ?></td>
             <td><?php echo $p->getDateCreated()->format('d-m-Y'); ?></td>
-            <td><a class="btn btn-info" href="<?php echo $this->url('dev-ctrl', array(
+            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
                 'controller' => 'project',
                 'action' => 'detail',
                 'id' => $p->getId()
