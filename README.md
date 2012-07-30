@@ -21,6 +21,8 @@ configure your database connection:
 
 edit the newly created local.php config file with your database credentials
 
+database files can be found in the build/db/ directory
+
 Virtual Host
 ------------
 Afterwards, set up a virtual host to point to the public/ directory of the
