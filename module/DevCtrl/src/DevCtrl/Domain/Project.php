@@ -54,10 +54,16 @@ class Project
      */
     protected $items;
 
+    /**
+     * @var Version[]|Collection
+     */
+    protected $versions;
+
     public function __construct()
     {
         $this->linkedUsers = new Collection();
         $this->items = new Collection();
+        $this->versions = new Collection();
     }
 
     /**
@@ -210,5 +216,23 @@ class Project
     {
         $this->items[] = $item;
         return $this;
+    }
+
+    /**
+     * @param Version[] $versions
+     * @return Project
+     */
+    public function setVersions($versions)
+    {
+        $this->versions = $versions;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Version[]
+     */
+    public function getVersions()
+    {
+        return $this->versions;
     }
 }

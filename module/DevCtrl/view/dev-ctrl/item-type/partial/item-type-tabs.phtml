@@ -4,6 +4,11 @@
         'action' => 'detail',
         'id' => $this->itemType->getId()
     )); ?>">Info</a></li>
+    <li<?php if ($this->page == 'properties') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+        'controller' => 'item-type',
+        'action' => 'properties',
+        'id' => $this->itemType->getId()
+    )); ?>">Properties</a></li>
     <?php if ($this->itemType->getHasState()): ?>
     <li<?php if ($this->page == 'states') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item-type',

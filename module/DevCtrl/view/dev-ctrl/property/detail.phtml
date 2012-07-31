@@ -1,0 +1,76 @@
+<?php use DevCtrl\Domain\Item\Property; ?>
+<?php $property = $this->property; /** @var $property Property */ ?>
+<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Property <small><?php echo $property->getName(); ?></small></h1></div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>name</th>
+        <td colspan="3"><?php echo $property->getName(); ?></td>
+    </tr>
+    <tr>
+        <th>description</th>
+        <td colspan="3"><?php echo $property->getDescription(); ?></td>
+    </tr>
+    <tr>
+        <th>default value provider</th>
+        <td><?php echo $property->getDefaultValueProvider() ?></td>
+        <th>possible values provider</th>
+        <td><?php echo $property->getPossibleValuesProvider() ?></td>
+    </tr>
+</table>
+
+<?php if ($property->getPossibleValuesProvider() == 'Custom'): ?>
+
+<div class="btn-group">
+    <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
+        'controller' => 'property',
+        'action' => 'add-value',
+        'id' => $property->getId(),
+    )); ?>">Add value</a>
+</div>
+<p></p>
+<table class="table table-striped">
+    <tr>
+        <th>id</th>
+        <th>value</th>
+        <th>change order</th>
+        <th>actions</th>
+    </tr>
+    <?php foreach ($property->getPossibleValues() as $v): ?>
+    <tr>
+        <td><?php echo $v->getId(); ?></td>
+        <td><?php echo $v->getValue(); ?></td>
+        <td>
+            <a class="btn" href="<?php echo $this->url('item_property_order_change', array(
+                'id' => $property->getId(),
+                'property' => $v->getId(),
+                'direction' => 'up',
+            )); ?>"><i class="icon-circle-arrow-up"></i></a>
+            <a class="btn" href="<?php echo $this->url('item_property_order_change', array(
+                'id' => $property->getId(),
+                'property' => $v->getId(),
+                'direction' => 'down',
+            )); ?>"><i class="icon-circle-arrow-down"></i></a>
+        </td>
+        <td>
+            <a class="btn" href="<?php echo $this->url('default/id', array(
+                'controller' => 'property',
+                'action' => 'detail',
+                'id' => $property->getId()
+            )); ?>">detail</a>
+            <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
+                'controller' => 'item-type',
+                'action' => 'detail',
+                'id' => $property->getId()
+            )); ?>">edit</a>
+            <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
+                'controller' => 'item-type',
+                'action' => 'detail',
+                'id' => $property->getId()
+            )); ?>">delete</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+
+<?php endif; ?>

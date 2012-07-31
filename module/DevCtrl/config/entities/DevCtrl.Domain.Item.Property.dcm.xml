@@ -11,7 +11,16 @@
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
-        <field name="type" column="type" type="integer" nullable="false" unique="false" />
+        <field name="type" column="type" type="string" nullable="false" unique="false" />
+        <field name="staticDefaultValue" column="static_default" type="string" nullable="true" unique="false" />
+        <field name="defaultValueProvider" column="default_value_provider" type="string" nullable="true" unique="false" />
+        <field name="possibleValuesProvider" column="possible_values_provider" type="string" nullable="true" unique="false" />
+
+        <one-to-many field="customPossibleValues" target-entity="DevCtrl\Domain\Item\Property\CustomPossibleValue" mapped-by="property">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
 
     </entity>
 </doctrine-mapping>

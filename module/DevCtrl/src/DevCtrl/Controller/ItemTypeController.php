@@ -39,6 +39,16 @@ class ItemTypeController extends AbstractController
         ));
     }
 
+    public function propertiesAction()
+    {
+        $id = $this->params('id');
+        $itemType = $this->getDomainService('ItemType')->getById($id);
+
+        return new ViewModel(array(
+            'itemType' => $itemType
+        ));
+    }
+
     public function createAction()
     {
         $project = $this->getDomainService('Project')->getById($this->params()->fromRoute('project'));
@@ -107,6 +117,41 @@ class ItemTypeController extends AbstractController
         ));
     }
 
+    public function createPropertyAction()
+    {
+        /** @var $itemService \DevCtrl\Service\ItemTypeService */
+        $typeService = $this->getDomainService('ItemType');
+        /** @var $itemType Domain\Item\ItemType */
+        $itemType = $typeService->getById($this->params()->fromRoute('id'));
+        /** @var $propertyService \DevCtrl\Service\ItemPropertyService */
+        $propertyService = $this->getDomainService('ItemProperty');
+
+        if ($this->getRequest()->isPost()) {
+
+            $state = new Domain\Item\State(
+                $this->params()->fromPost('name'),
+                $this->params()->fromPost('type')
+            );
+
+            $itemType->addState($state);
+
+            $typeService->getEntityManager()->persist($itemType);
+            $typeService->getEntityManager()->flush();
+
+            return $this->redirect()->toRoute('default/id', array(
+                'controller' => 'item-type',
+                'action' => 'states',
+                'id' => $itemType->getId()
+            ));
+        }
+
+        return new ViewModel(array(
+            'itemType' => $itemType,
+            'defaultValueProviders' => $propertyService->getAllConfiguredDefaultValueProviders(),
+            'possibleValuesProviders' => $propertyService->getAllConfiguredPossibleValuesProviders(),
+        ));
+    }
+
     public function stateOrderChangeAction()
     {
         /** @var $itemService \DevCtrl\Service\ItemTypeService */
@@ -114,7 +159,7 @@ class ItemTypeController extends AbstractController
         /** @var $itemType Domain\Item\ItemType */
         $itemType = $typeService->getById($this->params()->fromRoute('id'));
 
-        $state = $itemType->getState($this->params()->fromRoute('state-id'));
+        $state = $itemType->getState($this->params()->fromRoute('state'));
         if ($this->params()->fromRoute('direction') == 'up') {
             if ($state->getOrder() > 1) {
                 foreach ($itemType->getStates() as $s) {

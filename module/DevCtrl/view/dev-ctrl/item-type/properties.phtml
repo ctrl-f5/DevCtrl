@@ -12,13 +12,14 @@
     )); ?>">New property</a>
 </div>
 <p></p>
-<div class="">
+<div>
     <table class="table table-striped">
         <tr>
             <th>id</th>
             <th>name</th>
-            <th>description</th>
-            <th>default value</th>
+            <th>type</th>
+            <th>default value provider</th>
+            <th>possible values provider</th>
             <th>required</th>
             <th>change order</th>
             <th>actions</th>
@@ -27,8 +28,9 @@
         <tr>
             <td><?php echo $itp->getId(); ?></td>
             <td><?php echo $itp->getProperty()->getName(); ?></td>
-            <td><?php echo $itp->getProperty()->getDescription(); ?></td>
-            <td><?php echo $itp->getProperty()->getDefaultValue(); ?></td>
+            <td><?php echo $itp->getProperty()->getType(); ?></td>
+            <td><?php echo $itp->getProperty()->getDefaultValueProvider(); ?></td>
+            <td><?php echo $itp->getProperty()->getPossibleValuesProvider(); ?></td>
             <td><?php echo $itp->getRequired() ? 'yes' : 'no' ?></td>
             <td>
                 <a class="btn" href="<?php echo $this->url('item_property_order_change', array(
@@ -43,6 +45,11 @@
                 )); ?>"><i class="icon-circle-arrow-down"></i></a>
             </td>
             <td>
+                <a class="btn" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'property',
+                    'action' => 'detail',
+                    'id' => $itp->getProperty()->getId()
+                )); ?>">detail</a>
                 <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
                     'controller' => 'item-type',
                     'action' => 'detail',

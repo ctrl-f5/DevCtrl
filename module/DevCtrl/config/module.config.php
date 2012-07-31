@@ -64,10 +64,26 @@ return array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route'    => '/item-type/state-order-change/[:id]/[:state-id]/[:direction]',
+                    'route'    => '/item-type/state-order-change/[:id]/[:state]/[:direction]',
                     'constraints' => array(
                         'id'     => '[0-9]+',
-                        'state-id'     => '[0-9]+',
+                        'state'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'DevCtrl\Controller',
+                        'controller'    => 'item-type',
+                        'action'        => 'state-order-change',
+                    ),
+                ),
+            ),
+            'item_property_order_change' => array(
+                'type'    => 'Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route'    => '/item-type/property-order-change/[:id]/[:property]/[:direction]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                        'property'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
@@ -101,6 +117,7 @@ return array(
             'DevCtrl\Controller\Project' => 'DevCtrl\Controller\ProjectController',
             'DevCtrl\Controller\Item' => 'DevCtrl\Controller\ItemController',
             'DevCtrl\Controller\ItemType' => 'DevCtrl\Controller\ItemTypeController',
+            'DevCtrl\Controller\Property' => 'DevCtrl\Controller\PropertyController',
         ),
     ),
     'domain_services' => array(
@@ -108,10 +125,26 @@ return array(
             'Project' => 'DevCtrl\Service\ProjectService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
+            'ItemProperty' => 'DevCtrl\Service\ItemPropertyService',
             'User' => 'DevCtrl\Service\UserService',
         ),
     ),
+    Module::ITEM_PROP_DEFAULT_VALUE_PROVIDERS => array(
+        'Empty' => 'DevCtrl\Domain\Item\Property\EmptyDefaultValueProvider',
+        'Static' => 'DevCtrl\Domain\Item\Property\StaticDefaultValueProvider',
+        'FirstPossible' => 'DevCtrl\Domain\Item\Property\FirstPossibleDefaultValueProvider',
+        'LastPossible' => 'DevCtrl\Domain\Item\Property\LastPossibleDefaultValueProvider',
+    ),
+    Module::ITEM_PROP_POSSIBLE_VALUES_PROVIDERS => array(
+        'Empty' => 'DevCtrl\Domain\Item\Property\EmptyPossibleValuesProvider',
+        'Custom' => 'DevCtrl\Domain\Item\Property\CustomPossibleValuesProvider',
+        'ProjectVersion' => 'DevCtrl\Domain\Item\Property\ProjectVersionPossibleValuesProvider',
+    ),
     'service_manager' => array(
+        'factories' => array(
+            'PropertyPossibleValuesProviderLoader' => 'DevCtrl\Domain\Item\Property\PossibleValuesProviderLoaderFactory',
+            'PropertyDefaultValueProviderLoader' => 'DevCtrl\Domain\Item\Property\DefaultValueProviderLoaderFactory',
+        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,

@@ -1,5 +1,5 @@
 <?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
-<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1><?php echo $itemType->getName(); ?></h1></div>
+<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Item Type <small><?php echo $itemType->getName(); ?></small></h1></div>
 
 <?php $this->page = 'states'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
@@ -16,7 +16,7 @@
     <table class="table table-striped">
         <tr>
             <th>id</th>
-            <th>title</th>
+            <th>name</th>
             <th>type</th>
             <th>order</th>
             <th>change order</th>
@@ -31,12 +31,12 @@
             <td>
                 <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
                     'id' => $itemType->getId(),
-                    'state-id' => $s->getId(),
+                    'state' => $s->getId(),
                     'direction' => 'up',
                 )); ?>"><i class="icon-circle-arrow-up"></i></a>
                 <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
                     'id' => $itemType->getId(),
-                    'state-id' => $s->getId(),
+                    'state' => $s->getId(),
                     'direction' => 'down',
                 )); ?>"><i class="icon-circle-arrow-down"></i></a>
             </td>

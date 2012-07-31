@@ -1,3 +1,4 @@
+<?php use DevCtrl\Domain\Item\Property; ?>
 <?php $project = $this->project; /** @var $project \DevCtrl\Domain\Project */ ?>
 <?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
 <h1>New item
@@ -60,9 +61,27 @@
         <div class="control-group">
             <label class="control-label"><?php echo $p->getProperty()->getName(); ?></label>
             <div class="controls">
-                <input type="text"
-                       class="input-xxlarge <?php if ($p->getRequired()) echo 'required'; ?>"
-                       name="item-type-property[<?php echo $p->getProperty()->getId(); ?>]" />
+                <?php
+                    switch ($p->getProperty()->getType()) {
+                        case Property::TYPE_LIST:
+                        case Property::TYPE_LIST_MULTI:
+                            echo '<select class="input-xxlarge '.($p->getRequired()?'required':'').'"
+                                    name="item-type-property['.$p->getProperty()->getId().']">';
+                            if (!$p->getRequired()) echo '<option></option>';
+                            foreach ($p->getProperty()->getPossibleValues() as $pv) {
+                                echo '<option value="'.$pv->getId().'" '
+                                    .($pv->getId()==$p->getProperty()->getDefaultValue()?'selected="selected"':'')
+                                    .'>'.$pv->getValue().'</option>';
+                            }
+                            echo '</select>';
+
+                            break;
+                        default:
+                            echo '<input type="text" class="input-xxlarge '.($p->getRequired()?'required':'').' '
+                                .'name="item-type-property['.$p->getProperty()->getId().']" '
+                                .'value="'.$p->getProperty()->getDefaultValue().'" />';
+                    }
+                ?>
             </div>
         </div>
         <?php endforeach; ?>
