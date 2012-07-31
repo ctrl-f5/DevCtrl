@@ -1,15 +1,16 @@
 <?php
 
-namespace DevCtrl\Domain\Item\Property;
+namespace DevCtrl\Domain\Item\Property\ValuesProvider;
 
-use DevCtrl\Domain\Item\Property;
 use DevCtrl\Domain\Item\Item;
+use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Property\Value\Value;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\EntityManager;
 
-class CustomPossibleValuesProvider implements
-    PossibleValuesProviderInterface,
+class CustomProvider implements
+    ProviderInterface,
     ServiceLocatorAwareInterface
 {
     /**
@@ -17,11 +18,11 @@ class CustomPossibleValuesProvider implements
      */
     protected $serviceLocator;
 
-    public function getPossibleValues(Property $property, Item $item = null)
+    public function getValues(Property $property, Item $item = null)
     {
         $values = array();
-        foreach ($property->getCustomPossibleValues() as $v) {
-            $value = new PossibleValue();
+        foreach ($property->getCustomValues() as $v) {
+            $value = new Value();
             $value->setId($v->getId())->setValue($v->getValue());
             $values[] = $v;
         }

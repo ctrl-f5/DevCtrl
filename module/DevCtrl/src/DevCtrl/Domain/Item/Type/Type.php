@@ -1,10 +1,11 @@
 <?php
 
-namespace DevCtrl\Domain\Item;
+namespace DevCtrl\Domain\Item\Type;
 
 use DevCtrl\Domain;
+use DevCtrl\Domain\Item\Property\Property;
 
-class ItemType
+class Type
 {
     /**
      * @var int
@@ -32,9 +33,9 @@ class ItemType
     protected $hasState = false;
 
     /**
-     * @var Domain\Collection|ItemTypeProperty[]
+     * @var Domain\Collection|TypeProperty[]
      */
-    protected $itemTypeProperties;
+    protected $typeProperties;
 
     /**
      * @var Domain\Collection|State[]
@@ -43,13 +44,13 @@ class ItemType
 
     public function __construct()
     {
-        $this->itemTypeProperties = new Domain\Collection();
+        $this->typeProperties = new Domain\Collection();
         $this->states = new Domain\Collection();
     }
 
     /**
      * @param string $description
-     * @return ItemType
+     * @return Type
      */
     public function setDescription($description)
     {
@@ -67,7 +68,7 @@ class ItemType
 
     /**
      * @param int $id
-     * @return ItemType
+     * @return Type
      */
     public function setId($id)
     {
@@ -85,7 +86,7 @@ class ItemType
 
     /**
      * @param string $name
-     * @return ItemType
+     * @return Type
      */
     public function setName($name)
     {
@@ -104,37 +105,46 @@ class ItemType
     /**
      * @param Property $property
      * @param bool $required
-     * @return ItemType
+     * @return Type
+     * @throws \DevCtrl\Domain\Exception
      */
     public function addProperty(Property $property, $required = false)
     {
-        $itemTypeProperty = new ItemTypeProperty();
-        $itemTypeProperty->setItemType($this)->setProperty($property)->setRequired($required);
-        $this->itemTypeProperties[] = $itemTypeProperty;
+        foreach ($this->typeProperties as $p)
+            if ($p->getProperty()->getId() == $property->getId())
+                throw new \DevCtrl\Domain\Exception('Item\Property\Property already linked to this Item\Type\Type');
+
+        $typeProperty = new TypeProperty();
+        $typeProperty->setItemType($this)
+            ->setProperty($property)
+            ->setRequired($required);
+
+        $this->typeProperties[] = $typeProperty;
+
         return $this;
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\ItemTypeProperty $itemTypeProperties
-     * @return ItemType
+     * @param TypeProperty[] $properties
+     * @return Type
      */
-    public function setItemTypeProperties($itemTypeProperties)
+    public function setTypeProperties($properties)
     {
-        $this->itemTypeProperties = $itemTypeProperties;
+        $this->typeProperties = $properties;
         return $this;
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\ItemTypeProperty[]
+     * @return TypeProperty[]
      */
-    public function getItemTypeProperties()
+    public function getTypeProperties()
     {
-        return $this->itemTypeProperties;
+        return $this->typeProperties;
     }
 
     /**
      * @param boolean $timed
-     * @return ItemType
+     * @return Type
      */
     public function setTimed($timed)
     {
@@ -152,7 +162,7 @@ class ItemType
 
     /**
      * @param boolean $hasState
-     * @return ItemType
+     * @return Type
      */
     public function setHasState($hasState)
     {
@@ -170,7 +180,7 @@ class ItemType
 
     /**
      * @param $states
-     * @return ItemType
+     * @return Type
      */
     public function setStates($states)
     {
@@ -200,7 +210,7 @@ class ItemType
 
     /**
      * @param State $state
-     * @return ItemType
+     * @return Type
      */
     public function addState(State $state)
     {

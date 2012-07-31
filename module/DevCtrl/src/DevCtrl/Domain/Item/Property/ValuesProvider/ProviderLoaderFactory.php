@@ -1,6 +1,6 @@
 <?php
 
-namespace DevCtrl\Domain\Item\Property;
+namespace DevCtrl\Domain\Item\Property\ValuesProvider;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -10,7 +10,7 @@ use Zend\ServiceManager\Config;
 use Zend\EventManager\EventManagerAwareInterface;
 use Ctrl\ServiceManager\EntityManagerAwareInterface;
 
-class DefaultValueProviderLoaderFactory implements FactoryInterface
+class ProviderLoaderFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface|ServiceManager $serviceLocator
@@ -18,7 +18,7 @@ class DefaultValueProviderLoaderFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $key = \DevCtrl\Module::ITEM_PROP_DEFAULT_VALUE_PROVIDERS;
+        $key = \DevCtrl\Module::ITEM_PROP_VALUES_PROVIDERS;
         $config = $serviceLocator->get('Configuration');
         $serviceConfig = new Config(
             isset($config[$key]) ? array('invokables' => $config[$key]) : array()

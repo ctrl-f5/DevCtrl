@@ -7,8 +7,8 @@ use \Ctrl\EntityManager\PostLoadSubscriber;
 
 class Module
 {
-    const ITEM_PROP_DEFAULT_VALUE_PROVIDERS = 'domain_item_property_default_value_providers';
-    const ITEM_PROP_POSSIBLE_VALUES_PROVIDERS = 'domain_item_property_possible_values_providers';
+    const ITEM_PROP_DEFAULT_PROVIDERS = 'domain_item_property_default_providers';
+    const ITEM_PROP_VALUES_PROVIDERS = 'domain_item_property_values_providers';
 
     /**
      * @param $e \Zend\Mvc\MvcEvent

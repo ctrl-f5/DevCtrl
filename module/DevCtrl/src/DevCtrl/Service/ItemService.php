@@ -3,7 +3,9 @@
 namespace DevCtrl\Service;
 
 use \DevCtrl\Domain;
-use \DevCtrl\Domain\Item;
+use \DevCtrl\Domain\Item\Item;
+use \DevCtrl\Domain\Item\PropertyValue;
+use \DevCtrl\Domain\Item\Type\Type;
 
 class ItemService extends \Ctrl\Service\AbstractDomainEntityService
 {
@@ -48,17 +50,19 @@ class ItemService extends \Ctrl\Service\AbstractDomainEntityService
 
     /**
      * @param string $title
-     * @param Item\ItemType $itemType
-     * @param array $propertyValues property_id/value pairs
-     * @return Item\Item
+     * @param Domain\User $createdBy
+     * @param Domain\Project $project
+     * @param Type $itemType
+     * @param array $propertyValues
+     * @return Item
      */
-    public function createItem($title, Domain\User $createdBy, Domain\Project $project, Item\ItemType $itemType, $propertyValues)
+    public function createItem($title, Domain\User $createdBy, Domain\Project $project, Type $itemType, $propertyValues)
     {
         $propVals = array();
-        foreach ($itemType->getItemTypeProperties() as $itp) {
+        foreach ($itemType->getTypeProperties() as $itp) {
             foreach ($propertyValues as $id => $value) {
                 if ($itp->getProperty()->getId() == $id) {
-                    $propVal = new Item\ItemPropertyValue();
+                    $propVal = new PropertyValue();
                     $propVal->setProperty($itp->getProperty())
                         ->setValue($value);
                     $propVals[] = $propVal;
@@ -66,7 +70,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainEntityService
                 }
             }
         }
-        $item = new Item\Item($title, $createdBy, $project, $itemType, $propVals);
+        $item = new Item($title, $createdBy, $project, $itemType, $propVals);
         return $item;
     }
 }

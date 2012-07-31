@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\State" table="item_states">
+    <entity name="DevCtrl\Domain\Item\Type\State" table="item_states">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -13,7 +13,7 @@
         <field name="type" column="state_type" type="integer" nullable="false" unique="false" />
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\ItemType">
+        <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type">
             <join-column name="item_type_id" referenced-column-name="id" />
         </one-to-one>
 

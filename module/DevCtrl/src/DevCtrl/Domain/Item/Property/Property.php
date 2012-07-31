@@ -1,18 +1,20 @@
 <?php
 
-namespace DevCtrl\Domain\Item;
+namespace DevCtrl\Domain\Item\Property;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Ctrl\Domain\ServiceLocatorAwareModel;
-use DevCtrl\Domain\Item\Property\DefaultValueProviderInterface;
-use DevCtrl\Domain\Item\Property\PossibleValuesProviderInterface;
+use DevCtrl\Domain\Item\Property\DefaultProvider\ProviderInterface as DefaultProvider;
+use DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface as ValuesProvider;
+use DevCtrl\Domain\Item\Property\Value\Value;
+use DevCtrl\Domain\Item\Property\Value\CustomValue;
+use DevCtrl\Domain\Item\Item;
 
 class Property extends ServiceLocatorAwareModel
 {
     const TYPE_SINGLE           = 'single';
     const TYPE_BOOL             = 'boolean';
     const TYPE_LIST             = 'list';
-    const TYPE_LIST_MULTI       = 'list-multi';
 
     /**
      * @var int
@@ -34,14 +36,20 @@ class Property extends ServiceLocatorAwareModel
      */
     protected $staticDefaultValue;
 
+    /**
+     * @var string
+     */
     protected $defaultValueProvider = 'Empty';
 
-    protected $possibleValuesProvider = 'Empty';
+    /**
+     * @var string
+     */
+    protected $valuesProvider = 'Empty';
 
     /**
-     * @var \DevCtrl\Domain\Collection|\DevCtrl\Domain\Item\Property\CustomPossibleValue[]
+     * @var \DevCtrl\Domain\Collection|\DevCtrl\Domain\Item\Property\Value\CustomValue[]
      */
-    protected $customPossibleValues;
+    protected $customValues;
 
     /**
      * @var string
@@ -50,7 +58,7 @@ class Property extends ServiceLocatorAwareModel
 
     public function __construct(ServiceLocatorInterface $serviceLocator)
     {
-        $this->customPossibleValues = new \DevCtrl\Domain\Collection();
+        $this->customValues = new \DevCtrl\Domain\Collection();
         $this->setServiceLocator($serviceLocator);
     }
 
@@ -147,9 +155,9 @@ class Property extends ServiceLocatorAwareModel
      */
     public function getDefaultValue()
     {
-        /** @var $provider DefaultValueProviderInterface */
+        /** @var $provider DefaultProvider */
         $provider = $this->getServiceLocator()
-            ->get('PropertyDefaultValueProviderLoader')
+            ->get('PropertyDefaultProviderLoader')
             ->get($this->defaultValueProvider);
 
         return $provider->getDefaultValue($this);
@@ -157,34 +165,34 @@ class Property extends ServiceLocatorAwareModel
 
     /**
      * @param Item $item
-     * @return Property\PossibleValue[]
+     * @return Value[]
      */
     public function getPossibleValues(Item $item = null)
     {
-        /** @var $provider PossibleValuesProviderInterface */
+        /** @var $provider ValuesProvider */
         $provider = $this->getServiceLocator()
-            ->get('PropertyPossibleValuesProviderLoader')
-            ->get($this->possibleValuesProvider);
+            ->get('PropertyValuesProviderLoader')
+            ->get($this->valuesProvider);
 
-        return $provider->getPossibleValues($this, $item);
+        return $provider->getValues($this, $item);
     }
 
     /**
      * @param $possibleValuesProvider
      * @return Property
      */
-    public function setPossibleValuesProvider($possibleValuesProvider)
+    public function setValuesProvider($possibleValuesProvider)
     {
-        $this->possibleValuesProvider = $possibleValuesProvider;
+        $this->valuesProvider = $possibleValuesProvider;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPossibleValuesProvider()
+    public function getValuesProvider()
     {
-        return $this->possibleValuesProvider;
+        return $this->valuesProvider;
     }
 
     /**
@@ -206,32 +214,32 @@ class Property extends ServiceLocatorAwareModel
     }
 
     /**
-     * @param $customPossibleValues
+     * @param $customValues
      * @return Property
      */
-    public function setCustomPossibleValues($customPossibleValues)
+    public function setCustomValues($customValues)
     {
-        $this->customPossibleValues = $customPossibleValues;
+        $this->customValues = $customValues;
         return $this;
     }
 
     /**
-     * @return \DevCtrl\Domain\Collection|Property\CustomPossibleValue[]
+     * @return \DevCtrl\Domain\Collection|CustomValue[]
      */
-    public function getCustomPossibleValues()
+    public function getCustomValues()
     {
-        return $this->customPossibleValues;
+        return $this->customValues;
     }
 
     /**
-     * @param Property\CustomPossibleValue $value
+     * @param CustomValue $value
      * @return Property
      */
-    public function addCustomPossibleValue(Property\CustomPossibleValue $value)
+    public function addCustomPossibleValue(CustomValue $value)
     {
-        $value->setOrder(count($this->customPossibleValues)+1);
+        $value->setOrder(count($this->customValues)+1);
         $value->setProperty($this);
-        $this->customPossibleValues[] = $value;
+        $this->customValues[] = $value;
 
         return $this;
     }

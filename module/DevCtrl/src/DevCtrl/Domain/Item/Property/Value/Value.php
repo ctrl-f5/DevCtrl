@@ -1,8 +1,8 @@
 <?php
 
-namespace DevCtrl\Domain\Item\Property;
+namespace DevCtrl\Domain\Item\Property\Value;
 
-class PossibleValue
+class Value
 {
     /**
      * @var int
@@ -21,7 +21,7 @@ class PossibleValue
 
     /**
      * @param int $id
-     * @return PossibleValue
+     * @return Value
      */
     public function setId($id)
     {
@@ -39,7 +39,7 @@ class PossibleValue
 
     /**
      * @param mixed $value
-     * @return PossibleValue
+     * @return Value
      */
     public function setValue($value)
     {
@@ -57,7 +57,7 @@ class PossibleValue
 
     /**
      * @param int $order
-     * @return PossibleValue
+     * @return Value
      */
     public function setOrder($order)
     {

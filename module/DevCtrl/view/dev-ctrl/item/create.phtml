@@ -1,6 +1,6 @@
-<?php use DevCtrl\Domain\Item\Property; ?>
+<?php use DevCtrl\Domain\Item\Property\Property; ?>
 <?php $project = $this->project; /** @var $project \DevCtrl\Domain\Project */ ?>
-<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
 <h1>New item
     <small>for <strong><?php echo $project->getName(); ?></strong></small>
 </h1>
@@ -57,14 +57,13 @@
 
     <fieldset id="item-type-property-controls-container">
         <legend>Additional fields for this item type</legend>
-        <?php foreach ($itemType->getItemTypeProperties() as $p): ?>
+        <?php foreach ($itemType->getTypeProperties() as $p): ?>
         <div class="control-group">
             <label class="control-label"><?php echo $p->getProperty()->getName(); ?></label>
             <div class="controls">
                 <?php
                     switch ($p->getProperty()->getType()) {
                         case Property::TYPE_LIST:
-                        case Property::TYPE_LIST_MULTI:
                             echo '<select class="input-xxlarge '.($p->getRequired()?'required':'').'"
                                     name="item-type-property['.$p->getProperty()->getId().']">';
                             if (!$p->getRequired()) echo '<option></option>';

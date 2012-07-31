@@ -129,21 +129,21 @@ return array(
             'User' => 'DevCtrl\Service\UserService',
         ),
     ),
-    Module::ITEM_PROP_DEFAULT_VALUE_PROVIDERS => array(
-        'Empty' => 'DevCtrl\Domain\Item\Property\EmptyDefaultValueProvider',
-        'Static' => 'DevCtrl\Domain\Item\Property\StaticDefaultValueProvider',
-        'FirstPossible' => 'DevCtrl\Domain\Item\Property\FirstPossibleDefaultValueProvider',
-        'LastPossible' => 'DevCtrl\Domain\Item\Property\LastPossibleDefaultValueProvider',
+    Module::ITEM_PROP_DEFAULT_PROVIDERS => array(
+        'Empty'         => 'DevCtrl\Domain\Item\Property\DefaultProvider\EmptyProvider',
+        'Static'        => 'DevCtrl\Domain\Item\Property\DefaultProvider\StaticProvider',
+        'First'         => 'DevCtrl\Domain\Item\Property\DefaultProvider\FirstProvider',
+        'Last'          => 'DevCtrl\Domain\Item\Property\DefaultProvider\LastProvider',
     ),
-    Module::ITEM_PROP_POSSIBLE_VALUES_PROVIDERS => array(
-        'Empty' => 'DevCtrl\Domain\Item\Property\EmptyPossibleValuesProvider',
-        'Custom' => 'DevCtrl\Domain\Item\Property\CustomPossibleValuesProvider',
-        'ProjectVersion' => 'DevCtrl\Domain\Item\Property\ProjectVersionPossibleValuesProvider',
+    Module::ITEM_PROP_VALUES_PROVIDERS => array(
+        'Empty'             => 'DevCtrl\Domain\Item\Property\ValuesProvider\EmptyProvider',
+        'Custom'            => 'DevCtrl\Domain\Item\Property\ValuesProvider\CustomProvider',
+        'ProjectVersion'    => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProjectVersionProvider',
     ),
     'service_manager' => array(
         'factories' => array(
-            'PropertyPossibleValuesProviderLoader' => 'DevCtrl\Domain\Item\Property\PossibleValuesProviderLoaderFactory',
-            'PropertyDefaultValueProviderLoader' => 'DevCtrl\Domain\Item\Property\DefaultValueProviderLoaderFactory',
+            'PropertyValuesProviderLoader'      => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProviderLoaderFactory',
+            'PropertyDefaultProviderLoader'     => 'DevCtrl\Domain\Item\Property\DefaultProvider\ProviderLoaderFactory',
         ),
     ),
     'view_manager' => array(

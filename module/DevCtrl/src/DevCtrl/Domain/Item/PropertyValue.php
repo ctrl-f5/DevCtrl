@@ -3,8 +3,10 @@
 namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
+use \DevCtrl\Domain\Item\Item;
+use \DevCtrl\Domain\Item\Property\Property;
 
-class ItemPropertyValue
+class PropertyValue
 {
     /**
      * @var int
@@ -26,10 +28,9 @@ class ItemPropertyValue
      */
     protected $value;
 
-
     /**
      * @param int $id
-     * @return ItemPropertyValue
+     * @return PropertyValue
      */
     public function setId($id)
     {
@@ -46,8 +47,8 @@ class ItemPropertyValue
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\Item $item
-     * @return ItemPropertyValue
+     * @param Item $item
+     * @return PropertyValue
      */
     public function setItem($item)
     {
@@ -56,7 +57,7 @@ class ItemPropertyValue
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\Item
+     * @return Item
      */
     public function getItem()
     {
@@ -64,8 +65,8 @@ class ItemPropertyValue
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\Property $property
-     * @return ItemPropertyValue
+     * @param Property $property
+     * @return PropertyValue
      */
     public function setProperty($property)
     {
@@ -74,7 +75,7 @@ class ItemPropertyValue
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\Property
+     * @return Property
      */
     public function getProperty()
     {
@@ -83,7 +84,7 @@ class ItemPropertyValue
 
     /**
      * @param mixed $value
-     * @return ItemPropertyValue
+     * @return PropertyValue
      */
     public function setValue($value)
     {

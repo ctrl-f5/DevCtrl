@@ -1,10 +1,12 @@
 <?php
 
-namespace DevCtrl\Domain\Item;
+namespace DevCtrl\Domain\Item\Type;
 
 use \DevCtrl\Domain;
+use \DevCtrl\Domain\Item\Item;
+use \DevCtrl\Domain\Item\Property\Property;
 
-class ItemTypeProperty
+class TypeProperty
 {
     /**
      * @var int
@@ -12,7 +14,7 @@ class ItemTypeProperty
     protected $id;
 
     /**
-     * @var ItemType
+     * @var Type
      */
     protected $itemType;
 
@@ -28,7 +30,7 @@ class ItemTypeProperty
 
     /**
      * @param int $id
-     * @return ItemTypeProperty
+     * @return TypeProperty
      */
     public function setId($id)
     {
@@ -45,8 +47,8 @@ class ItemTypeProperty
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\Property $property
-     * @return ItemTypeProperty
+     * @param Property $property
+     * @return TypeProperty
      */
     public function setProperty($property)
     {
@@ -55,7 +57,7 @@ class ItemTypeProperty
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\Property
+     * @return Property
      */
     public function getProperty()
     {
@@ -64,7 +66,7 @@ class ItemTypeProperty
 
     /**
      * @param boolean $required
-     * @return ItemTypeProperty
+     * @return TypeProperty
      */
     public function setRequired($required)
     {
@@ -81,8 +83,8 @@ class ItemTypeProperty
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\ItemType $itemType
-     * @return ItemTypeProperty
+     * @param \DevCtrl\Domain\Item\Type\Type $itemType
+     * @return TypeProperty
      */
     public function setItemType($itemType)
     {
@@ -91,7 +93,7 @@ class ItemTypeProperty
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\ItemType
+     * @return \DevCtrl\Domain\Item\Type\Type
      */
     public function getItemType()
     {

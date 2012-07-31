@@ -1,15 +1,17 @@
 <?php
 
-namespace DevCtrl\Domain\Item\Property;
+namespace DevCtrl\Domain\Item\Property\Value;
 
-class CustomPossibleValue
+use DevCtrl\Domain\Item\Property\Property;
+
+class CustomValue
 {
     /**
      * @var int
      */
     protected $id;
 
-    /** @var \DevCtrl\Domain\Item\Property */
+    /** @var Property */
     protected $property;
 
     /**

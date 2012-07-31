@@ -1,6 +1,6 @@
 <?php
 
-namespace DevCtrl\Domain\Item;
+namespace DevCtrl\Domain\Item\Type;
 
 class State
 {
@@ -29,7 +29,7 @@ class State
     protected $order;
 
     /**
-     * @var ItemType
+     * @var Type
      */
     protected $itemType;
 

@@ -1,5 +1,5 @@
-<?php use DevCtrl\Domain\Item\Property; ?>
-<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<?php use DevCtrl\Domain\Item\Property\Property; ?>
+<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
 <h1>New property
     <small>for <strong><?php echo $itemType->getName(); ?></strong></small>
 </h1>
@@ -30,7 +30,6 @@
                     <option value="<?php echo Property::TYPE_SINGLE; ?>">text</option>
                     <option value="<?php echo Property::TYPE_BOOL; ?>">boolean</option>
                     <option value="<?php echo Property::TYPE_LIST; ?>">list</option>
-                    <option value="<?php echo Property::TYPE_LIST_MULTI; ?>">multi list</option>
                 </select>
             </div>
         </div>

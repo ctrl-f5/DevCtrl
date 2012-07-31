@@ -12,7 +12,7 @@
         <field name="title" column="title" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
 
-        <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\ItemType">
+        <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type">
             <join-column name="item_type_id" referenced-column-name="id" />
         </one-to-one>
 
@@ -20,7 +20,7 @@
             <join-column name="created_by_user_id" referenced-column-name="id" />
         </one-to-one>
 
-        <one-to-one field="state" target-entity="DevCtrl\Domain\Item\State">
+        <one-to-one field="state" target-entity="DevCtrl\Domain\Item\Type\State">
             <join-column name="state_id" referenced-column-name="id" />
         </one-to-one>
 
@@ -39,7 +39,7 @@
             </join-table>
         </many-to-many>
 
-        <one-to-many field="propertyValues" target-entity="DevCtrl\Domain\Item\ItemPropertyValue" mapped-by="item">
+        <one-to-many field="propertyValues" target-entity="DevCtrl\Domain\Item\PropertyValue" mapped-by="item">
             <cascade>
                 <cascade-persist/>
             </cascade>

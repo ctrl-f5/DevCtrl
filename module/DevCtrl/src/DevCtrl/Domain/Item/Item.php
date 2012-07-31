@@ -3,6 +3,7 @@
 namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
+use \DevCtrl\Domain\Item\Property\Property;
 
 class Item
 {
@@ -22,7 +23,7 @@ class Item
     protected $description;
 
     /**
-     * @var ItemType
+     * @var Type\Type
      */
     protected $itemType;
 
@@ -32,7 +33,7 @@ class Item
     protected $state;
 
     /**
-     * @var Domain\Collection|ItemPropertyValue[]
+     * @var Domain\Collection|PropertyValue[]
      */
     protected $propertyValues;
 
@@ -55,11 +56,11 @@ class Item
      * @param $title
      * @param Domain\User $createdBy
      * @param Domain\Project $project
-     * @param ItemType $itemType
-     * @param ItemPropertyValue[] $propertyValues
-     * @throws Domain\DomainException
+     * @param Type\Type $itemType
+     * @param PropertyValue[] $propertyValues
+     * @throws Domain\Exception
      */
-    public function __construct($title, Domain\User $createdBy, Domain\Project $project, ItemType $itemType, $propertyValues)
+    public function __construct($title, Domain\User $createdBy, Domain\Project $project, Type\Type $itemType, $propertyValues)
     {
         $this->title = $title;
         $this->createdByUser = $createdBy;
@@ -72,8 +73,8 @@ class Item
         foreach ($propertyValues as $pv) {
             $this->addPropertyValue($pv);
         }
-        if (!$this->hasAllRequiredItemTypePropertyValues()) {
-            throw new Domain\DomainException('item is missing a required property value');
+        if (!$this->hasAllRequiredPropertyValues()) {
+            throw new Domain\Exception('item is missing a required property value');
         }
     }
 
@@ -179,7 +180,7 @@ class Item
     }
 
     /**
-     * @return \DevCtrl\Domain\Item\ItemType
+     * @return \DevCtrl\Domain\Item\Type\Type
      */
     public function getItemType()
     {
@@ -204,19 +205,19 @@ class Item
                 return $pv;
             }
         }
-        throw new Domain\DomainException('Item has no ItemPropertyValue for the given Property');
+        throw new Domain\Exception('Item has no PropertyValue for the given Property');
     }
 
-    public function addPropertyValue(ItemPropertyValue $itemPropertyValue)
+    public function addPropertyValue(PropertyValue $propertyValue)
     {
-        $this->propertyValues[] = $itemPropertyValue;
-        $itemPropertyValue->setItem($this);
+        $this->propertyValues[] = $propertyValue;
+        $propertyValue->setItem($this);
         return $this;
     }
 
-    protected function hasAllRequiredItemTypePropertyValues()
+    protected function hasAllRequiredPropertyValues()
     {
-        foreach ($this->getItemType()->getItemTypeProperties() as $itp) {
+        foreach ($this->getItemType()->getTypeProperties() as $itp) {
             $val = null;
             foreach ($this->getPropertyValues() as $pv) {
                 if ($pv->getProperty() === $itp->getProperty()) {

@@ -1,4 +1,4 @@
-<?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
 <div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Item Type <small><?php echo $itemType->getName(); ?></small></h1></div>
 
 <?php $this->page = 'properties'; ?>
@@ -24,13 +24,13 @@
             <th>change order</th>
             <th>actions</th>
         </tr>
-        <?php foreach ($itemType->getItemTypeProperties() as $itp): ?>
+        <?php foreach ($itemType->getTypeProperties() as $itp): ?>
         <tr>
             <td><?php echo $itp->getId(); ?></td>
             <td><?php echo $itp->getProperty()->getName(); ?></td>
             <td><?php echo $itp->getProperty()->getType(); ?></td>
             <td><?php echo $itp->getProperty()->getDefaultValueProvider(); ?></td>
-            <td><?php echo $itp->getProperty()->getPossibleValuesProvider(); ?></td>
+            <td><?php echo $itp->getProperty()->getValuesProvider(); ?></td>
             <td><?php echo $itp->getRequired() ? 'yes' : 'no' ?></td>
             <td>
                 <a class="btn" href="<?php echo $this->url('item_property_order_change', array(

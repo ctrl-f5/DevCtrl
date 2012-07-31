@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\ItemType" table="item_types">
+    <entity name="DevCtrl\Domain\Item\Type\Type" table="item_types">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -14,13 +14,13 @@
         <field name="timed" column="is_timed" type="boolean" nullable="false" unique="false" />
         <field name="hasState" column="has_state" type="boolean" nullable="false" unique="false" />
 
-        <one-to-many field="itemTypeProperties" target-entity="DevCtrl\Domain\Item\ItemTypeProperty" mapped-by="itemType">
+        <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType">
             <cascade>
                 <cascade-persist/>
             </cascade>
         </one-to-many>
 
-        <one-to-many field="states" target-entity="DevCtrl\Domain\Item\State" mapped-by="itemType">
+        <one-to-many field="states" target-entity="DevCtrl\Domain\Item\Type\State" mapped-by="itemType">
             <order-by>
                 <order-by-field name="order" direction="ASC" />
             </order-by>

@@ -1,4 +1,4 @@
-<?php use DevCtrl\Domain\Item\Property; ?>
+<?php use DevCtrl\Domain\Item\Property\Property; ?>
 <?php $property = $this->property; /** @var $property Property */ ?>
 <div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Property <small><?php echo $property->getName(); ?></small></h1></div>
 
@@ -15,11 +15,11 @@
         <th>default value provider</th>
         <td><?php echo $property->getDefaultValueProvider() ?></td>
         <th>possible values provider</th>
-        <td><?php echo $property->getPossibleValuesProvider() ?></td>
+        <td><?php echo $property->getValuesProvider() ?></td>
     </tr>
 </table>
 
-<?php if ($property->getPossibleValuesProvider() == 'Custom'): ?>
+<?php if ($property->getValuesProvider() == 'Custom'): ?>
 
 <div class="btn-group">
     <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
