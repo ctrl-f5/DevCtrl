@@ -4,8 +4,8 @@
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "f5fceab894a58bc4870498ee09861b0e78454e5c",
-            "commit-date": "1343611151"
+            "source-reference": "5978626c48ec565c4691f50673eeaf92e02f5e04",
+            "commit-date": "1343755529"
         },
         {
             "package": "doctrine/common",
@@ -28,8 +28,8 @@
         {
             "package": "doctrine/doctrine-module",
             "version": "dev-master",
-            "source-reference": "bac509a97667bddef540f09c90fc0681bd24cf49",
-            "commit-date": "1343296450"
+            "source-reference": "8ada8b2c7aebc35461d8e14e33a097b505e8be4f",
+            "commit-date": "1343678022"
         },
         {
             "package": "doctrine/doctrine-orm-module",
@@ -46,8 +46,8 @@
         {
             "package": "doctrine/orm",
             "version": "2.3.x-dev",
-            "source-reference": "992b51eba77b413878385f2924763680617497ff",
-            "commit-date": "1343559790"
+            "source-reference": "3f2ddc60d42ebc140de7bbadf7f7af6115c3690a",
+            "commit-date": "1343745264"
         },
         {
             "package": "symfony/console",
