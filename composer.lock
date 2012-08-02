@@ -10,8 +10,8 @@
         {
             "package": "doctrine/common",
             "version": "2.3.x-dev",
-            "source-reference": "1ba1f944c174db5ea2320fab3f49a6ca0ea79b9b",
-            "commit-date": "1343558692"
+            "source-reference": "2ec4bc6db13db6a0976a16b71058083c55cbcdbd",
+            "commit-date": "1343847076"
         },
         {
             "package": "doctrine/data-fixtures",
@@ -28,14 +28,14 @@
         {
             "package": "doctrine/doctrine-module",
             "version": "dev-master",
-            "source-reference": "8ada8b2c7aebc35461d8e14e33a097b505e8be4f",
-            "commit-date": "1343678022"
+            "source-reference": "5ea15bcc982e20458dd7b626a2156d90dfdc812d",
+            "commit-date": "1343824551"
         },
         {
             "package": "doctrine/doctrine-orm-module",
             "version": "dev-master",
-            "source-reference": "5fb90e6498b794554bfedaf8f2f1b0de1acfa6b9",
-            "commit-date": "1343168014"
+            "source-reference": "5d1c5c9d5962e034fa463d2265dab77b22fe7b76",
+            "commit-date": "1343827918"
         },
         {
             "package": "doctrine/migrations",
@@ -46,8 +46,8 @@
         {
             "package": "doctrine/orm",
             "version": "2.3.x-dev",
-            "source-reference": "3f2ddc60d42ebc140de7bbadf7f7af6115c3690a",
-            "commit-date": "1343745264"
+            "source-reference": "17862d9a2a38bf801e564d09a26eea8503621ae0",
+            "commit-date": "1343850025"
         },
         {
             "package": "symfony/console",
