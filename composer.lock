@@ -16,8 +16,8 @@
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "5978626c48ec565c4691f50673eeaf92e02f5e04",
-            "commit-date": "1343755529"
+            "source-reference": "d3e1376e12c475ddc41858a7ee9f9ca0bb98db82",
+            "commit-date": "1343936035"
         },
         {
             "package": "doctrine/common",
