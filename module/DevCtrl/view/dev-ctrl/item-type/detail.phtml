@@ -1,4 +1,6 @@
-<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Item Type <small><?php echo $this->itemType->getName(); ?></small></h1></div>
+<?php use DevCtrl\Domain\Item\Type\Type; ?>
+<?php $type = $this->itemType; /** @var $type Type */ ?>
+<div class="page-header"><h1>Item Type <small><?php echo $this->itemType->getName(); ?></small></h1></div>
 
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
@@ -6,16 +8,18 @@
 <table class="table table-bordered">
     <tr>
         <th>name</th>
-        <td colspan="3"><?php echo $this->itemType->getName(); ?></td>
+        <td colspan=""><?php echo $this->itemType  ->getName(); ?></td>
+        <th>supports timing</th>
+        <td><?php echo $type->supportsTiming() ? 'yes' : 'no' ?></td>
     </tr>
     <tr>
         <th>description</th>
         <td colspan="3"><?php echo $this->itemType->getDescription(); ?></td>
     </tr>
     <tr>
-        <th>is timed</th>
-        <td><?php echo $this->itemType->supportsTiming() ? 'yes' : 'no' ?></td>
         <th>has state</th>
-        <td><?php echo $this->itemType->supportsStates() ? 'yes' : 'no' ?></td>
+        <td><?php echo $type->hasStates() ? 'yes' : 'no' ?></td>
+        <th>state set</th>
+        <td><?php if ($type->hasStates()) $type->getStates()->getName() ?></td>
     </tr>
 </table>
