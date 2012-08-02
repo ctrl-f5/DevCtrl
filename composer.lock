@@ -1,6 +1,18 @@
 {
-    "hash": "5abdd46496d96342d7b03fc4c8b1ca38",
+    "hash": "f262b6a32180cbb0f726e3c7a1e11450",
     "packages": [
+        {
+            "package": "composer/installers",
+            "version": "dev-master",
+            "source-reference": "c515efe6e807b09b51eba0f5f6188868156edd8b",
+            "commit-date": "1343250599"
+        },
+        {
+            "package": "ctrl-f5/ctrljs",
+            "version": "dev-master",
+            "source-reference": "398c7190e4cb1f71a64b80d1a55403ab360a5096",
+            "commit-date": "1343935549"
+        },
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
@@ -28,8 +40,8 @@
         {
             "package": "doctrine/doctrine-module",
             "version": "dev-master",
-            "source-reference": "5ea15bcc982e20458dd7b626a2156d90dfdc812d",
-            "commit-date": "1343824551"
+            "source-reference": "dd6ec9a75d187085041e046475bfd69d3c00db6d",
+            "commit-date": "1343934116"
         },
         {
             "package": "doctrine/doctrine-orm-module",
@@ -89,6 +101,7 @@
         "zendframework/zendframework": 20,
         "doctrine/doctrine-orm-module": 20,
         "doctrine/doctrine-module": 20,
-        "ctrl-f5/ctrllib": 20
+        "ctrl-f5/ctrllib": 20,
+        "ctrl-f5/ctrljs": 20
     }
 }
