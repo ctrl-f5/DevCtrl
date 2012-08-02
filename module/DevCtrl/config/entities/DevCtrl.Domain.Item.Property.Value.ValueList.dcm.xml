@@ -1,0 +1,29 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\Item\Property\Value\ValueList" table="propertyValueList">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
+        <field name="nativeType" column="nativeType" type="string" length="255" nullable="false" unique="false" />
+
+        <many-to-many field="values" target-entity="DevCtrl\Domain\Item\Property\Value\Value">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-table name="propertyValueList_nativeValue">
+                <join-columns>
+                    <join-column name="propertyValueList_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="nativeValue_id" referenced-column-name="id" unique="true" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+    </entity>
+</doctrine-mapping>

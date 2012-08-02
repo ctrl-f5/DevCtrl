@@ -4,15 +4,22 @@ namespace DevCtrl\Domain\Item\Property\DefaultProvider;
 
 use DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\Item\Item;
+use DevCtrl\Domain\Item\Type\TypeProperty;
 
-class FirstProvider implements ProviderInterface
+class FirstProvider extends AbstractProvider
 {
-    public function getDefaultValue(Property $property)
+    public function getName()
     {
-        $values = $property->getPossibleValues();
-        if (count($values)) {
-            return reset($values);
-        }
-        throw new \DevCtrl\Domain\Exception('FirstProvider expects at least one PossibleValue');
+        return 'First';
+    }
+
+    public function requiresValuesProvider()
+    {
+        return true;
+    }
+
+    protected function _getDefaultValue(Property $property, TypeProperty $typeProperty = null)
+    {
+        return null;
     }
 }

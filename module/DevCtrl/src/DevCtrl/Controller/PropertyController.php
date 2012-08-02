@@ -4,46 +4,50 @@ namespace DevCtrl\Controller;
 
 use DevCtrl\Domain;
 use DevCtrl\Service\ProjectService;
-use Ctrl\Controller\AbstractController;
+use DevCtrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
+use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 
 class PropertyController extends AbstractController
 {
-    public function detailAction()
+    public function indexAction()
     {
-        $id = $this->params('id');
-        $property = $this->getDomainService('ItemProperty')->getById($id);
-
+        /** @var $propertyService \DevCtrl\Service\PropertyService */
+        $propertyService = $this->getDomainService('Property');
         return new ViewModel(array(
-            'property' => $property
+            'properties' => $propertyService->getAll(),
+            'types' => $this->getConfiguredPropertyTypes(),
         ));
     }
 
-    public function addValueAction()
+    public function createAction()
     {
-        $id = $this->params('id');
-        $propertyService = $this->getDomainService('ItemProperty');
-        /** @var $property \DevCtrl\Domain\Item\Property */
-        $property = $propertyService->getById($id);
+        $propertyType = $this->getPropertyType($this->params()->fromRoute('type'));
+
+        /** @var $propertyService \DevCtrl\Service\PropertyService */
+        $propertyService = $this->getDomainService('Property');
 
         if ($this->getRequest()->isPost()) {
 
-            $value = new \DevCtrl\Domain\Item\Property\CustomPossibleValue();
-            $value->setValue($this->params()->fromPost('value'));
-            $property->addCustomPossibleValue($value);
+            $property = new \DevCtrl\Domain\Item\Property\Property(
+                $propertyType,
+                $this->params()->fromPost('type'),
+                $this->params()->fromPost('type-config')
+            );
+            $property->setName($this->params()->fromPost('name'))
+                ->setDescription($this->params()->fromPost('description'));
 
-            $propertyService->getEntityManager()->persist($value);
-            $propertyService->getEntityManager()->flush();
+            $propertyService->persist($property);
 
-            return $this->redirect()->toRoute('default/id', array(
+            return $this->redirect()->toRoute('default', array(
                 'controller' => 'property',
-                'action' => 'detail',
-                'id' => $property->getId()
+                'action' => 'index',
             ));
         }
 
         return new ViewModel(array(
-            'property' => $property
+            'type' => $propertyType,
+            'valuesProviders' => $propertyService->getConfiguredValuesProviders()
         ));
     }
 }

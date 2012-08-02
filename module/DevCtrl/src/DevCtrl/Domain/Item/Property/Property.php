@@ -3,19 +3,17 @@
 namespace DevCtrl\Domain\Item\Property;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Ctrl\Domain\PersistableServiceLocatorAwareModel;
 use Ctrl\Domain\ServiceLocatorAwareModel;
+use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\Property\DefaultProvider\ProviderInterface as DefaultProvider;
 use DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface as ValuesProvider;
 use DevCtrl\Domain\Item\Property\Value\Value;
 use DevCtrl\Domain\Item\Property\Value\CustomValue;
-use DevCtrl\Domain\Item\Item;
+use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 
-class Property extends ServiceLocatorAwareModel
+class Property extends PersistableServiceLocatorAwareModel
 {
-    const TYPE_SINGLE           = 'single';
-    const TYPE_BOOL             = 'boolean';
-    const TYPE_LIST             = 'list';
-
     /**
      * @var int
      */
@@ -32,52 +30,30 @@ class Property extends ServiceLocatorAwareModel
     protected $description;
 
     /**
-     * @var mixed
+     * @var ValuesProvider
      */
-    protected $staticDefaultValue;
+    protected $valuesProvider;
 
     /**
      * @var string
      */
-    protected $defaultValueProvider = 'Empty';
+    protected $valuesProviderConfig;
 
     /**
      * @var string
      */
-    protected $valuesProvider = 'Empty';
+    protected $typeName;
 
     /**
-     * @var \DevCtrl\Domain\Collection|\DevCtrl\Domain\Item\Property\Value\CustomValue[]
-     */
-    protected $customValues;
-
-    /**
-     * @var string
+     * @var TypeInterface
      */
     protected $type;
 
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function __construct(TypeInterface $type, $provider, $providerConfig)
     {
-        $this->customValues = new \DevCtrl\Domain\Collection();
-        $this->setServiceLocator($serviceLocator);
-    }
-
-    /**
-     * @param mixed $defaultValue
-     * @return Property
-     */
-    public function setStaticDefaultValue($defaultValue)
-    {
-        $this->staticDefaultValue = $defaultValue;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStaticDefaultValue()
-    {
-        return $this->staticDefaultValue;
+        $this->setType($type);
+        $this->valuesProvider = $provider;
+        $this->valuesProviderConfig = $providerConfig;
     }
 
     /**
@@ -135,112 +111,41 @@ class Property extends ServiceLocatorAwareModel
     }
 
     /**
-     * @return string
-     */
-    public function getDefaultValueProvider()
-    {
-        return $this->defaultValueProvider;
-    }
-
-    /**
-     * @param $provider
-     */
-    public function setDefaultValueProvider($provider)
-    {
-        $this->defaultValueProvider = $provider;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDefaultValue()
-    {
-        /** @var $provider DefaultProvider */
-        $provider = $this->getServiceLocator()
-            ->get('PropertyDefaultProviderLoader')
-            ->get($this->defaultValueProvider);
-
-        return $provider->getDefaultValue($this);
-    }
-
-    /**
-     * @param Item $item
-     * @return Value[]
-     */
-    public function getPossibleValues(Item $item = null)
-    {
-        /** @var $provider ValuesProvider */
-        $provider = $this->getServiceLocator()
-            ->get('PropertyValuesProviderLoader')
-            ->get($this->valuesProvider);
-
-        return $provider->getValues($this, $item);
-    }
-
-    /**
-     * @param $possibleValuesProvider
+     * @param TypeInterface $type
      * @return Property
      */
-    public function setValuesProvider($possibleValuesProvider)
-    {
-        $this->valuesProvider = $possibleValuesProvider;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValuesProvider()
-    {
-        return $this->valuesProvider;
-    }
-
-    /**
-     * @param string $type
-     * @return Property
-     */
-    public function setType($type)
+    public function setType(TypeInterface $type)
     {
         $this->type = $type;
+        $this->typeName = $type->getRepresentedPorpertyType();
         return $this;
     }
 
     /**
-     * @return string
+     * @return TypeInterface
      */
     public function getType()
     {
-        return $this->type;
+        return $this->getServiceLocator()
+            ->get('PropertyTypeLoader')
+            ->get($this->typeName);
     }
 
     /**
-     * @param $customValues
-     * @return Property
+     * @return \DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface
      */
-    public function setCustomValues($customValues)
+    public function getValuesProvider()
     {
-        $this->customValues = $customValues;
-        return $this;
+        return $this->getServiceLocator()
+            ->get('ValuesProviderLoader')
+            ->get($this->valuesProvider);
     }
 
     /**
-     * @return \DevCtrl\Domain\Collection|CustomValue[]
+     * @return string
      */
-    public function getCustomValues()
+    public function getValuesProviderConfig()
     {
-        return $this->customValues;
-    }
-
-    /**
-     * @param CustomValue $value
-     * @return Property
-     */
-    public function addCustomPossibleValue(CustomValue $value)
-    {
-        $value->setOrder(count($this->customValues)+1);
-        $value->setProperty($this);
-        $this->customValues[] = $value;
-
-        return $this;
+        return $this->valuesProviderConfig;
     }
 }

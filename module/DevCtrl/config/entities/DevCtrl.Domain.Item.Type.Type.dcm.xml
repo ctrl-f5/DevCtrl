@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\Type\Type" table="item_types">
+    <entity name="DevCtrl\Domain\Item\Type\Type" table="itemType">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -11,8 +11,7 @@
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
-        <field name="timed" column="is_timed" type="boolean" nullable="false" unique="false" />
-        <field name="hasState" column="has_state" type="boolean" nullable="false" unique="false" />
+        <field name="supportsTiming" column="supportsTiming" type="boolean" nullable="false" unique="false" />
 
         <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType">
             <cascade>
@@ -20,14 +19,9 @@
             </cascade>
         </one-to-many>
 
-        <one-to-many field="states" target-entity="DevCtrl\Domain\Item\Type\State" mapped-by="itemType">
-            <order-by>
-                <order-by-field name="order" direction="ASC" />
-            </order-by>
-            <cascade>
-                <cascade-persist/>
-            </cascade>
-        </one-to-many>
+        <one-to-one field="states" target-entity="DevCtrl\Domain\Item\State\StateList">
+            <join-column name="itemStateList_id" referenced-column-name="id" />
+        </one-to-one>
 
     </entity>
 </doctrine-mapping>

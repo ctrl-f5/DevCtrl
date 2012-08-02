@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs">
+    <li<?php if ($this->page == 'item-type') echo ' class="active"'; ?>><a href="<?php echo $this->url('default', array(
+        'controller' => 'item-type'
+    )); ?>">Item Types</a></li>
+    <li<?php if ($this->page == 'property') echo ' class="active"'; ?>><a href="<?php echo $this->url('default', array(
+        'controller' => 'property'
+    )); ?>">Properties</a></li>
+    <li<?php if ($this->page == 'value-list') echo ' class="active"'; ?>><a href="<?php echo $this->url('default', array(
+        'controller' => 'value-list'
+    )); ?>">Custom Lists</a></li>
+    <li<?php if ($this->page == 'state-list') echo ' class="active"'; ?>><a href="<?php echo $this->url('default', array(
+        'controller' => 'state-list'
+    )); ?>">State sets</a></li>
+</ul>

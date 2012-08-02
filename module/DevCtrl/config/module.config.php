@@ -43,6 +43,31 @@ return array(
                     ),
                 ),
             ),
+            'property_create' => array(
+                'type'    => 'Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route'    => '/property/create/[:type]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'DevCtrl\Controller',
+                        'controller'    => 'property',
+                        'action'        => 'create',
+                    ),
+                ),
+            ),
+            'type_property_link' => array(
+                'type'    => 'Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route'    => '/item-type/link-property/[:type]/[:property][/[:page]]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'DevCtrl\Controller',
+                        'controller'    => 'item-type',
+                        'action'        => 'link-property',
+                        'page'        => 1,
+                    ),
+                ),
+            ),
             'item_create' => array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
@@ -118,6 +143,8 @@ return array(
             'DevCtrl\Controller\Item' => 'DevCtrl\Controller\ItemController',
             'DevCtrl\Controller\ItemType' => 'DevCtrl\Controller\ItemTypeController',
             'DevCtrl\Controller\Property' => 'DevCtrl\Controller\PropertyController',
+            'DevCtrl\Controller\ValueList' => 'DevCtrl\Controller\ValueListController',
+            'DevCtrl\Controller\StateList' => 'DevCtrl\Controller\StateListController',
         ),
     ),
     'domain_services' => array(
@@ -125,25 +152,32 @@ return array(
             'Project' => 'DevCtrl\Service\ProjectService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
+            'Property' => 'DevCtrl\Service\PropertyService',
+            'ValueList' => 'DevCtrl\Service\ValueListService',
+            'StateList' => 'DevCtrl\Service\StateListService',
             'ItemProperty' => 'DevCtrl\Service\ItemPropertyService',
             'User' => 'DevCtrl\Service\UserService',
         ),
     ),
     Module::ITEM_PROP_DEFAULT_PROVIDERS => array(
         'Empty'         => 'DevCtrl\Domain\Item\Property\DefaultProvider\EmptyProvider',
-        'Static'        => 'DevCtrl\Domain\Item\Property\DefaultProvider\StaticProvider',
+        'Defined'         => 'DevCtrl\Domain\Item\Property\DefaultProvider\DefinedProvider',
         'First'         => 'DevCtrl\Domain\Item\Property\DefaultProvider\FirstProvider',
         'Last'          => 'DevCtrl\Domain\Item\Property\DefaultProvider\LastProvider',
     ),
     Module::ITEM_PROP_VALUES_PROVIDERS => array(
-        'Empty'             => 'DevCtrl\Domain\Item\Property\ValuesProvider\EmptyProvider',
-        'Custom'            => 'DevCtrl\Domain\Item\Property\ValuesProvider\CustomProvider',
-        'ProjectVersion'    => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProjectVersionProvider',
+        'CustomList'            => 'DevCtrl\Domain\Item\Property\ValuesProvider\CustomListProvider',
+        'ProjectProperty'    => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProjectPropertyProvider',
+    ),
+    Module::ITEM_PROP_TYPES => array(
+        'string' => 'DevCtrl\Domain\Item\Property\Type\StringType',
+        'select' => 'DevCtrl\Domain\Item\Property\Type\SelectType',
     ),
     'service_manager' => array(
         'factories' => array(
-            'PropertyValuesProviderLoader'      => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProviderLoaderFactory',
-            'PropertyDefaultProviderLoader'     => 'DevCtrl\Domain\Item\Property\DefaultProvider\ProviderLoaderFactory',
+            'ValuesProviderLoader'      => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProviderLoaderFactory',
+            'DefaultProviderLoader'     => 'DevCtrl\Domain\Item\Property\DefaultProvider\ProviderLoaderFactory',
+            'PropertyTypeLoader'     => 'DevCtrl\Domain\Item\Property\Type\TypeLoaderFactory',
         ),
     ),
     'view_manager' => array(

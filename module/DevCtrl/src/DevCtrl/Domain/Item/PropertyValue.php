@@ -4,7 +4,8 @@ namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
 use \DevCtrl\Domain\Item\Item;
-use \DevCtrl\Domain\Item\Property\Property;
+use \DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Item\Property\Value\NativeValueInterface;
 
 class PropertyValue
 {
@@ -19,12 +20,12 @@ class PropertyValue
     protected $item;
 
     /**
-     * @var Property
+     * @var TypeProperty
      */
     protected $property;
 
     /**
-     * @var mixed
+     * @var NativeValueInterface
      */
     protected $value;
 

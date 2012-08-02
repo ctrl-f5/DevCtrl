@@ -2,11 +2,14 @@
 
 namespace DevCtrl\Domain\Item\Type;
 
-use \DevCtrl\Domain;
-use \DevCtrl\Domain\Item\Item;
-use \DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Property\Property;
+use Ctrl\Domain\PersistableServiceLocatorAwareModel;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use DevCtrl\Domain\Item\Type\Type;
+use DevCtrl\Domain\Item\Property\DefaultProvider\ProviderInterface;
+use DevCtrl\Domain\Exception;
 
-class TypeProperty
+class TypeProperty extends PersistableServiceLocatorAwareModel
 {
     /**
      * @var int
@@ -29,21 +32,17 @@ class TypeProperty
     protected $required = false;
 
     /**
-     * @param int $id
-     * @return TypeProperty
+     * @var string
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
+    protected $defaultProvider = 'Empty';
 
-    /**
-     * @return int
-     */
-    public function getId()
+    protected $defaultProviderConfig;
+
+    public function __construct(ServiceLocatorInterface $serviceLocator, Property $property, $defaultProvider)
     {
-        return $this->id;
+        $this->setServiceLocator($serviceLocator);
+        $this->setDefaultProvider($defaultProvider);
+        $this->property = $property;
     }
 
     /**
@@ -98,5 +97,47 @@ class TypeProperty
     public function getItemType()
     {
         return $this->itemType;
+    }
+
+    /**
+     * @return ProviderInterface
+     */
+    public function getDefaultProvider()
+    {
+        if (is_string($this->defaultProvider)) {
+            $this->setDefaultProvider($this->defaultProvider);
+        }
+        return $this->defaultProvider;
+    }
+
+    /**
+     * @return TypeProperty
+     */
+    protected function setDefaultProvider($defaultProvider)
+    {
+        if (is_string($defaultProvider)) {
+            $this->defaultProvider = $this->getServiceLocator()
+                ->get('DefaultProviderLoader')
+                ->get($defaultProvider);
+        } else if (is_object($defaultProvider) && $defaultProvider instanceof ProviderInterface) {
+            $this->defaultProvider = $defaultProvider;
+        } else {
+            throw new Exception('TypeProperty requires a valid DefaultProvider');
+        }
+        return $this;
+    }
+
+    public function setDefaultProviderConfig($defaultProviderConfig)
+    {
+        if ($defaultProviderConfig == null && $this->getDefaultProvider()->requiresConfiguration()) {
+            throw new Exception('configuration for linked DefaultProvider cannot be empty');
+        }
+        $this->defaultProviderConfig = $defaultProviderConfig;
+        return $this;
+    }
+
+    public function getDefaultProviderConfig()
+    {
+        return $this->defaultProviderConfig;
     }
 }

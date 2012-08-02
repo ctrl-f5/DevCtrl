@@ -3,10 +3,6 @@
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
 
-<div class="btn-group">
-    <a class="btn" href="#">new</a>
-</div>
-<p></p>
 <table class="table table-bordered">
     <tr>
         <th>name</th>
@@ -18,8 +14,8 @@
     </tr>
     <tr>
         <th>is timed</th>
-        <td><?php echo $this->itemType->getTimed() ? 'yes' : 'no' ?></td>
+        <td><?php echo $this->itemType->supportsTiming() ? 'yes' : 'no' ?></td>
         <th>has state</th>
-        <td><?php echo $this->itemType->getHasState() ? 'yes' : 'no' ?></td>
+        <td><?php echo $this->itemType->supportsStates() ? 'yes' : 'no' ?></td>
     </tr>
 </table>

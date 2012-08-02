@@ -1,0 +1,22 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\Item\Property\Value\Value"
+            table="nativeValue" inheritance-type="JOINED">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <discriminator-column name="nativeType" type="integer" field-name="nativeType" />
+
+        <discriminator-map>
+            <discriminator-mapping value="string" class="DevCtrl\Domain\Item\Property\Value\StringValue" />
+            <discriminator-mapping value="text" class="DevCtrl\Domain\Item\Property\Value\TextValue" />
+            <discriminator-mapping value="int" class="DevCtrl\Domain\Item\Property\Value\IntValue" />
+        </discriminator-map>
+
+    </entity>
+</doctrine-mapping>

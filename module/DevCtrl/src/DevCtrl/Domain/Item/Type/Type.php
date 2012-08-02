@@ -2,16 +2,15 @@
 
 namespace DevCtrl\Domain\Item\Type;
 
-use DevCtrl\Domain;
 use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Item\State\StateList;
+use DevCtrl\Domain\Item\State\State;
+use DevCtrl\Domain\Exception;
+use DevCtrl\Domain\Collection;
 
-class Type
+class Type extends \Ctrl\Domain\Persistable
 {
-    /**
-     * @var int
-     */
-    protected $id;
-
     /**
      * @var string
      */
@@ -25,27 +24,25 @@ class Type
     /**
      * @var bool
      */
-    protected $timed = false;
+    protected $supportsTiming = false;
 
     /**
-     * @var bool
-     */
-    protected $hasState = false;
-
-    /**
-     * @var Domain\Collection|TypeProperty[]
+     * @var Collection|TypeProperty[]
      */
     protected $typeProperties;
 
     /**
-     * @var Domain\Collection|State[]
+     * @var Collection|StateList[]
      */
     protected $states;
 
-    public function __construct()
+    public function __construct($supportsTiming, $supportsStates)
     {
-        $this->typeProperties = new Domain\Collection();
-        $this->states = new Domain\Collection();
+        $this->supportsTiming = (bool)$supportsTiming;
+        $this->supportsStates = (bool)$supportsStates;
+
+        $this->typeProperties = new Collection();
+        $this->states = new Collection();
     }
 
     /**
@@ -67,24 +64,6 @@ class Type
     }
 
     /**
-     * @param int $id
-     * @return Type
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * @param string $name
      * @return Type
      */
@@ -103,22 +82,17 @@ class Type
     }
 
     /**
-     * @param Property $property
-     * @param bool $required
+     * @param TypeProperty $typeProperty
      * @return Type
-     * @throws \DevCtrl\Domain\Exception
+     * @throws Exception
      */
-    public function addProperty(Property $property, $required = false)
+    public function addProperty(TypeProperty $typeProperty)
     {
         foreach ($this->typeProperties as $p)
-            if ($p->getProperty()->getId() == $property->getId())
+            if ($p->getProperty()->getId() == $typeProperty->getProperty()->getId())
                 throw new \DevCtrl\Domain\Exception('Item\Property\Property already linked to this Item\Type\Type');
 
-        $typeProperty = new TypeProperty();
-        $typeProperty->setItemType($this)
-            ->setProperty($property)
-            ->setRequired($required);
-
+        $typeProperty->setItemType($this);
         $this->typeProperties[] = $typeProperty;
 
         return $this;
@@ -143,83 +117,36 @@ class Type
     }
 
     /**
-     * @param boolean $timed
-     * @return Type
-     */
-    public function setTimed($timed)
-    {
-        $this->timed = (bool)$timed;
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
-    public function getTimed()
+    public function supportsTiming()
     {
-        return (bool)$this->timed;
+        return (bool)$this->supportsTiming;
     }
 
     /**
-     * @param boolean $hasState
+     * @param \DevCtrl\Domain\Item\State\StateList $list
      * @return Type
      */
-    public function setHasState($hasState)
+    public function setStates(StateList $list = null)
     {
-        $this->hasState = (bool)$hasState;
+        $this->states = $list;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
-    public function getHasState()
+    public function hasStates()
     {
-        return (bool)$this->hasState;
+        return $this->states instanceof StateList;
     }
 
     /**
-     * @param $states
-     * @return Type
-     */
-    public function setStates($states)
-    {
-        $this->states = $states;
-        return $this;
-    }
-
-    /**
-     * @return Domain\Collection|State[]
+     * @return StateList
      */
     public function getStates()
     {
         return $this->states;
-    }
-
-    /**
-     * @param $id
-     * @return State|null
-     */
-    public function getState($id)
-    {
-        foreach ($this->getStates() as $s) {
-            if ($s->getId() == $id) return $s;
-        }
-        return null;
-    }
-
-    /**
-     * @param State $state
-     * @return Type
-     */
-    public function addState(State $state)
-    {
-        $state->setItemType($this)
-            ->setOrder(
-                count($this->states) + 1
-            );
-        $this->states[] = $state;
-
-        return $this;
     }
 }

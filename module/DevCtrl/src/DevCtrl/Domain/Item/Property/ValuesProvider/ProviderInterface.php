@@ -3,16 +3,13 @@
 namespace DevCtrl\Domain\Item\Property\ValuesProvider;
 
 use DevCtrl\Domain\Item\Property\Property;
-use DevCtrl\Domain\Item\Property\Value;
-use DevCtrl\Domain\Item\Item;
+use DevCtrl\Domain\Item\Type\Type;
 
 interface ProviderInterface
 {
-    /**
-     * @abstract
-     * @param \DevCtrl\Domain\Item\Property\Property $property
-     * @param \DevCtrl\Domain\Item\Item $item
-     * @return Value[]
-     */
-    public function getValues(Property $property, Item $item = null);
+    public function getName();
+    public function getValues(Property $property, $config = null);
+    public function requiresConfiguration();
+    public function getConfigurationValues();
+    public function supportsDefaultValue();
 }

@@ -1,0 +1,43 @@
+<?php $this->page = 'value-list'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<h1>Custom lists</h1>
+<p></p>
+<div class="btn-group">
+    <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+        New custom list
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <?php foreach ($this->nativeTypes as $id => $t): ?>
+        <li><a href="<?php echo $this->url('property_create', array(
+        )); ?>"><?php echo $t['name']; ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>value type</th>
+            <th>values</th>
+            <th>actions</th>
+        </tr>
+        <?php /** @var $l \DevCtrl\Domain\Item\Property\Value\ValueList */ ?>
+        <?php foreach ($this->lists as $l): ?>
+        <tr>
+            <td><?php echo $l->getId(); ?></td>
+            <td><?php echo $l->getName(); ?></td>
+            <td><?php echo $l->getNativeType(); ?></td>
+            <td><?php echo count($l->getValues()) ?></td>
+            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
+                'controller' => 'value-list',
+                'action' => 'detail',
+                'id' => $l->getId()
+            )); ?>">detail</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

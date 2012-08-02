@@ -2,13 +2,15 @@
 
 namespace DevCtrl;
 
-use \Zend\Mvc\ModuleRouteListener;
-use \Ctrl\EntityManager\PostLoadSubscriber;
+use Zend\Mvc\ModuleRouteListener;
+use Ctrl\EntityManager\PostLoadSubscriber;
+use DevCtrl\EntityManager\ProviderToStringSubscriber;
 
 class Module
 {
     const ITEM_PROP_DEFAULT_PROVIDERS = 'domain_item_property_default_providers';
     const ITEM_PROP_VALUES_PROVIDERS = 'domain_item_property_values_providers';
+    const ITEM_PROP_TYPES = 'domain_item_property_types';
 
     /**
      * @param $e \Zend\Mvc\MvcEvent
@@ -24,6 +26,10 @@ class Module
         $entityManager->getEventManager()->addEventListener(
             array(\Doctrine\ORM\Events::postLoad),
             new PostLoadSubscriber($e->getApplication()->getServiceManager())
+        );
+        $entityManager->getEventManager()->addEventListener(
+            array(\Doctrine\ORM\Events::prePersist),
+            new ProviderToStringSubscriber($e->getApplication()->getServiceManager())
         );
     }
 

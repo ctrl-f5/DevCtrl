@@ -3,8 +3,12 @@
 namespace DevCtrl\Domain\Item\Property\DefaultProvider;
 
 use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Type\TypeProperty;
 
 interface ProviderInterface
 {
-    public function getDefaultValue(Property $property);
+    public function getName();
+    public function getDefaultValue(Property $property, TypeProperty $typeProperty = null);
+    public function requiresValuesProvider();
+    public function requiresConfiguration();
 }

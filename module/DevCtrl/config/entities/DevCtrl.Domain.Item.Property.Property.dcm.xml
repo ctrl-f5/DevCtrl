@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\Property\Property" table="item_properties">
+    <entity name="DevCtrl\Domain\Item\Property\Property" table="property">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -11,16 +11,9 @@
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
-        <field name="type" column="type" type="string" nullable="false" unique="false" />
-        <field name="staticDefaultValue" column="static_default" type="string" nullable="true" unique="false" />
-        <field name="defaultValueProvider" column="default_value_provider" type="string" nullable="true" unique="false" />
-        <field name="valuesProvider" column="possible_values_provider" type="string" nullable="true" unique="false" />
-
-        <one-to-many field="customValues" target-entity="DevCtrl\Domain\Item\Property\Value\CustomValue" mapped-by="property">
-            <cascade>
-                <cascade-persist/>
-            </cascade>
-        </one-to-many>
+        <field name="valuesProvider" column="valuesProvider" type="string" nullable="true" unique="false" />
+        <field name="valuesProviderConfig" column="valuesProviderConfig" type="string" nullable="true" unique="false" />
+        <field name="typeName" column="propertyType" type="string" nullable="false" unique="false" />
 
     </entity>
 </doctrine-mapping>

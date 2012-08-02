@@ -4,8 +4,12 @@ namespace DevCtrl\Controller;
 
 use DevCtrl\Domain;
 use DevCtrl\Service\ProjectService;
-use Ctrl\Controller\AbstractController;
+use DevCtrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
+use DevCtrl\Service\ItemTypeService;
+use DevCtrl\Domain\Item\Type\Type;
+use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Type\TypeProperty;
 
 class ItemTypeController extends AbstractController
 {
@@ -51,142 +55,91 @@ class ItemTypeController extends AbstractController
 
     public function createAction()
     {
-        $project = $this->getDomainService('Project')->getById($this->params()->fromRoute('project'));
-        $itemType = $this->getDomainService('ItemType')->getById($this->params()->fromRoute('item-type'));
-
         /** @var $itemService \DevCtrl\Service\ItemService */
         $itemService = $this->getDomainService('Item');
+        /** @var $stateService \DevCtrl\Service\StateListService */
+        $stateService = $this->getDomainService('StateList');
 
         if ($this->getRequest()->isPost()) {
 
-            $userId = 1; //TODO fetch correct user
-            $user = $userService = $this->getDomainService('User')->getById($userId);
-
-            $item = $itemService->createItem(
-                $this->params()->fromPost('title'),
-                $user,
-                $project,
-                $itemType,
-                $this->params()->fromPost('item-type-property')
+            $itemType = new Type(
+                $this->params()->fromPost('supports-timing'),
+                $this->params()->fromPost('supports-states')
             );
+            $itemType->setName($this->params()->fromPost('name'))
+                ->setDescription($this->params()->fromPost('description'));
 
-            $itemService->getEntityManager()->persist($item);
+            $itemType->setStates($stateService->getById(
+                $this->params()->fromPost('state-list')
+            ));
+
+            $itemService->getEntityManager()->persist($itemType);
             $itemService->getEntityManager()->flush();
 
             return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'project',
-                'action' => 'items',
-                'id' => $project->getId()
+                'controller' => 'item-type',
+                'action' => 'index'
             ));
         }
 
         return new ViewModel(array(
-            'project' => $project,
-            'itemType' => $itemType
+            'states' => $stateService->getAll()
         ));
     }
 
-    public function createStateAction()
+    public function selectLinkPropertyAction()
     {
-        /** @var $itemService \DevCtrl\Service\ItemTypeService */
+        /** @var $typeService \DevCtrl\Service\ItemTypeService */
         $typeService = $this->getDomainService('ItemType');
-        /** @var $itemType Domain\Item\ItemType */
+        /** @var $itemType Domain\Item\Type\Type */
         $itemType = $typeService->getById($this->params()->fromRoute('id'));
-
-        if ($this->getRequest()->isPost()) {
-
-            $state = new Domain\Item\State(
-                $this->params()->fromPost('name'),
-                $this->params()->fromPost('type')
-            );
-
-            $itemType->addState($state);
-
-            $typeService->getEntityManager()->persist($itemType);
-            $typeService->getEntityManager()->flush();
-
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'item-type',
-                'action' => 'states',
-                'id' => $itemType->getId()
-            ));
-        }
+        /** @var $propertyService \DevCtrl\Service\PropertyService */
+        $propertyService = $this->getDomainService('Property');
 
         return new ViewModel(array(
-            'itemType' => $itemType
+            'itemType' => $itemType,
+            'properties' => $propertyService->getAll(),
         ));
     }
 
-    public function createPropertyAction()
+    public function linkPropertyAction()
     {
-        /** @var $itemService \DevCtrl\Service\ItemTypeService */
+        /** @var $typeService \DevCtrl\Service\ItemTypeService */
         $typeService = $this->getDomainService('ItemType');
-        /** @var $itemType Domain\Item\ItemType */
-        $itemType = $typeService->getById($this->params()->fromRoute('id'));
-        /** @var $propertyService \DevCtrl\Service\ItemPropertyService */
-        $propertyService = $this->getDomainService('ItemProperty');
+        /** @var $itemType Domain\Item\Type\Type */
+        $itemType = $typeService->getById($this->params()->fromRoute('type'));
+        /** @var $propertyService \DevCtrl\Service\PropertyService */
+        $propertyService = $this->getDomainService('Property');
+        /** @var $property Property */
+        $property = $propertyService->getById($this->params()->fromRoute('property'));
 
         if ($this->getRequest()->isPost()) {
 
-            $state = new Domain\Item\State(
-                $this->params()->fromPost('name'),
-                $this->params()->fromPost('type')
-            );
+            $typeProperty = new TypeProperty($this->getServiceLocator(), $property, $this->params()->fromPost('default-provider'));
 
-            $itemType->addState($state);
+            if ($property->getValuesProvider()->supportsDefaultValue()) {
 
-            $typeService->getEntityManager()->persist($itemType);
-            $typeService->getEntityManager()->flush();
+                $typeProperty->setRequired($this->params()->fromPost('required'));
 
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'item-type',
-                'action' => 'states',
-                'id' => $itemType->getId()
-            ));
+                if ($typeProperty->getDefaultProvider()->requiresConfiguration()) {
+                    $typeProperty->setDefaultProviderConfig($this->params()->fromPost('default-provider-config'));
+                }
+
+                $itemType->addProperty($typeProperty);
+                $typeService->persist($itemType);
+
+                return $this->redirect()->toRoute('default/id', array(
+                    'controller' => 'item-type',
+                    'action' => 'properties',
+                    'id' => $itemType->getId()
+                ));
+            }
         }
 
         return new ViewModel(array(
             'itemType' => $itemType,
-            'defaultValueProviders' => $propertyService->getAllConfiguredDefaultValueProviders(),
-            'possibleValuesProviders' => $propertyService->getAllConfiguredPossibleValuesProviders(),
-        ));
-    }
-
-    public function stateOrderChangeAction()
-    {
-        /** @var $itemService \DevCtrl\Service\ItemTypeService */
-        $typeService = $this->getDomainService('ItemType');
-        /** @var $itemType Domain\Item\ItemType */
-        $itemType = $typeService->getById($this->params()->fromRoute('id'));
-
-        $state = $itemType->getState($this->params()->fromRoute('state'));
-        if ($this->params()->fromRoute('direction') == 'up') {
-            if ($state->getOrder() > 1) {
-                foreach ($itemType->getStates() as $s) {
-                    if ($s->getOrder() == $state->getOrder()-1) {
-                        $state->setOrder($s->getOrder());
-                        $s->setOrder($s->getOrder()+1);
-                    }
-                }
-            }
-        } else if ($this->params()->fromRoute('direction') == 'down') {
-            if ($state->getOrder() > 1) {
-                foreach ($itemType->getStates() as $s) {
-                    if ($s->getOrder() == $state->getOrder()+1) {
-                        $state->setOrder($s->getOrder());
-                        $s->setOrder($s->getOrder()-1);
-                    }
-                }
-            }
-        }
-
-        $typeService->getEntityManager()->persist($itemType);
-        $typeService->getEntityManager()->flush();
-
-        return $this->redirect()->toRoute('default/id', array(
-            'controller' => 'item-type',
-            'action' => 'states',
-            'id' => $itemType->getId()
+            'property' => $property,
+            'defaultProviders' => $propertyService->getConfiguredDefaultValueProviders(),
         ));
     }
 }

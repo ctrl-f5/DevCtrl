@@ -1,0 +1,29 @@
+<?php $list = $this->list; /** @var $list \DevCtrl\Domain\Item\State\StateList */ ?>
+<div class="page-header"><h1>State list <small><?php echo $this->list->getName(); ?></small></h1></div>
+
+<div class="btn-group">
+    <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
+        'controller' => 'state-list',
+        'action' => 'add-state',
+        'id' => $list->getId(),
+    )); ?>">Add state</a>
+</div>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>label</th>
+            <th>native state</th>
+            <th>actions</th>
+        </tr>
+        <?php foreach ($list->getStates() as $s): ?>
+        <tr>
+            <td><?php echo $s->getId(); ?></td>
+            <td><?php echo $s->getLabel(); ?></td>
+            <td><?php echo $s->getNativeState(); ?></td>
+            <td></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

@@ -1,21 +1,17 @@
-<?php $project = $this->project; /** @var $project \DevCtrl\Domain\Project */ ?>
-<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
-<h1>New item
-    <small>for <strong><?php echo $project->getName(); ?></strong></small>
+<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
+<h1>New item type</small>
 </h1>
 
-<form class="form-horizontal" method="post" id="item-form" action="<?php echo $this->url('item_create', array(
-    'controller' => 'item',
+<form class="form-horizontal" method="post" id="item-form" action="<?php echo $this->url('default/id', array(
+    'controller' => 'item-type',
     'action' => 'create',
-    'project' => $project->getId(),
-    'item-type' => $itemType->getId(),
 )); ?>">
     <fieldset class="part-1">
         <legend>Configure your item</legend>
         <div class="control-group">
-            <label class="control-label">title</label>
+            <label class="control-label">name</label>
             <div class="controls">
-                <input type="text" class="input-xxlarge required" name="title" />
+                <input type="text" class="input-xxlarge required" name="name" />
             </div>
         </div>
         <div class="control-group">
@@ -25,55 +21,28 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">users</label>
+            <label class="control-label">supports timing</label>
             <div class="controls">
-                <select class="input-xxlarge" name="user" size="5" multiple="multiple">
-                    <?php foreach ($project->getLinkedUsers() as $u): ?>
-                    <option value="<?php echo $u->getUser()->getId(); ?>"><?php echo $u->getUser()->getAuthUser()->getUsername(); ?></option>
+                <input type="checkbox" name="supports-timing" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">state set</label>
+            <div class="controls">
+                <select class="input-xxlarge required" name="state-list">
+                    <option></option>
+                    <?php foreach ($this->states as $s): ?>
+                    <option value="<?php echo $s->getId(); ?>"><?php echo $s->getName(); ?></option>
                     <?php endforeach; ?>
                 </select>
-                <p class="help-block">Ctrl+Click to select multiple users</p>
-                <p class="help-block">This list only contains users linked to this project</p>
             </div>
         </div>
-        <?php if ($itemType->getTimed()): ?>
-        <div class="control-group">
-            <label class="control-label">estimated required time</label>
-            <div class="controls">
-                <input type="text" class="input-small required" name="time_required" />
-            </div>
-        </div>
-        <?php endif; ?>
         <div class="form-actions">
-            <a class="btn btn-primary" href="#" id="show-item-type-property-controls">next</a>
+            <input type="submit" class="btn btn-primary" />
             <a class="btn" href="<?php echo $this->url('default/id', array(
-                'controller' => 'project',
-                'action' => 'items',
-                'id' => $this->project->getId(),
+                'controller' => 'item-type',
+                'action' => 'index',
             )); ?>">cancel</a>
-        </div>
-    </fieldset>
-
-    <fieldset id="item-type-property-controls-container">
-        <legend>Additional fields for this item type</legend>
-        <?php foreach ($itemType->getItemTypeProperties() as $p): ?>
-        <div class="control-group">
-            <label class="control-label"><?php echo $p->getProperty()->getName(); ?></label>
-            <div class="controls">
-                <input type="text"
-                       class="input-xxlarge <?php if ($p->getRequired()) echo 'required'; ?>"
-                       name="item-type-property[<?php echo $p->getProperty()->getId(); ?>]" />
-            </div>
-        </div>
-        <?php endforeach; ?>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="save">
-            <a class="btn" href="<?php echo $this->url('default/id', array(
-                'controller' => 'project',
-                'action' => 'items',
-                'id' => $this->project->getId(),
-            )); ?>">cancel</a>
-
         </div>
     </fieldset>
 </form>

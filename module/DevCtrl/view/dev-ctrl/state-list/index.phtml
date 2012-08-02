@@ -1,0 +1,35 @@
+<?php $this->page = 'state-list'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<h1>State lists</h1>
+<p></p>
+<div class="btn-group">
+    <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
+        'controller' => 'state-list',
+        'action' => 'create'
+    )); ?>">New list</a>
+</div>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>states</th>
+            <th>actions</th>
+        </tr>
+        <?php /** @var $l \DevCtrl\Domain\Item\State\StateList */ ?>
+        <?php foreach ($this->lists as $l): ?>
+        <tr>
+            <td><?php echo $l->getId(); ?></td>
+            <td><?php echo $l->getName(); ?></td>
+            <td><?php echo count($l->getStates()); ?></td>
+            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
+                'controller' => 'state-list',
+                'action' => 'detail',
+                'id' => $l->getId()
+            )); ?>">detail</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

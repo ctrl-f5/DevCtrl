@@ -1,23 +1,33 @@
-<h1>Item Types</h1>
+<?php $this->page = 'item-type'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
+<h1>Item Types</h1>
+<p></p>
+<div class="btn-group">
+    <a class="btn btn-primary" href="<?php echo $this->url('default', array(
+            'controller' => 'item-type',
+            'action' => 'create'
+    )); ?>">New type</a>
+</div>
+<p></p>
 <div class="">
     <table class="table table-striped">
         <tr>
             <th>id</th>
             <th>name</th>
             <th>description</th>
-            <th>timed</th>
-            <th>has states</th>
+            <th>supports timing</th>
+            <th>states set</th>
             <th>actions</th>
         </tr>
-        <?php /** @var $p \DevCtrl\Domain\Item\ItemType */ ?>
+        <?php /** @var $p \DevCtrl\Domain\Item\Type\Type */ ?>
         <?php foreach ($this->itemTypes as $p): ?>
         <tr>
             <td><?php echo $p->getId(); ?></td>
             <td><?php echo $p->getName(); ?></td>
             <td><?php echo $p->getDescription(); ?></td>
-            <td><?php echo $p->getTimed() ?></td>
-            <td><?php echo $p->getHasState(); ?></td>
+            <td><?php echo $p->supportsTiming() ?></td>
+            <td><?php echo $p->hasStates() ? $p->getStates()->getName() : ''; ?></td>
             <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
                 'controller' => 'item-type',
                 'action' => 'detail',

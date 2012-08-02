@@ -1,0 +1,58 @@
+<?php $p = $this->project /** @var $p \DevCtrl\Domain\Project */ ?>
+<?php $types = $this->types /** @var $types \DevCtrl\Domain\Item\Property\Type\TypeInterface[] */ ?>
+
+<?php $this->page = 'property'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<h1>Properties</h1>
+<p></p>
+<div class="btn-group">
+    <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+        New property
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <?php foreach ($types as $t): ?>
+        <li><a href="<?php echo $this->url('property_create', array(
+            'type' => $t->getRepresentedPorpertyType()
+        )); ?>"><?php echo $t->getRepresentedPorpertyType(); ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>description</th>
+            <th>type</th>
+            <th>provider</th>
+            <th>provider config</th>
+            <th>actions</th>
+        </tr>
+        <?php /** @var $p \DevCtrl\Domain\Item\Property\Property */ ?>
+        <?php foreach ($this->properties as $p): ?>
+        <tr>
+            <td><?php echo $p->getId(); ?></td>
+            <td><?php echo $p->getName(); ?></td>
+            <td><?php echo $p->getDescription(); ?></td>
+            <td><?php echo $p->getType()->getRepresentedPorpertyType(); ?></td>
+            <td><?php if ($p->getType()->supportsProvidingValues()) echo $p->getValuesProvider()->getName(); ?></td>
+            <td>
+                <?php
+                if ($p->getType()->supportsProvidingValues() && $p->getValuesProvider()->requiresConfiguration()) {
+                    $values = $p->getValuesProvider()->getConfigurationValues();
+                    if (isset($values[$p->getValuesProviderConfig()])) {
+                        echo $values[$p->getValuesProviderConfig()];
+                    } else {
+                        echo $p->getValuesProviderConfig();
+                    }
+                }
+                ?>
+            </td>
+            <td></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

@@ -2,22 +2,42 @@
 
 namespace DevCtrl\Domain\Item\Property\Value;
 
-class Value
+class Value extends AbstractNativeValue
 {
+    protected static $nativeValueTypes = array(
+        'string' => array(
+            'name' => 'String',
+            'class' => '\DevCtrl\Domain\Item\Property\Value\StringValue'
+        ),
+        'text' => array(
+            'name' => 'Text',
+            'class' => '\DevCtrl\Domain\Item\Property\Value\TextValue'
+        ),
+        'integer' => array(
+            'name' => 'Int',
+            'class' => '\DevCtrl\Domain\Item\Property\Value\IntValue'
+        ),
+    );
+
+    public static function getNativeValueTypes()
+    {
+        return self::$nativeValueTypes;
+    }
+
     /**
      * @var int
      */
     protected $id;
 
     /**
-     * @var mixed
+     * @var NativeValueInterface
      */
     protected $value;
 
     /**
-     * @var int
+     * @var string
      */
-    protected $order;
+    protected $nativeType;
 
     /**
      * @param int $id
@@ -48,28 +68,10 @@ class Value
     }
 
     /**
-     * @return mixed
+     * @return NativeValueInterface
      */
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * @param int $order
-     * @return Value
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrder()
-    {
-        return $this->order;
     }
 }

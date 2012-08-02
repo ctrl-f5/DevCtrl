@@ -7,7 +7,7 @@
 <div class="btn-group">
     <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
         'controller' => 'item-type',
-        'action' => 'create-property',
+        'action' => 'select-link-property',
         'id' => $itemType->getId(),
     )); ?>">New property</a>
 </div>
@@ -17,10 +17,8 @@
         <tr>
             <th>id</th>
             <th>name</th>
-            <th>type</th>
-            <th>default value provider</th>
-            <th>possible values provider</th>
             <th>required</th>
+            <th>default value</th>
             <th>change order</th>
             <th>actions</th>
         </tr>
@@ -28,10 +26,8 @@
         <tr>
             <td><?php echo $itp->getId(); ?></td>
             <td><?php echo $itp->getProperty()->getName(); ?></td>
-            <td><?php echo $itp->getProperty()->getType(); ?></td>
-            <td><?php echo $itp->getProperty()->getDefaultValueProvider(); ?></td>
-            <td><?php echo $itp->getProperty()->getValuesProvider(); ?></td>
             <td><?php echo $itp->getRequired() ? 'yes' : 'no' ?></td>
+            <td><?php echo $itp->getDefaultProvider()->getName() ?></td>
             <td>
                 <a class="btn" href="<?php echo $this->url('item_property_order_change', array(
                     'id' => $itemType->getId(),

@@ -1,0 +1,102 @@
+<?php use DevCtrl\Domain\Item\Property\Type\TypeInterface; ?>
+<?php use DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface as ValuesProvider; ?>
+<?php $type = $this->type; /** @var $type TypeInterface */ ?>
+<?php $valuesProviders = $this->valuesProviders; /** @var $valuesProviders ValuesProvider[] */ ?>
+<h1>New property</h1>
+
+<form class="form-horizontal" method="post" id="form-property" action="<?php echo $this->url('property_create', array(
+    'type' => $type->getRepresentedPorpertyType(),
+)); ?>">
+    <fieldset>
+        <legend><?php echo $type->getRepresentedPorpertyType(); ?> property</legend>
+        <div class="control-group">
+            <label class="control-label">name</label>
+            <div class="controls">
+                <input type="text" class="input-xxlarge required" name="name" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">description</label>
+            <div class="controls">
+                <input type="text" class="input-xxlarge" name="description" />
+            </div>
+        </div>
+        <?php if ($type->supportsProvidingValues()): ?>
+        <div class="control-group property-type">
+            <label class="control-label">type</label>
+            <div class="controls">
+                <select class="input-large required" name="type">
+                    <?php foreach ($valuesProviders as $k => $vp): ?>
+                        <option><?php echo $k; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="control-group property-type-config">
+            <label class="control-label">type configuration</label>
+            <div class="controls">
+                <select class="input-large required" name="type-config">
+                    <?php foreach ($valuesProviders as $k => $vp): ?>
+                    <?php if (!$vp->requiresConfiguration()) continue; ?>
+                    <?php foreach ($vp->getConfigurationValues() as $kk => $v): ?>
+                        <option
+                            value="<?php echo $kk; ?>"
+                            class="<?php echo $k; ?>"
+                        ><?php echo $v; ?></option>
+                    <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="save">
+            <a class="btn" href="<?php echo $this->url('default', array(
+                'controller' => 'property',
+                'action' => 'index',
+            )); ?>">cancel</a>
+        </div>
+    </fieldset>
+
+</form>
+
+
+<script type="text/javascript">
+    $(function () {
+        var values = [];
+        $('#form-property .property-type-config option').each(function () {
+            values.push({
+                'value' : $(this).attr('value'),
+                'class' : $(this).attr('class'),
+                'text' : $(this).html()
+            });
+        });
+        $('#form-property .property-type select').live('change', function () {
+            var val = $(this).val();
+            var config = $('#form-property .property-type-config select');
+            config.html('');
+            var option = {};
+            for (var i in values) {
+                if (values[i].class == val) {
+                    option = $('<option></option>');
+                    option.attr('value', values[i].value);
+                    option.attr('class', values[i].class);
+                    option.html(values[i].text);
+                    config.append(option);
+                }
+            }
+        }).trigger('change');
+
+        $('form#item-type-state-form').live('submit', function () {
+            if (Ctrl.forms().isValid($(this))) {
+                $('form#item-form .form-actions .alert').remove();
+            } else {
+                $('form#item-form .form-actions').prepend(
+                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
+                );
+                return false;
+            }
+            return true;
+        });
+    });
+</script>
