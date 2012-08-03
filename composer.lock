@@ -10,8 +10,8 @@
         {
             "package": "ctrl-f5/ctrljs",
             "version": "dev-master",
-            "source-reference": "167556f7dbaf027c379abb50bafd69b948e0c16b",
-            "commit-date": "1343954961"
+            "source-reference": "689ac7f342853b67453b3aef03957391f25abe62",
+            "commit-date": "1344025590"
         },
         {
             "package": "ctrl-f5/ctrllib",
