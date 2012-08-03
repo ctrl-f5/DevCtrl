@@ -13,12 +13,12 @@
                         ->appendStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
                         ->appendStylesheet($this->basePath() . '/modules/dev-ctrl/css/style.css') ?>
 
-        <!-- Scripts -->
-        <?php echo $this->headScript()->appendFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->appendFile($this->basePath() . '/js/jquery-1.7.2.min.js')
-            ->appendFile($this->basePath() . '/js/bootstrap.min.js')
-            ->appendFile($this->basePath() . '/js/ctrl.lib.js')
+        <!-- vendor scripts -->
+        <?php
+            echo $this->ctrlJsLoader()->loadScripts(true);
         ?>
+        <!-- Custom Scripts -->
+        <?php //echo $this->headScript()->appendFile($this->basePath() . '/js/ctrljs.config.js'); ?>
   </head>
   <body>
 

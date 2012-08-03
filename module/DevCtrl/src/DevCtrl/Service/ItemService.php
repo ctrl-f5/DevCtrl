@@ -7,7 +7,7 @@ use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\PropertyValue;
 use \DevCtrl\Domain\Item\Type\Type;
 
-class ItemService extends \Ctrl\Service\AbstractDomainEntityService
+class ItemService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Item';
 

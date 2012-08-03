@@ -5,7 +5,7 @@ namespace DevCtrl\Domain\Item\Property\Value;
 use DevCtrl\Domain\Item\Property\Value\Value;
 use DevCtrl\Domain\Collection;
 
-class ValueList extends \Ctrl\Domain\Persistable
+class ValueList extends \Ctrl\Domain\PersistableModel
 {
     /**
      * @var string

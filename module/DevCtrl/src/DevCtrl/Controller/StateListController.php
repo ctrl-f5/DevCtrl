@@ -9,7 +9,6 @@ use Zend\View\Model\ViewModel;
 use DevCtrl\Service\StateListService;
 use DevCtrl\Domain\Item\State\StateList;
 use DevCtrl\Domain\Item\State\State;
-
 class StateListController extends AbstractController
 {
     public function indexAction()
@@ -23,6 +22,11 @@ class StateListController extends AbstractController
 
     public function createAction()
     {
+        /** @var $listService StateListService */
+        $listService = $this->getDomainService('StateList');
+
+        $form = $listService->getForm(new StateList());
+
         if ($this->getRequest()->isPost()) {
 
             $listService = $this->getDomainService('StateList');
@@ -39,6 +43,7 @@ class StateListController extends AbstractController
         }
 
         return new ViewModel(array(
+            'form' => $form,
             'nativeStates' => State::getNativeStates()
         ));
     }

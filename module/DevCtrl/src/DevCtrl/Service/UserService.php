@@ -4,7 +4,7 @@ namespace DevCtrl\Service;
 
 use \DevCtrl\Domain;
 
-class UserService extends \Ctrl\Service\AbstractDomainEntityService
+class UserService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\User';
 }

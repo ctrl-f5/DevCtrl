@@ -4,7 +4,7 @@ namespace DevCtrl\Service;
 
 use DevCtrl\Domain\Item\Property\Property;
 
-class PropertyService extends \Ctrl\Service\AbstractDomainEntityService
+class PropertyService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Property\Property';
 

@@ -2,11 +2,11 @@
 
 namespace DevCtrl\Domain\Item\State;
 
-use Ctrl\Domain\Persistable;
+use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Exception;
 use DevCtrl\Domain\Collection;
 
-class StateList extends Persistable
+class StateList extends PersistableModel
 {
     /**
      * @var string

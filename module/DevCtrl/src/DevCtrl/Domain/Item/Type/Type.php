@@ -9,7 +9,7 @@ use DevCtrl\Domain\Item\State\State;
 use DevCtrl\Domain\Exception;
 use DevCtrl\Domain\Collection;
 
-class Type extends \Ctrl\Domain\Persistable
+class Type extends \Ctrl\Domain\PersistableModel
 {
     /**
      * @var string

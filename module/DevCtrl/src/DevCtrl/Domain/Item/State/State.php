@@ -2,10 +2,10 @@
 
 namespace DevCtrl\Domain\Item\State;
 
-use Ctrl\Domain\Persistable;
+use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Exception;
 
-class State extends Persistable
+class State extends PersistableModel
 {
     /**
      * @var array

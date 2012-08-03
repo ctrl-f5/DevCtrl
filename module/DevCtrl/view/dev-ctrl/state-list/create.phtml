@@ -1,17 +1,17 @@
+<?php $form = $this->form; /** @var $form \Ctrl\Form\Form */ ?>
 <h1>New state</h1>
 
-<form class="form-horizontal" method="post" id="form-state-list" action="<?php echo $this->url('default', array(
+<form class="form-horizontal ctrljs-validate" method="post" id="<?php echo $form->getName(); ?>" action="<?php echo $this->url('default', array(
     'controller' => 'state-list',
     'action' => 'create'
     )); ?>">
     <fieldset>
         <legend>state config</legend>
-        <div class="control-group">
-            <label class="control-label">name</label>
-            <div class="controls">
-                <input type="text" class="input-xxlarge required" name="name" />
-            </div>
-        </div>
+        <?php
+        foreach ($this->form->getElements() as $e) {
+            echo $this->ctrlFormInput($e);
+        }
+        ?>
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="save">
             <a class="btn" href="<?php echo $this->url('default', array(
