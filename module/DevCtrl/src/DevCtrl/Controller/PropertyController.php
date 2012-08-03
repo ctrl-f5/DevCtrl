@@ -3,10 +3,11 @@
 namespace DevCtrl\Controller;
 
 use DevCtrl\Domain;
-use DevCtrl\Service\ProjectService;
+use DevCtrl\Service\PropertyService;
+use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 use DevCtrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
-use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 
 class PropertyController extends AbstractController
 {
@@ -23,31 +24,62 @@ class PropertyController extends AbstractController
     public function createAction()
     {
         $propertyType = $this->getPropertyType($this->params()->fromRoute('type'));
-
         /** @var $propertyService \DevCtrl\Service\PropertyService */
         $propertyService = $this->getDomainService('Property');
+        $form = $propertyService->getFormForType($propertyType);
+        $form->setReturnUrl($this->url()->fromRoute('default', array(
+            'controller' => 'property',
+            'action' => 'index',
+        )));
 
         if ($this->getRequest()->isPost()) {
 
-            $property = new \DevCtrl\Domain\Item\Property\Property(
-                $propertyType,
-                $this->params()->fromPost('type'),
-                $this->params()->fromPost('type-config')
-            );
-            $property->setName($this->params()->fromPost('name'))
-                ->setDescription($this->params()->fromPost('description'));
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
 
-            $propertyService->persist($property);
+                $elems = $form->getElements();
+                $type = null;
+                $typeconfig = null;
+                if (isset($elems['type'])) {
+                    $type = $elems['type']->getValue();
+                    $configKey = 'type-config-'.strtolower($elems['type']->getValue());
+                    if (isset($elems[$configKey])) $typeConfig = $elems[$configKey]->getValue();
+                }
+                $property = new Property(
+                    $propertyType,
+                    $type,
+                    $typeConfig
+                );
+                $property
+                    ->setName($elems['name']->getValue())
+                    ->setDescription($elems['description']->getValue());
 
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'property',
-                'action' => 'index',
-            ));
+                $propertyService->persist($property);
+
+                return $this->redirect()->toUrl($form->getReturnurl());
+
+            }
         }
 
         return new ViewModel(array(
+            'form' => $form,
             'type' => $propertyType,
             'valuesProviders' => $propertyService->getConfiguredValuesProviders()
+        ));
+    }
+
+    public function deleteAction()
+    {
+        /** @var $propertyService PropertyService */
+        $propertyService = $this->getDomainService('Property');
+        $property = $this->getDomainService('Property')->getById($this->params('id'));
+        if ($property && $propertyService->canRemove($property)) {
+            $propertyService->remove($property);
+        }
+
+        return $this->redirect()->toRoute('default', array(
+            'controller' => 'property',
+            'action' => 'index',
         ));
     }
 }

@@ -20,19 +20,19 @@ class StateService extends \Ctrl\Service\AbstractDomainModelService
 
         $property = new TextInput('label');
         $property->setLabel('label');
-        if ($state) $property->setValue($state->getId());
+        if ($state) $property->setValue($state->getLabel());
         $form->add($property);
 
         $property = new SelectInput('native-state');
         $property->setLabel('native state')
             ->setAttribute('options', State::getNativeStates());
 
-        if ($state) $property->setValue($state->getId());
+        if ($state) $property->setValue($state->getNativeState());
         $form->add($property);
 
         $property = new TextInput('color');
         $property->setLabel('color');
-        if ($state) $property->setValue($state->getId());
+        if ($state) $property->setValue($state->getColor());
         $form->add($property);
 
         $factory = new FilterFactory();

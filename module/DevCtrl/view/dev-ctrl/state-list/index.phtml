@@ -7,7 +7,7 @@
     <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
         'controller' => 'state-list',
         'action' => 'create'
-    )); ?>">New list</a>
+    )); ?>">Add new set</a>
 </div>
 <p></p>
 <div class="">
@@ -33,7 +33,7 @@
                     'id' => $l->getId()
                 )); ?>">detail</a>
                 <?php if(!count($l->getItemTypes())): ?>
-                <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
+                <a class="btn btn-danger ctrljs-confirm" href="<?php echo $this->url('default/id', array(
                     'controller' => 'state-list',
                     'action' => 'delete',
                     'id' => $l->getId()

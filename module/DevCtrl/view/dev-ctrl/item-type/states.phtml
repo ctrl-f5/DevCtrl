@@ -1,4 +1,4 @@
-<?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\ItemType */ ?>
+<?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
 <div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Item Type <small><?php echo $itemType->getName(); ?></small></h1></div>
 
 <?php $this->page = 'states'; ?>
@@ -22,11 +22,11 @@
             <th>change order</th>
             <th>actions</th>
         </tr>
-        <?php foreach ($itemType->getStates() as $s): ?>
+        <?php foreach ($itemType->getStates()->getStates() as $s): ?>
         <tr>
             <td><?php echo $s->getId(); ?></td>
-            <td><?php echo $s->getName(); ?></td>
-            <td><?php echo $s->getType(); ?></td>
+            <td><?php echo $s->getLabel(); ?></td>
+            <td><?php echo $s->getNativeState(); ?></td>
             <td><?php echo $s->getOrder(); ?></td>
             <td>
                 <a class="btn" href="<?php echo $this->url('item_state_order_change', array(

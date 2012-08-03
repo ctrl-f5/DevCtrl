@@ -51,7 +51,14 @@
                 }
                 ?>
             </td>
-            <td></td>
+            <td>
+                <a class="btn btn-danger ctrljs-confirm"
+                   href="<?php echo $this->url('default/id', array(
+                    'controller' => 'property',
+                    'action' => 'delete',
+                    'id' => $p->getId()
+                )); ?>">delete</a>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>

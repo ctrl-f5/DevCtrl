@@ -33,12 +33,12 @@ class StateListService extends \Ctrl\Service\AbstractDomainModelService
         return $form;
     }
 
-    public function canRemove(StateList $list)
+    public function canRemove(StateList $property)
     {
-        if (!$this->getEntityManager()->contains($list)) {
+        if (!$this->getEntityManager()->contains($property)) {
             return false;
         }
 
-        return count($list->getItemTypes()) == 0;
+        return count($property->getItemTypes()) == 0;
     }
 }

@@ -4,21 +4,17 @@ namespace DevCtrl\Domain\Item\Property;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Ctrl\Domain\PersistableServiceLocatorAwareModel;
-use Ctrl\Domain\ServiceLocatorAwareModel;
 use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\Property\DefaultProvider\ProviderInterface as DefaultProvider;
 use DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface as ValuesProvider;
 use DevCtrl\Domain\Item\Property\Value\Value;
 use DevCtrl\Domain\Item\Property\Value\CustomValue;
 use DevCtrl\Domain\Item\Property\Type\TypeInterface;
+use DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Collection;
 
 class Property extends PersistableServiceLocatorAwareModel
 {
-    /**
-     * @var int
-     */
-    protected $id;
-
     /**
      * @var string
      */
@@ -49,11 +45,17 @@ class Property extends PersistableServiceLocatorAwareModel
      */
     protected $type;
 
+    /**
+     * @var TypeProperty[]
+     */
+    protected $typeProperties;
+
     public function __construct(TypeInterface $type, $provider, $providerConfig)
     {
         $this->setType($type);
         $this->valuesProvider = $provider;
         $this->valuesProviderConfig = $providerConfig;
+        $this->typeProperties = new Collection();
     }
 
     /**
@@ -147,5 +149,23 @@ class Property extends PersistableServiceLocatorAwareModel
     public function getValuesProviderConfig()
     {
         return $this->valuesProviderConfig;
+    }
+
+    /**
+     * @param $typeProperties
+     * @return Property
+     */
+    public function setTypeProperties($typeProperties)
+    {
+        $this->typeProperties = $typeProperties;
+        return $this;
+    }
+
+    /**
+     * @return TypeProperty[]
+     */
+    public function getTypeProperties()
+    {
+        return $this->typeProperties;
     }
 }

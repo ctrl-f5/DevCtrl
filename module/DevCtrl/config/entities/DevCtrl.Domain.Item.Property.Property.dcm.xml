@@ -15,5 +15,6 @@
         <field name="valuesProviderConfig" column="valuesProviderConfig" type="string" nullable="true" unique="false" />
         <field name="typeName" column="propertyType" type="string" nullable="false" unique="false" />
 
+        <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="property" />
     </entity>
 </doctrine-mapping>
