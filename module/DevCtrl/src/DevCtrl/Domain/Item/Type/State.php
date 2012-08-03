@@ -2,7 +2,9 @@
 
 namespace DevCtrl\Domain\Item\Type;
 
-class State
+use Ctrl\Domain\PersistableModel;
+
+class State extends PersistableModel
 {
     const TYPE_OPEN        = 1;
     const TYPE_BLOCKED     = 2;
@@ -37,24 +39,6 @@ class State
     {
         $this->name = $name;
         $this->type = $type;
-    }
-
-    /**
-     * @param int $id
-     * @return State
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

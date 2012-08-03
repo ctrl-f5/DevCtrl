@@ -13,10 +13,11 @@
 <div class="">
     <table class="table table-striped">
         <tr>
-            <th>id</th>
+            <th width="50">id</th>
             <th>name</th>
-            <th>states</th>
-            <th>actions</th>
+            <th width="100">states</th>
+            <th width="100">in use</th>
+            <th width="200">actions</th>
         </tr>
         <?php /** @var $l \DevCtrl\Domain\Item\State\StateList */ ?>
         <?php foreach ($this->lists as $l): ?>
@@ -24,11 +25,21 @@
             <td><?php echo $l->getId(); ?></td>
             <td><?php echo $l->getName(); ?></td>
             <td><?php echo count($l->getStates()); ?></td>
-            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'state-list',
-                'action' => 'detail',
-                'id' => $l->getId()
-            )); ?>">detail</a></td>
+            <td><?php echo count($l->getItemTypes()) ? 'yes': 'no'; ?></td>
+            <td>
+                <a class="btn btn-info" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'state-list',
+                    'action' => 'detail',
+                    'id' => $l->getId()
+                )); ?>">detail</a>
+                <?php if(!count($l->getItemTypes())): ?>
+                <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'state-list',
+                    'action' => 'delete',
+                    'id' => $l->getId()
+                )); ?>">delete</a>
+                <?php endif; ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>

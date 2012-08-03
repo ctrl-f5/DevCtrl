@@ -2,13 +2,13 @@
 
 namespace DevCtrl\Controller;
 
-use DevCtrl\Domain;
-use DevCtrl\Service\ProjectService;
 use DevCtrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use DevCtrl\Service\StateListService;
+use DevCtrl\Service\StateService;
 use DevCtrl\Domain\Item\State\StateList;
 use DevCtrl\Domain\Item\State\State;
+
 class StateListController extends AbstractController
 {
     public function indexAction()
@@ -26,25 +26,38 @@ class StateListController extends AbstractController
         $listService = $this->getDomainService('StateList');
 
         $form = $listService->getForm(new StateList());
+        $form->setReturnUrl($this->url()->fromRoute('default', array(
+            'controller' => 'state-list',
+            'action' => 'index',
+        )));
 
         if ($this->getRequest()->isPost()) {
 
-            $listService = $this->getDomainService('StateList');
-            $list = new StateList();
-            $list->setName($this->params()->fromPost('name'));
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $list = new StateList();
+                $list->setName($this->params()->fromPost('name'));
 
-            $listService->persist($list);
-
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'state-list',
-                'action' => 'detail',
-                'id' => $list->getId(),
-            ));
+                $listService->persist($list);
+                return $this->redirect()->toUrl($form->getReturnurl());
+            }
         }
 
-        return new ViewModel(array(
-            'form' => $form,
-            'nativeStates' => State::getNativeStates()
+        return new ViewModel(array('form' => $form));
+    }
+
+    public function deleteAction()
+    {
+        /** @var $listService StateListService */
+        $listService = $this->getDomainService('StateList');
+        $list = $this->getDomainService('StateList')->getById($this->params('id'));
+        if ($list && $listService->canRemove($list)) {
+            $listService->remove($list);
+        }
+
+        return $this->redirect()->toRoute('default', array(
+            'controller' => 'state-list',
+            'action' => 'index',
         ));
     }
 
@@ -65,25 +78,37 @@ class StateListController extends AbstractController
         /** @var $list StateList */
         $list = $listService->getById($this->params()->fromRoute('id'));
 
+        /** @var $stateService StateService */
+        $stateService = $this->getDomainService('State');
+        $form = $stateService->getForm();
+        $form->setReturnUrl($this->url()->fromRoute('default/id', array(
+            'controller' => 'state-list',
+            'action' => 'detail',
+            'id' => $list->getId()
+        )));
+
         if ($this->getRequest()->isPost()) {
 
-            $state = new State($this->params()->fromPost('native-state'), $list);
-            $state->setLabel($this->params()->fromPost('label'))
-                ->setColor($this->params()->fromPost('color'));
-            $list->addState($state);
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
 
-            $listService->persist($list);
+                $nativeState = State::getNativeStates($this->params()->fromPost('native-state'));
+                $state = new State(
+                    $nativeState,
+                    $list,
+                    $this->params()->fromPost('label'),
+                    $this->params()->fromPost('color')
+                );
+                $list->addState($state);
+                $listService->persist($list);
 
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'state-list',
-                'action' => 'detail',
-                'id' => $list->getId(),
-            ));
+                return $this->redirect()->toUrl($form->getReturnurl());
+            }
         }
 
         return new ViewModel(array(
             'list' => $list,
-            'nativeStates' => State::getNativeStates()
+            'form' => $form
         ));
     }
 }

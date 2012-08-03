@@ -17,5 +17,7 @@
             </cascade>
         </one-to-many>
 
+        <one-to-many field="itemTypes" target-entity="DevCtrl\Domain\Item\Type\Type" mapped-by="states" />
+
     </entity>
 </doctrine-mapping>

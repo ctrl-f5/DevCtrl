@@ -5,6 +5,7 @@ namespace DevCtrl\Domain\Item\State;
 use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Exception;
 use DevCtrl\Domain\Collection;
+use DevCtrl\Domain\Item\Type\Type;
 
 class StateList extends PersistableModel
 {
@@ -18,9 +19,15 @@ class StateList extends PersistableModel
      */
     protected $states;
 
+    /**
+     * @var Type[]
+     */
+    protected $itemTypes;
+
     public function __construct()
     {
         $this->states = new Collection();
+        $this->itemTypes = new Collection();
     }
 
     /**
@@ -59,5 +66,10 @@ class StateList extends PersistableModel
         $state->setOrder(count($this->getStates()+1));
         $this->states[] = $state;
         return $this;
+    }
+
+    public function getItemTypes()
+    {
+        return $this->itemTypes;
     }
 }

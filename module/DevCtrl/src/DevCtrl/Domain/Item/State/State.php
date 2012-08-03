@@ -11,9 +11,9 @@ class State extends PersistableModel
      * @var array
      */
     protected static $nativeStates = array(
-        'open',
-        'blocked',
-        'closed'
+        1 => 'open',
+        2 => 'blocked',
+        3 => 'closed'
     );
 
     /**
@@ -40,18 +40,27 @@ class State extends PersistableModel
      */
     protected $order;
 
-    public static function getNativeStates()
+    public static function getNativeStates($id = null)
     {
+        if ($id) {
+            if (isset(self::$nativeStates[$id])) {
+                return self::$nativeStates[$id];
+            }
+            throw new Exception('Requested unexisting native state: '.$id);
+        }
+
         return self::$nativeStates;
     }
 
-    public function __construct($nativeState, StateList $list)
+    public function __construct($nativeState, StateList $list, $label = null, $color = null)
     {
         if (!in_array($nativeState, $this::getNativeStates())) {
             throw new Exception('State must have a valid native state');
         }
         $this->nativeState = $nativeState;
-        $this->list = $list;
+        $this->setList($list)
+            ->setLabel($label)
+            ->setColor($color);
     }
 
     /**
@@ -91,6 +100,16 @@ class State extends PersistableModel
     }
 
     /**
+     * @param string $nativeState
+     * @return State
+     */
+    protected function setNativeState($nativeState)
+    {
+        $this->nativeState = $nativeState;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getNativeState()
@@ -116,13 +135,14 @@ class State extends PersistableModel
         return $this->order;
     }
 
-
     /**
-     * @return StateList
+     * @param StateList $list
+     * @return State
      */
-    public function setList()
+    public function setList(StateList $list)
     {
-        return $this->list;
+        $this->list = $list;
+        return $this;
     }
 
     /**

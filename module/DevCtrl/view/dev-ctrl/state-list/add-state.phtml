@@ -2,42 +2,23 @@
 <h1>Add a state<small>to <?php echo $list->getName(); ?></small>
 </h1>
 
-<form class="form-horizontal" method="post" id="form-state" action="<?php echo $this->url('default/id', array(
-    'controller' => 'state-list',
-    'action' => 'add-state',
-    'id' => $list->getId(),
-)); ?>">
+<form class="form-horizontal ctrljs-validate" method="post"
+      id="<?php echo $this->form->getName(); ?>"
+      action="<?php echo $this->url('default/id', array(
+            'controller' => 'state-list',
+            'action' => 'add-state',
+            'id' => $list->getId(),
+        )); ?>">
     <fieldset class="part-1">
         <legend>Configure your state</legend>
-        <div class="control-group">
-            <label class="control-label">label</label>
-            <div class="controls">
-                <input type="text" class="input-xxlarge required" name="label" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">native state</label>
-            <div class="controls">
-                <select class="input-large required" name="native-state">
-                    <?php foreach ($this->nativeStates as $s): ?>
-                    <option><?php echo $s; ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">color</label>
-            <div class="controls">
-                <input type="text" class="input-xxlarge required" name="color" />
-            </div>
-        </div>
+        <?php
+        foreach ($this->form->getElements() as $e) {
+            echo $this->ctrlFormInput($e);
+        }
+        ?>
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="save" />
-            <a class="btn" href="<?php echo $this->url('default/id', array(
-                'controller' => 'state-list',
-                'action' => 'detail',
-                'id' => $list->getId(),
-            )); ?>">cancel</a>
+            <a class="btn" href="<?php echo $this->form->getReturnUrl(); ?>">cancel</a>
         </div>
     </fieldset>
 </form>

@@ -155,6 +155,7 @@ return array(
             'Property' => 'DevCtrl\Service\PropertyService',
             'ValueList' => 'DevCtrl\Service\ValueListService',
             'StateList' => 'DevCtrl\Service\StateListService',
+            'State' => 'DevCtrl\Service\StateService',
             'ItemProperty' => 'DevCtrl\Service\ItemPropertyService',
             'User' => 'DevCtrl\Service\UserService',
         ),

@@ -13,12 +13,12 @@ class StateListService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\State\StateList';
 
-    public function getForm(StateList $list)
+    public function getForm(StateList $state = null)
     {
         $form = new Form('create-state-list');
 
         $property = new TextInput('name');
-        $property->setValue($list->getName())
+        $property->setValue($state->getName())
             ->setLabel('name');
 
         $factory = new FilterFactory();
@@ -31,5 +31,14 @@ class StateListService extends \Ctrl\Service\AbstractDomainModelService
         $form->add($property);
 
         return $form;
+    }
+
+    public function canRemove(StateList $list)
+    {
+        if (!$this->getEntityManager()->contains($list)) {
+            return false;
+        }
+
+        return count($list->getItemTypes()) == 0;
     }
 }

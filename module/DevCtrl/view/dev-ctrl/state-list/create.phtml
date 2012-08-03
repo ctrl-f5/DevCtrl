@@ -14,10 +14,7 @@
         ?>
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="save">
-            <a class="btn" href="<?php echo $this->url('default', array(
-                'controller' => 'state-list',
-                'action' => 'index',
-            )); ?>">cancel</a>
+            <a class="btn" href="<?php echo $this->form->getReturnUrl(); ?>">cancel</a>
         </div>
     </fieldset>
 </form>
