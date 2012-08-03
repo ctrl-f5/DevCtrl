@@ -12,6 +12,9 @@
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
 
         <one-to-many field="states" target-entity="DevCtrl\Domain\Item\State\State" mapped-by="list">
+            <order-by>
+                <order-by-field name="order" direction="ASC" />
+            </order-by>
             <cascade>
                 <cascade-persist/>
             </cascade>

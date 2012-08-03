@@ -15,6 +15,7 @@
             <th>id</th>
             <th>label</th>
             <th>native state</th>
+            <th>order</th>
             <th>actions</th>
         </tr>
         <?php foreach ($state->getStates() as $s): ?>
@@ -22,7 +23,29 @@
             <td><?php echo $s->getId(); ?></td>
             <td><?php echo $s->getLabel(); ?></td>
             <td><?php echo $s->getNativeState(); ?></td>
-            <td></td>
+            <td>
+                <a class="btn" href="<?php echo $this->url('default/query', array(
+                    'controller' => 'state-list',
+                    'action' => 'change-state-order',
+                    'id' => $s->getList()->getId(),
+                    'state' => $s->getId(),
+                    'dir' => 'up',
+                )); ?>"><i class="icon-circle-arrow-up"></i></a>
+                <a class="btn" href="<?php echo $this->url('default/query', array(
+                    'controller' => 'state-list',
+                    'action' => 'change-state-order',
+                    'id' => $s->getList()->getId(),
+                    'state' => $s->getId(),
+                    'dir' => 'down',
+                )); ?>"><i class="icon-circle-arrow-down"></i></a>
+            </td>
+            <td>
+                <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
+                    'controller' => 'state-list',
+                    'action' => 'delete-state',
+                    'id' => $s->getId()
+                )); ?>">delete</a>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>

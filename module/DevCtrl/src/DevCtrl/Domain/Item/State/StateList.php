@@ -57,13 +57,23 @@ class StateList extends PersistableModel
     }
 
     /**
+     * @param $states
+     * @return StateList
+     */
+    public function setStates($states)
+    {
+        $this->states = $states;
+        return $this;
+    }
+
+    /**
      * @param State $state
      * @return StateList
      */
     public function addState(State $state)
     {
         $state->setList($this);
-        $state->setOrder(count($this->getStates()+1));
+        $state->setOrder(count($this->getStates())+1);
         $this->states[] = $state;
         return $this;
     }

@@ -111,4 +111,49 @@ class StateListController extends AbstractController
             'form' => $form
         ));
     }
+
+    public function deleteStateAction()
+    {
+        /** @var $stateService StateService */
+        $stateService = $this->getDomainService('State');
+        /** @var $state State */
+        $state = $stateService->getById($this->params('id'));
+        $list = $state->getList();
+        if ($state && $stateService->canRemove($state)) {
+            $stateService->remove($state);
+        }
+
+        return $this->redirect()->toRoute('default/id', array(
+            'controller' => 'state-list',
+            'action' => 'detail',
+            'id' => $list->getId(),
+        ));
+    }
+
+    public function changeStateOrderAction()
+    {
+        /** @var $itemService \DevCtrl\Service\StateListService */
+        $listService = $this->getDomainService('StateList');
+        /** @var $list StateList */
+        $list = $listService->getById($this->params()->fromQuery('id'));
+
+        $stateId = $this->params()->fromQuery('state');
+        $dir = $this->params()->fromQuery('dir');
+
+        $list->setStates(
+            $listService->switchOrderInCollection(
+                $list->getStates(),
+                $stateId,
+                $dir
+            )
+        );
+
+        $listService->persist($list);
+
+        return $this->redirect()->toRoute('default/id', array(
+            'controller' => 'state-list',
+            'action' => 'detail',
+            'id' => $list->getId()
+        ));
+    }
 }
