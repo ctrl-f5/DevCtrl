@@ -4,51 +4,36 @@
 <?php $type = $this->type; /** @var $type TypeInterface */ ?>
 <?php $valuesProviders = $this->valuesProviders; /** @var $valuesProviders ValuesProvider[] */ ?>
 <?php $form = $this->form; /** @var $form Form */ ?>
-<h1>New property</h1>
 
-<form class="form-horizontal ctrljs-validate" method="post" id="form-property" action="<?php echo $this->url('property_create', array(
-    'type' => $type->getRepresentedPorpertyType(),
-)); ?>">
-    <fieldset>
-        <legend><?php echo $type->getRepresentedPorpertyType(); ?> property</legend>
-        <?php
-        foreach ($form->getElements() as $e) {
-            $containerOptions = array();
-            if (0 === strpos($e->getName(), 'type-config')) {
-                $containerOptions['class'] = array(
-                    $e->getAttribute('data-name'),
-                    'type-config'
-                );
-            }
-            echo $this->ctrlFormInput($e, $containerOptions);
+<?php echo $this->pageTitle('New property', $type->getRepresentedPorpertyType()); ?>
+
+<?php
+    echo $this->ctrlForm()->start($form->setLabel('Please provide some info'));
+
+    foreach ($form->getElements() as $e) {
+        $containerOptions = array();
+        if (0 === strpos($e->getName(), 'type-config')) {
+            $containerOptions['class'] = array(
+                $e->getAttribute('data-name'),
+                'type-config'
+            );
         }
-        ?>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="save">
-            <a class="btn" href="<?php echo $form->getReturnurl(); ?>">cancel</a>
-        </div>
-    </fieldset>
+        echo $this->ctrlFormInput($e, $containerOptions);
+    }
 
-</form>
+    echo $this->ctrlFormActions(array(
+        $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+        $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
+    ));
 
+    echo $this->ctrlForm()->end($form);
+?>
 
 <script type="text/javascript">
     $(function () {
         $('select[name=type]').live('change', function () {
-            $('#form-property .type-config').hide();
-            $('#form-property .type-config.'+$(this).val()).show();
+            $('#form-property-create .type-config').hide();
+            $('#form-property-create .type-config.'+$(this).val()).show();
         }).trigger('change');
-
-        $('form#item-type-state-form').live('submit', function () {
-            if (Ctrl.forms().isValid($(this))) {
-                $('form#item-form .form-actions .alert').remove();
-            } else {
-                $('form#item-form .form-actions').prepend(
-                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
-                );
-                return false;
-            }
-            return true;
-        });
     });
 </script>

@@ -1,81 +1,28 @@
-<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
-<h1>New item type</small>
-</h1>
+<?php
 
-<form class="form-horizontal" method="post" id="item-form" action="<?php echo $this->url('default/id', array(
-    'controller' => 'item-type',
-    'action' => 'create',
-)); ?>">
-    <fieldset class="part-1">
-        <legend>Configure your item</legend>
-        <div class="control-group">
-            <label class="control-label">name</label>
-            <div class="controls">
-                <input type="text" class="input-xxlarge required" name="name" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">description</label>
-            <div class="controls">
-                <textarea class="input-xxlarge" name="description"></textarea>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">supports timing</label>
-            <div class="controls">
-                <input type="checkbox" name="supports-timing" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">state set</label>
-            <div class="controls">
-                <select class="input-xxlarge required" name="state-list">
-                    <option></option>
-                    <?php foreach ($this->states as $s): ?>
-                    <option value="<?php echo $s->getId(); ?>"><?php echo $s->getName(); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" />
-            <a class="btn" href="<?php echo $this->url('default/id', array(
-                'controller' => 'item-type',
-                'action' => 'index',
-            )); ?>">cancel</a>
-        </div>
-    </fieldset>
-</form>
+use Ctrl\Form\Form;
 
-<script type="text/javascript">
-$(function () {
-    var propertyContainer = $('#item-type-property-controls-container');
-    propertyContainer.hide();
+/** @var $form Form */
+$form = $this->form;
 
-    $('#show-item-type-property-controls').live('click', function () {
-        if (!propertyContainer.is(':visible')) {
-            if (Ctrl.forms().isValid($('form#item-form .part-1'))) {
-                $(this).closest('.form-actions').hide();
-                propertyContainer.show();
-                $('form#item-form .form-actions .alert').remove();
-            } else {
-                $('form#item-form .form-actions').prepend(
-                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
-                );
-            }
-        }
-    });
+echo $this->pageTitle('New item type');
 
-    $('form#item-form').live('submit', function () {
-        if (Ctrl.forms().isValid($(this))) {
-            $('form#item-form .form-actions .alert').remove();
-        } else {
-            $('form#item-form .form-actions').prepend(
-                $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
-            );
-            return false;
-        }
-        return true;
-    });
-});
-</script>
+echo $this->ctrlForm()->start($form->setLabel('Please provide some info'));
+
+foreach ($form->getElements() as $e) {
+    $containerOptions = array();
+    if (0 === strpos($e->getName(), 'type-config')) {
+        $containerOptions['class'] = array(
+            $e->getAttribute('data-name'),
+            'type-config'
+        );
+    }
+    echo $this->ctrlFormInput($e, $containerOptions);
+}
+
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
+));
+
+echo $this->ctrlForm()->end($form);

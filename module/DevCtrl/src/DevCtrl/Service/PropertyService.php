@@ -61,14 +61,14 @@ class PropertyService extends \Ctrl\Service\AbstractDomainModelService
         return array();
     }
 
-    public function getForm(Property $property = null)
+    public function getForm(Property $type = null)
     {
         throw new Exception('this method is not supported on this service, use the getFormForType() function instead');
     }
 
     public function getFormForType(TypeInterface $type, Property $property = null)
     {
-        $form = new Form('create-item-property');
+        $form = new Form('form-property-create');
 
         $input = new TextInput('name');
         $input->setLabel('name');

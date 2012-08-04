@@ -1,11 +1,10 @@
 <?php $p = $this->project /** @var $p \DevCtrl\Domain\Project */ ?>
 <?php $types = $this->types /** @var $types \DevCtrl\Domain\Item\Property\Type\TypeInterface[] */ ?>
 
-<?php $this->page = 'property'; ?>
+<?php $this->configTab = 'property'; ?>
 <?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
-<h1>Properties</h1>
-<p></p>
+<?php echo $this->pageTitle('Properties'); ?>
 <div class="btn-group">
     <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
         New property
@@ -52,12 +51,12 @@
                 ?>
             </td>
             <td>
-                <a class="btn btn-danger ctrljs-confirm"
-                   href="<?php echo $this->url('default/id', array(
+                <?php echo $this->ctrlButton('link', array('value' => 'delete', 'confirm' => true,
+                'href' => $this->url('default/id', array(
                     'controller' => 'property',
                     'action' => 'delete',
                     'id' => $p->getId()
-                )); ?>">delete</a>
+                ))), 'danger') ?>
             </td>
         </tr>
         <?php endforeach; ?>

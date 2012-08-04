@@ -1,6 +1,16 @@
-<h1>Link property to item type</h1>
+<?php
+echo $this->pageTitle('Link to item type', $this->itemType->getName());
+echo $this->pageTitle('Select the property you want to link', null, array('level' => 3));
+?>
 <p></p>
-<h4>Select the property you would like to link</h4>
+<div class="btn-group">
+    <?php echo $this->ctrlButton('link', array('value' => 'Back to index',
+    'href' => $this->url('default/id', array(
+        'controller' => 'item-type',
+        'action' => 'properties',
+        'id' => $this->itemType->getId(),
+    )))) ?>
+</div>
 <p></p>
 <div class="">
     <table class="table table-striped">
@@ -14,10 +24,13 @@
         <tr>
             <td><?php echo $p->getName(); ?></td>
             <td><?php echo $p->getDescription(); ?></td>
-            <td><a class="btn btn-primary" href="<?php echo $this->url('type_property_link', array(
-                'type' => $this->itemType->getId(),
-                'property' => $p->getId(),
-            )); ?>">link</a></td>
+            <td>
+                <?php echo $this->ctrlButton('link', array('value' => 'add',
+                'href' => $this->url('type_property_link', array(
+                    'type' => $this->itemType->getId(),
+                    'property' => $p->getId(),
+                ))), 'primary') ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>

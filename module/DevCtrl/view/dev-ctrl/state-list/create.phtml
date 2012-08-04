@@ -5,7 +5,7 @@ $form = $this->form;
 
 echo $this->pageTitle('New', 'state list');
 
-echo $this->ctrlForm()->start($form->setName('please provide some info'));
+echo $this->ctrlForm()->start($form->setLabel('please provide some info'));
 foreach ($this->form->getElements() as $e) {
     echo $this->ctrlFormInput($e);
 }

@@ -36,7 +36,15 @@ class TypeProperty extends PersistableServiceLocatorAwareModel
      */
     protected $defaultProvider = 'Empty';
 
+    /**
+     * @var string|null
+     */
     protected $defaultProviderConfig;
+
+    /**
+     * @var int
+     */
+    protected $order;
 
     public function __construct(ServiceLocatorInterface $serviceLocator, Property $property, $defaultProvider)
     {
@@ -121,8 +129,6 @@ class TypeProperty extends PersistableServiceLocatorAwareModel
                 ->get($defaultProvider);
         } else if (is_object($defaultProvider) && $defaultProvider instanceof ProviderInterface) {
             $this->defaultProvider = $defaultProvider;
-        } else {
-            throw new Exception('TypeProperty requires a valid DefaultProvider');
         }
         return $this;
     }
@@ -139,5 +145,23 @@ class TypeProperty extends PersistableServiceLocatorAwareModel
     public function getDefaultProviderConfig()
     {
         return $this->defaultProviderConfig;
+    }
+
+    /**
+     * @param int $order
+     * @return TypeProperty
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 }

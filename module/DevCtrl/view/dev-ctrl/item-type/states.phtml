@@ -1,15 +1,20 @@
 <?php $itemType = $this->itemType /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
-<div class="page-header" xmlns="http://www.w3.org/1999/html"><h1>Item Type <small><?php echo $itemType->getName(); ?></small></h1></div>
+
+<?php $this->configTab = 'property'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<?php echo $this->pageTitle('Item type', $itemType->getName()); ?>
 
 <?php $this->page = 'states'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
 
+<?php if ($itemType->hasStates()): ?>
 <div class="btn-group">
-    <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
-        'controller' => 'item-type',
-        'action' => 'create-state',
-        'id' => $itemType->getId(),
-    )); ?>">New state</a>
+    <a class="btn" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
+        'controller' => 'state-list',
+        'action' => 'detail',
+        'id' => $itemType->getStates()->getId(),
+    )); ?>">state list configuration</a>
 </div>
 <p></p>
 <div class="">
@@ -56,3 +61,4 @@
         <?php endforeach; ?>
     </table>
 </div>
+<?php endif; ?>

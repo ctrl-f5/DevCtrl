@@ -1,13 +1,13 @@
-<?php $this->page = 'item-type'; ?>
+<?php $this->configTab = 'item-type'; ?>
 <?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
-<h1>Item Types</h1>
-<p></p>
+<?php echo $this->pageTitle('Item types'); ?>
 <div class="btn-group">
-    <a class="btn btn-primary" href="<?php echo $this->url('default', array(
-            'controller' => 'item-type',
-            'action' => 'create'
-    )); ?>">New type</a>
+    <?php echo $this->ctrlButton('link', array('value' => 'Add new type',
+    'href' => $this->url('default', array(
+        'controller' => 'item-type',
+        'action' => 'create'
+    ))), 'primary') ?>
 </div>
 <p></p>
 <div class="">
@@ -28,11 +28,13 @@
             <td><?php echo $p->getDescription(); ?></td>
             <td><?php echo $p->supportsTiming() ?></td>
             <td><?php echo $p->hasStates() ? $p->getStates()->getName() : ''; ?></td>
-            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'item-type',
-                'action' => 'detail',
-                'id' => $p->getId()
-            )); ?>">detail</a></td>
+            <td>
+                <?php echo $this->ctrlButton('link', array('value' => 'detail',
+                'href' => $this->url('default/id', array(
+                    'controller' => 'item-type',
+                    'action' => 'detail',
+                    'id' => $p->getId()
+                ))), 'info') ?>
         </tr>
         <?php endforeach; ?>
     </table>

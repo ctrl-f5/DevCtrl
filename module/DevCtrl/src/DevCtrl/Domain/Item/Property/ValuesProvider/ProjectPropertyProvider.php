@@ -15,6 +15,7 @@ class ProjectPropertyProvider extends AbstractProvider
     protected function _getValues(Property $property, $config = null)
     {
         $values = array();
+        return array();
         foreach ($itemType->getProject()->getVersions() as $v) {
             $values = new PossibleValue();
             $values->setId($v->getId())->setValue($v->getName());

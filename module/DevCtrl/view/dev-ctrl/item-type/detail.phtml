@@ -1,6 +1,10 @@
 <?php use DevCtrl\Domain\Item\Type\Type; ?>
 <?php $type = $this->itemType; /** @var $type Type */ ?>
-<div class="page-header"><h1>Item Type <small><?php echo $this->itemType->getName(); ?></small></h1></div>
+
+<?php $this->configTab = 'property'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<?php echo $this->pageTitle('Item type', $this->itemType->getName()); ?>
 
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>

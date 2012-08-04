@@ -93,6 +93,9 @@ class Type extends \Ctrl\Domain\PersistableModel
                 throw new \DevCtrl\Domain\Exception('Item\Property\Property already linked to this Item\Type\Type');
 
         $typeProperty->setItemType($this);
+        $typeProperty->setOrder(
+            $this->getTypeProperties()->count()
+        );
         $this->typeProperties[] = $typeProperty;
 
         return $this;

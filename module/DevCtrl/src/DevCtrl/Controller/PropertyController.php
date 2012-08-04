@@ -23,10 +23,16 @@ class PropertyController extends AbstractController
 
     public function createAction()
     {
+        /** @var $propertyType TypeInterface */
         $propertyType = $this->getPropertyType($this->params()->fromRoute('type'));
         /** @var $propertyService \DevCtrl\Service\PropertyService */
         $propertyService = $this->getDomainService('Property');
         $form = $propertyService->getFormForType($propertyType);
+        $form->setAttribute('action', $this->url()->fromRoute('property_create', array(
+            'controller' => 'property',
+            'action' => 'create',
+            'type' => $propertyType->getNativeValueType()
+        )));
         $form->setReturnUrl($this->url()->fromRoute('default', array(
             'controller' => 'property',
             'action' => 'index',
@@ -72,6 +78,7 @@ class PropertyController extends AbstractController
     {
         /** @var $propertyService PropertyService */
         $propertyService = $this->getDomainService('Property');
+        /** @var $property Property */
         $property = $this->getDomainService('Property')->getById($this->params('id'));
         if ($property && $propertyService->canRemove($property)) {
             $propertyService->remove($property);

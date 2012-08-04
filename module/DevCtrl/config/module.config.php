@@ -132,6 +132,7 @@ return array(
             'Project' => 'DevCtrl\Service\ProjectService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
+            'ItemTypeProperty' => 'DevCtrl\Service\ItemTypePropertyService',
             'Property' => 'DevCtrl\Service\PropertyService',
             'ValueList' => 'DevCtrl\Service\ValueListService',
             'ListValue' => 'DevCtrl\Service\ListValueService',

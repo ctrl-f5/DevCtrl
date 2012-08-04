@@ -14,7 +14,7 @@ class ValueListService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Property\Value\ValueList';
 
-    public function getForm(ValueList $property = null)
+    public function getForm(ValueList $type = null)
     {
         throw new Exception('this method is not supported on this service, use the getForm*() functions instead');
     }

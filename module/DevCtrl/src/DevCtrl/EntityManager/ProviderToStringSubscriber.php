@@ -9,6 +9,7 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Item\Property\DefaultProvider\ProviderInterface as DefaultProvider;
 
 class ProviderToStringSubscriber implements EventSubscriber, ServiceLocatorAwareInterface
 {
@@ -53,7 +54,7 @@ class ProviderToStringSubscriber implements EventSubscriber, ServiceLocatorAware
             $prop = $reflection->getProperty('defaultProvider');
             $prop->setAccessible(true);
             $val = $prop->getValue($e);
-            $prop->setValue($e, $val->getName());
+            if ($val instanceof DefaultProvider) $prop->setValue($e, $val->getName());
         }
     }
 }

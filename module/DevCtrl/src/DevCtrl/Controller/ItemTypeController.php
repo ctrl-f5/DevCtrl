@@ -10,6 +10,7 @@ use DevCtrl\Service\ItemTypeService;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Item\State\StateList;
 
 class ItemTypeController extends AbstractController
 {
@@ -55,10 +56,17 @@ class ItemTypeController extends AbstractController
 
     public function createAction()
     {
-        /** @var $itemService \DevCtrl\Service\ItemService */
-        $itemService = $this->getDomainService('Item');
-        /** @var $stateService \DevCtrl\Service\StateListService */
-        $stateService = $this->getDomainService('StateList');
+        /** @var $typeService \DevCtrl\Service\ItemTypeService */
+        $typeService = $this->getDomainService('ItemType');
+        $form = $typeService->getForm();
+        $form->setAttribute('action', $this->url()->fromRoute('default', array(
+            'controller' => 'item-type',
+            'action' => 'create',
+        )));
+        $form->setReturnUrl($this->url()->fromRoute('default', array(
+            'controller' => 'item-type',
+            'action' => 'index',
+        )));
 
         if ($this->getRequest()->isPost()) {
 
@@ -69,12 +77,16 @@ class ItemTypeController extends AbstractController
             $itemType->setName($this->params()->fromPost('name'))
                 ->setDescription($this->params()->fromPost('description'));
 
-            $itemType->setStates($stateService->getById(
-                $this->params()->fromPost('state-list')
-            ));
+            /** @var $stateList StateList */
+            $stateList = $this->getDomainService('StateList')
+                ->getById($this->params()->fromPost('state-list'));
+            if (!$stateList) {
+                throw new Exception('Failed to load state list: '.$this->params()->fromPost('state-list'));
+            }
+            $itemType->setStates($stateList);
 
-            $itemService->getEntityManager()->persist($itemType);
-            $itemService->getEntityManager()->flush();
+            $typeService->getEntityManager()->persist($itemType);
+            $typeService->getEntityManager()->flush();
 
             return $this->redirect()->toRoute('default/id', array(
                 'controller' => 'item-type',
@@ -83,7 +95,7 @@ class ItemTypeController extends AbstractController
         }
 
         return new ViewModel(array(
-            'states' => $stateService->getAll()
+            'form' => $form,
         ));
     }
 
@@ -116,30 +128,56 @@ class ItemTypeController extends AbstractController
         if ($this->getRequest()->isPost()) {
 
             $typeProperty = new TypeProperty($this->getServiceLocator(), $property, $this->params()->fromPost('default-provider'));
+            $typeProperty->setRequired($this->params()->fromPost('required'));
 
-            if ($property->getValuesProvider()->supportsDefaultValue()) {
-
-                $typeProperty->setRequired($this->params()->fromPost('required'));
+            if ($property->getType()->supportsProvidingValues()
+                && $property->getValuesProvider()->supportsDefaultValue()
+                && $property->getType()->supportsDefaultValue()) {
 
                 if ($typeProperty->getDefaultProvider()->requiresConfiguration()) {
                     $typeProperty->setDefaultProviderConfig($this->params()->fromPost('default-provider-config'));
                 }
-
-                $itemType->addProperty($typeProperty);
-                $typeService->persist($itemType);
-
-                return $this->redirect()->toRoute('default/id', array(
-                    'controller' => 'item-type',
-                    'action' => 'properties',
-                    'id' => $itemType->getId()
-                ));
             }
+            $itemType->addProperty($typeProperty);
+            $typeService->persist($itemType);
+
+            return $this->redirect()->toRoute('default/id', array(
+                'controller' => 'item-type',
+                'action' => 'properties',
+                'id' => $itemType->getId()
+            ));
         }
 
         return new ViewModel(array(
             'itemType' => $itemType,
             'property' => $property,
             'defaultProviders' => $propertyService->getConfiguredDefaultValueProviders(),
+        ));
+    }
+
+    public function changePropertyOrderAction()
+    {
+        /** @var $itemService \DevCtrl\Service\ItemTypePropertyService */
+        $typeService = $this->getDomainService('ItemTypeProperty');
+        /** @var $typeProp TypeProperty */
+        $typeProp = $typeService->getById($this->params()->fromRoute('id'));
+
+        $dir = $this->params()->fromQuery('dir');
+
+        $typeProp->getItemType()->setTypeProperties(
+            $typeService->switchOrderInCollection(
+                $typeProp->getItemType()->getTypeProperties(),
+                $typeProp->getId(),
+                $dir
+            )
+        );
+
+        $typeService->persist($typeProp);
+
+        return $this->redirect()->toRoute('default/id', array(
+            'controller' => 'item-type',
+            'action' => 'properties',
+            'id' => $typeProp->getId()
         ));
     }
 }
