@@ -6,7 +6,7 @@
     <small>to <strong><?php echo $itemType->getName(); ?></strong></small>
 </h1>
 
-<form class="form-horizontal" method="post" id="item-type-state-form" action="<?php echo $this->url('type_property_link', array(
+<form class="form-horizontal ctrljs-validate" method="post" id="item-type-state-form" action="<?php echo $this->url('type_property_link', array(
     'controller' => 'item-type',
     'action' => 'link-property',
     'type' => $itemType->getId(),
@@ -71,20 +71,3 @@
     </fieldset>
 
 </form>
-
-
-<script type="text/javascript">
-    $(function () {
-        $('form#item-type-state-form').live('submit', function () {
-            if (Ctrl.forms().isValid($(this))) {
-                $('form#item-form .form-actions .alert').remove();
-            } else {
-                $('form#item-form .form-actions').prepend(
-                    $('<div class="alert alert-error"><strong>Hold on!</strong> Some required fields are missing a value.</div>')
-                );
-                return false;
-            }
-            return true;
-        });
-    });
-</script>

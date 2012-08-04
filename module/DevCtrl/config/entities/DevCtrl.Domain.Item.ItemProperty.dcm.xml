@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\ItemProperty" table="item_property_value">
+    <entity name="DevCtrl\Domain\Item\ItemProperty" table="item_type_property_value">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -11,15 +11,22 @@
 
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value">
-            <join-column name="nativeValue_id" referenced-column-name="id" />
+        <one-to-one field="item" target-entity="DevCtrl\Domain\Item\Item">
+            <join-column name="item_id" referenced-column-name="id" />
             <cascade>
                 <cascade-persist/>
             </cascade>
         </one-to-one>
 
-        <one-to-one field="list" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList">
-            <join-column name="propertyValueList_id" referenced-column-name="id" />
+        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value">
+            <join-column name="nativevalue_id" referenced-column-name="id" />
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-one>
+
+        <one-to-one field="typeProperty" target-entity="DevCtrl\Domain\Item\Type\TypeProperty">
+            <join-column name="itemtype_property_id" referenced-column-name="id" />
         </one-to-one>
 
     </entity>

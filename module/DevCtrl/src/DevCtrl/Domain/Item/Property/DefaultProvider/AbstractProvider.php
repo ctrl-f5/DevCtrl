@@ -8,12 +8,12 @@ use \DevCtrl\Domain\Exception;
 
 abstract class AbstractProvider implements ProviderInterface
 {
-    public function getDefaultValue(Property $property, TypeProperty $typeProperty = null)
+    public function getDefaultValue(TypeProperty $typeProperty = null)
     {
-        return $this->_getDefaultValue($property, $typeProperty);
+        return $this->_getDefaultValue($typeProperty);
     }
 
-    abstract protected function _getDefaultValue(Property $property, TypeProperty $typeProperty = null);
+    abstract protected function _getDefaultValue(TypeProperty $typeProperty = null);
 
     public function requiresValuesProvider()
     {

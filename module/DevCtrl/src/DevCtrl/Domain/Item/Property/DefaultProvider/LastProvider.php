@@ -18,7 +18,7 @@ class LastProvider  extends AbstractProvider
         return true;
     }
 
-    protected function _getDefaultValue(Property $property, TypeProperty $typeProperty = null)
+    protected function _getDefaultValue(TypeProperty $typeProperty = null)
     {
         return null;
     }

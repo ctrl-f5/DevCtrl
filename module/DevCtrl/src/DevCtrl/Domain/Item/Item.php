@@ -33,79 +33,9 @@ class Item
     protected $state;
 
     /**
-     * @var Domain\Collection|PropertyValue[]
+     * @var ItemProperty[]
      */
-    protected $propertyValues;
-
-    /**
-     * @var Domain\Project
-     */
-    protected $project;
-
-    /**
-     * @var Domain\User
-     */
-    protected $createdByUser;
-
-    /**
-     * @var Domain\Collection|Domain\User[]
-     */
-    protected $assignedUsers;
-
-    /**
-     * @param $title
-     * @param Domain\User $createdBy
-     * @param Domain\Project $project
-     * @param Type\Type $itemType
-     * @param PropertyValue[] $propertyValues
-     * @throws Domain\Exception
-     */
-    public function __construct($title, Domain\User $createdBy, Domain\Project $project, Type\Type $itemType, $propertyValues)
-    {
-        $this->title = $title;
-        $this->createdByUser = $createdBy;
-        $this->project = $project;
-        $this->itemType = $itemType;
-
-        $this->propertyValues = new Domain\Collection();
-        $this->assignedUsers = new Domain\Collection();
-
-        foreach ($propertyValues as $pv) {
-            $this->addPropertyValue($pv);
-        }
-        if (!$this->hasAllRequiredPropertyValues()) {
-            throw new Domain\Exception('item is missing a required property value');
-        }
-    }
-
-    public function setAssignedUsers($assignedUsers)
-    {
-        $this->assignedUsers = $assignedUsers;
-        return $this;
-    }
-
-    public function getAssignedUsers()
-    {
-        return $this->assignedUsers;
-    }
-
-    /**
-     * @param \DevCtrl\Domain\User $createdByUser
-     * @return Item
-     */
-    public function setCreatedByUser($createdByUser)
-    {
-        $this->createdByUser = $createdByUser;
-        return $this;
-    }
-
-    /**
-     * @return \DevCtrl\Domain\User
-     */
-    public function getCreatedByUser()
-    {
-        return $this->createdByUser;
-    }
+    protected $itemProperties;
 
     /**
      * @param string $description
@@ -123,24 +53,6 @@ class Item
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * @param int $id
-     * @return Item
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -187,32 +99,30 @@ class Item
         return $this->itemType;
     }
 
-    public function setPropertyValues($propertyValues)
+    public function setItemProperties($itemProperties)
     {
-        $this->propertyValues = $propertyValues;
+        $this->itemProperties = $itemProperties;
         return $this;
     }
 
-    public function getPropertyValues()
+    public function getItemProperties()
     {
-        return $this->propertyValues;
+        return $this->itemProperties;
     }
 
-    public function getPropertyValue(Property $property)
+    /**
+     * @param Property\Property $property
+     * @return ItemProperty
+     * @throws Domain\Exception
+     */
+    public function getItemProperty(Property $property)
     {
-        foreach ($this->getPropertyValues() as $pv) {
-            if ($pv->getProperty() === $property) {
-                return $pv;
+        foreach ($this->getItemProperties() as $ip) {
+            if ($ip->getTypeProperty()->getProperty()->getId() === $property->getId()) {
+                return $ip;
             }
         }
         throw new Domain\Exception('Item has no PropertyValue for the given Property');
-    }
-
-    public function addPropertyValue(PropertyValue $propertyValue)
-    {
-        $this->propertyValues[] = $propertyValue;
-        $propertyValue->setItem($this);
-        return $this;
     }
 
     protected function hasAllRequiredPropertyValues()
@@ -231,23 +141,4 @@ class Item
         }
         return true;
     }
-
-    /**
-     * @param \DevCtrl\Domain\Project $project
-     * @return Item
-     */
-    public function setProject($project)
-    {
-        $this->project = $project;
-        return $this;
-    }
-
-    /**
-     * @return \DevCtrl\Domain\Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
 }

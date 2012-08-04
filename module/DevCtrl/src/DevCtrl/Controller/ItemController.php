@@ -5,6 +5,9 @@ namespace DevCtrl\Controller;
 use DevCtrl\Service\ProjectService;
 use Ctrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
+use DevCtrl\Service\ItemService;
+use DevCtrl\Service\ItemTypeService;
+use DevCtrl\Domain\Item\Type\Type;
 
 class ItemController extends AbstractController
 {
@@ -12,9 +15,12 @@ class ItemController extends AbstractController
     {
         /** @var $itemService ItemService */
         $itemService = $this->getDomainService('Item');
+        /** @var $itemTypeService ItemTypeService */
+        $itemTypeService = $this->getDomainService('ItemType');
 
         return new ViewModel(array(
-            'items' => $itemService->getAll()
+            'items' => $itemService->getAll(),
+            'itemTypes' => $itemTypeService->getAll()
         ));
     }
 
@@ -30,11 +36,11 @@ class ItemController extends AbstractController
 
     public function createAction()
     {
-        $project = $this->getDomainService('Project')->getById($this->params()->fromRoute('project'));
-        $itemType = $this->getDomainService('ItemType')->getById($this->params()->fromRoute('item-type'));
-
+        /** @var $itemType Type */
+        $itemType = $this->getDomainService('ItemType')->getById($this->params()->fromRoute('type'));
         /** @var $itemService \DevCtrl\Service\ItemService */
         $itemService = $this->getDomainService('Item');
+        $form = $itemService->getFormForType($itemType);
 
         if ($this->getRequest()->isPost()) {
 
@@ -60,8 +66,8 @@ class ItemController extends AbstractController
         }
 
         return new ViewModel(array(
-            'project' => $project,
-            'itemType' => $itemType
+            'itemType' => $itemType,
+            'form' => $form,
         ));
     }
 }

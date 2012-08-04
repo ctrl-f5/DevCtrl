@@ -23,15 +23,12 @@ abstract class AbstractProvider implements ProviderInterface
      * @param Type $itemType
      * @throws Exception
      */
-    public function getValues(Property $property, $config = null)
+    public function getValues(Property $property)
     {
-        if ($config == null && $this->requiresConfiguration()) {
-            throw new Exception('this Provider requires configuration');
-        }
-        return $this->_getValues($property, $config);
+        return $this->_getValues($property);
     }
 
-    abstract protected function _getValues(Property $property, $config = null);
+    abstract protected function _getValues(Property $property);
 
     public function getConfigurationValues()
     {

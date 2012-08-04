@@ -26,18 +26,20 @@ class CustomListProvider extends AbstractServiceLocatorAwareProvider
      */
     protected $serviceLocator;
 
-    protected function _getValues(Property $property, $config = null)
+    protected function _getValues(Property $property)
     {
         /** @var $service ValueListService */
         $service = $this->getServiceLocator()
             ->get('DomainServiceLoader')
             ->get('ValueList');
         /** @var $list ValueList */
-        $list = $service->getById($config);
+        $list = $service->getById($property->getValuesProviderConfig());
 
         $values = array();
-        foreach ($list->getValues() as $v) {
-            $values[$v->getId()] = $v->getValue();
+        if ($list) {
+            foreach ($list->getValues() as $v) {
+                $values[$v->getId()] = $v->getValue()->getValue();
+            }
         }
         return $values;
     }

@@ -13,9 +13,13 @@ class DefinedProvider extends AbstractProvider
         return 'Defined';
     }
 
-    protected function _getDefaultValue(Property $property, TypeProperty $typeProperty = null)
+    protected function _getDefaultValue(TypeProperty $typeProperty = null)
     {
-        return null;
+        if (!$typeProperty->getProperty()->getType()->supportsDefaultValue()
+        || !$typeProperty->getDefaultProvider())
+            return null;
+
+        return $typeProperty->getDefaultProviderConfig();
     }
 
     public function requiresConfiguration()

@@ -84,11 +84,10 @@ return array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route'    => '/item/create/[:project]/[:item-type]',
+                    'route'    => '/item/create/[:type]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'project'     => '[0-9]+',
-                        'item-type'     => '[0-9]+',
+                        'type'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',

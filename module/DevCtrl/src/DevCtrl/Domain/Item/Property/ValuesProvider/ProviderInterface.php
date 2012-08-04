@@ -8,7 +8,7 @@ use DevCtrl\Domain\Item\Type\Type;
 interface ProviderInterface
 {
     public function getName();
-    public function getValues(Property $property, $config = null);
+    public function getValues(Property $property);
     public function requiresConfiguration();
     public function getConfigurationValues();
     public function supportsDefaultValue();

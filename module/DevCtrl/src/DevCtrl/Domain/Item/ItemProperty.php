@@ -6,6 +6,7 @@ use \DevCtrl\Domain;
 use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\Type\TypeProperty;
 use Ctrl\Domain\PersistableModel;
+use DevCtrl\Domain\Value\NativeValueInterface;
 
 class ItemProperty extends PersistableModel
 {
@@ -22,7 +23,7 @@ class ItemProperty extends PersistableModel
     /**
      * @var TypeProperty
      */
-    protected $property;
+    protected $typeProperty;
 
     /**
      * @var NativeValueInterface
@@ -69,16 +70,16 @@ class ItemProperty extends PersistableModel
      * @param Property $property
      * @return PropertyValue
      */
-    public function setProperty($property)
+    public function setTypeProperty($property)
     {
         $this->property = $property;
         return $this;
     }
 
     /**
-     * @return Property
+     * @return TypeProperty
      */
-    public function getProperty()
+    public function getTypeProperty()
     {
         return $this->property;
     }
@@ -94,7 +95,7 @@ class ItemProperty extends PersistableModel
     }
 
     /**
-     * @return mixed
+     * @return NativeValueInterface
      */
     public function getValue()
     {

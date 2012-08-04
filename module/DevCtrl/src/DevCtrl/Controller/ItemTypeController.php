@@ -130,9 +130,7 @@ class ItemTypeController extends AbstractController
             $typeProperty = new TypeProperty($this->getServiceLocator(), $property, $this->params()->fromPost('default-provider'));
             $typeProperty->setRequired($this->params()->fromPost('required'));
 
-            if ($property->getType()->supportsProvidingValues()
-                && $property->getValuesProvider()->supportsDefaultValue()
-                && $property->getType()->supportsDefaultValue()) {
+            if ($property->getType()->supportsDefaultValue()) {
 
                 if ($typeProperty->getDefaultProvider()->requiresConfiguration()) {
                     $typeProperty->setDefaultProviderConfig($this->params()->fromPost('default-provider-config'));
