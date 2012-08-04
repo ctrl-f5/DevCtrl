@@ -1,0 +1,16 @@
+<?php
+
+/** @var $form \Ctrl\Form\Form */
+$form = $this->form;
+
+echo $this->pageTitle('New', 'custom list');
+
+echo $this->ctrlForm()->start($form->setName('please provide some info'));
+foreach ($this->form->getElements() as $e) {
+    echo $this->ctrlFormInput($e);
+}
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $this->form->getReturnUrl()))
+));
+echo $this->ctrlForm()->end($form);

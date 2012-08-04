@@ -12,4 +12,9 @@ class TextValue
      * @var string
      */
     protected $value;
+
+    /**
+     * @var string
+     */
+    protected $nativeValueType = 'text';
 }

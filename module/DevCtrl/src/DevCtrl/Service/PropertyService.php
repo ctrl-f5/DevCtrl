@@ -63,7 +63,7 @@ class PropertyService extends \Ctrl\Service\AbstractDomainModelService
 
     public function getForm(Property $property = null)
     {
-        throw new Exception('this method is not supported on this service, use the getForm*() functions instead');
+        throw new Exception('this method is not supported on this service, use the getFormForType() function instead');
     }
 
     public function getFormForType(TypeInterface $type, Property $property = null)
@@ -126,12 +126,12 @@ class PropertyService extends \Ctrl\Service\AbstractDomainModelService
         return $filter;
     }
 
-    public function canRemove(Property $property)
+    public function canRemove(Property $list)
     {
-        if (!$this->getEntityManager()->contains($property)) {
+        if (!$this->getEntityManager()->contains($list)) {
             return false;
         }
 
-        return count($property->getTypeProperties()) == 0;
+        return count($list->getTypeProperties()) == 0;
     }
 }

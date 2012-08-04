@@ -12,4 +12,9 @@ class IntValue
      * @var int
      */
     protected $value;
+
+    /**
+     * @var string
+     */
+    protected $nativeValueType = 'integer';
 }

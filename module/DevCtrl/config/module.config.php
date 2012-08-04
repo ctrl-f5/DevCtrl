@@ -55,6 +55,18 @@ return array(
                     ),
                 ),
             ),
+            'value_list_create' => array(
+                'type'    => 'Segment',
+                'may_terminate' => true,
+                'options' => array(
+                    'route'    => '/value-list/create/[:type]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'DevCtrl\Controller',
+                        'controller'    => 'value-list',
+                        'action'        => 'create',
+                    ),
+                ),
+            ),
             'type_property_link' => array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
@@ -82,38 +94,6 @@ return array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
                         'controller'    => 'item',
                         'action'        => 'create',
-                    ),
-                ),
-            ),
-            'item_state_order_change' => array(
-                'type'    => 'Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route'    => '/item-type/state-order-change/[:id]/[:state]/[:direction]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                        'state'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'DevCtrl\Controller',
-                        'controller'    => 'item-type',
-                        'action'        => 'state-order-change',
-                    ),
-                ),
-            ),
-            'item_property_order_change' => array(
-                'type'    => 'Segment',
-                'may_terminate' => true,
-                'options' => array(
-                    'route'    => '/item-type/property-order-change/[:id]/[:property]/[:direction]',
-                    'constraints' => array(
-                        'id'     => '[0-9]+',
-                        'property'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'DevCtrl\Controller',
-                        'controller'    => 'item-type',
-                        'action'        => 'state-order-change',
                     ),
                 ),
             ),

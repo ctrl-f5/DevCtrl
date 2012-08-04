@@ -36,6 +36,45 @@ class ValueListController extends AbstractController
         ));
     }
 
+    public function createAction()
+    {
+        $valueType = $this->getNativeValueType($this->params()->fromRoute('type'));
+        /** @var $listService ValueListService */
+        $listService = $this->getDomainService('ValueList');
+        $form = $listService->getFormForType($valueType);
+        $form->setAttribute('action', $this->url()->fromRoute('value_list_create', array(
+            'controller' => 'value-list',
+            'action' => 'create',
+            'type' => $valueType->getNativeValueType()
+        )));
+        $form->setReturnUrl($this->url()->fromRoute('default', array(
+            'controller' => 'value-list',
+            'action' => 'index',
+        )));
+
+        if ($this->getRequest()->isPost()) {
+
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+
+                $list = new ValueList(
+                    $this->params()->fromPost('name'),
+                    $valueType->getNativeValueType()
+                );
+
+                $listService->persist($list);
+
+                return $this->redirect()->toUrl($form->getReturnurl());
+
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+            'type' => $valueType,
+        ));
+    }
+
     public function addValueAction()
     {
         /** @var $listService ValueListService */

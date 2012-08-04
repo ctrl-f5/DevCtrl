@@ -10,7 +10,8 @@
     </a>
     <ul class="dropdown-menu">
         <?php foreach ($this->nativeTypes as $id => $t): ?>
-        <li><a href="<?php echo $this->url('property_create', array(
+        <li><a href="<?php echo $this->url('value_list_create', array(
+            'type' => $id
         )); ?>"><?php echo $t['name']; ?></a></li>
         <?php endforeach; ?>
     </ul>

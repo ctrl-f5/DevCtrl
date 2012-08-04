@@ -13,6 +13,11 @@ class AbstractNativeValue implements NativeValueInterface
      */
     protected $value;
 
+    /**
+     * @var string
+     */
+    protected $nativeValueType;
+
     public function getId()
     {
         return $this->id;
@@ -26,5 +31,10 @@ class AbstractNativeValue implements NativeValueInterface
     public function setValue($value)
     {
         $this->value = $value;
+    }
+
+    public function getNativeValueType()
+    {
+        return $this->nativeValueType;
     }
 }

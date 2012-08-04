@@ -23,9 +23,11 @@ class ValueList extends \Ctrl\Domain\PersistableModel
      */
     protected $nativeType;
 
-    public function __construct()
+    public function __construct($name, $nativeType)
     {
         $this->values = new Collection;
+        $this->name = $name;
+        $this->nativeType = $nativeType;
     }
 
     /**
