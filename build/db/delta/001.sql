@@ -1,3 +1,63 @@
+CREATE TABLE `itemstate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `itemStateList_id` int(10) unsigned NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `nativeState` varchar(255) NOT NULL,
+  `color` varchar(255) DEFAULT NULL,
+  `order` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `itemstatelist` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `itemtype` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `supportsTiming` tinyint(3) unsigned NOT NULL,
+  `itemStateList_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `itemtype_property` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `itemType_id` int(10) unsigned NOT NULL,
+  `property_id` int(10) unsigned NOT NULL,
+  `required` tinyint(3) unsigned NOT NULL,
+  `defaultProvider` varchar(255) DEFAULT NULL,
+  `defaultProviderConfig` varchar(255) DEFAULT NULL,
+  `order` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `nativevalue` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nativeType` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `nativevalue_int` (
+  `id` int(10) unsigned NOT NULL,
+  `value` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `nativevalue_string` (
+  `id` int(10) unsigned NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `nativevalue_text` (
+  `id` int(10) unsigned NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
 CREATE TABLE `property` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -8,70 +68,17 @@ CREATE TABLE `property` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `itemType` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`name` VARCHAR( 255 ) NOT NULL ,
-`description` TEXT NOT NULL ,
-`supportsTiming` TINYINT UNSIGNED NOT NULL ,
-`supportsStates` TINYINT UNSIGNED NOT NULL
-) ENGINE = INNODB;
-
-CREATE TABLE `itemType_property` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`itemType_id` INT UNSIGNED NOT NULL ,
-`property_id` INT UNSIGNED NOT NULL ,
-`required` TINYINT UNSIGNED NOT NULL ,
-`defaultProvider` VARCHAR( 255 ) NOT NULL
-`defaultProviderConfig` VARCHAR( 255 ) NOT NULL
-) ENGINE = INNODB;
-
-CREATE TABLE `nativeValue` (
+CREATE TABLE `propertyvaluelist` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `nativeType` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-
-CREATE TABLE `nativeValue_int` (
-  `id` int(10) unsigned NOT NULL,
-  `value` int(11) NOT NULL,
+CREATE TABLE `propertyvaluelist_nativevalue` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `propertyValueList_id` int(10) unsigned NOT NULL,
+  `nativeValue_id` int(10) unsigned NOT NULL,
+  `order` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
-
-CREATE TABLE `nativeValue_string` (
-  `id` int(10) unsigned NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
-CREATE TABLE `nativeValue_text` (
-  `id` int(10) unsigned NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
-CREATE TABLE `propertyValueList` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`name` VARCHAR( 255 ) NOT NULL ,
-`nativeType` VARCHAR( 255 ) NOT NULL
-) ENGINE = INNODB;
-
-CREATE TABLE  `propertyValueList_nativeValue` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`propertyValueList_id` INT UNSIGNED NOT NULL ,
-`nativeValue_id` INT UNSIGNED NOT NULL
-) ENGINE = INNODB;
-
-CREATE TABLE `itemState` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`itemStateList_id` INT UNSIGNED NOT NULL,
-`label` VARCHAR( 255 ) NOT NULL ,
-`nativeState` VARCHAR( 255 ) NOT NULL ,
-`color` VARCHAR( 255 ) NULL ,
-`order` INT UNSIGNED NOT NULL
-) ENGINE = INNODB;
-
-CREATE TABLE `itemStateList` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`name` VARCHAR( 255 ) NOT NULL
-) ENGINE = INNODB;
