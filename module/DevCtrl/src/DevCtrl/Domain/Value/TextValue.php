@@ -1,7 +1,7 @@
 <?php
-namespace DevCtrl\Domain\Item\Property\Value;
+namespace DevCtrl\Domain\Value;
 
-class BoolValue
+class TextValue
 {
     /**
      * @var int

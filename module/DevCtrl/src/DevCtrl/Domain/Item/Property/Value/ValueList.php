@@ -2,7 +2,8 @@
 
 namespace DevCtrl\Domain\Item\Property\Value;
 
-use DevCtrl\Domain\Item\Property\Value\Value;
+use DevCtrl\Domain\Item\Property\Value\ListValue;
+use DevCtrl\Domain\Value\Value;
 use DevCtrl\Domain\Collection;
 
 class ValueList extends \Ctrl\Domain\PersistableModel
@@ -13,7 +14,7 @@ class ValueList extends \Ctrl\Domain\PersistableModel
     protected $name;
 
     /**
-     * @var Value[]
+     * @var ListValue[]
      */
     protected $values;
 
@@ -56,7 +57,7 @@ class ValueList extends \Ctrl\Domain\PersistableModel
     }
 
     /**
-     * @return Value[]
+     * @return ListValue[]
      */
     public function getValues()
     {
@@ -65,7 +66,28 @@ class ValueList extends \Ctrl\Domain\PersistableModel
 
     public function addValue(Value $value)
     {
-        $this->values[] = $value;
+        foreach ($this->values as $v) {
+            if ($v->getValue()->getId() == $value->getId())
+                return $this;
+        }
+        $listValue = new ListValue();
+        $listValue->setList($this)
+            ->setValue($value)
+            ->setOrder(
+                count($this->values) + 1
+            );
+        $this->values[] = $listValue;
+        return $this;
+    }
+
+    public function removeValue(Value $value)
+    {
+        $values = $this->values;
+        $this->values = new Collection();
+        foreach ($values as $v) {
+            if ($v->getValue()->getId() == $value->getId()) continue;
+            $this->values[] = $v;
+        }
         return $this;
     }
 

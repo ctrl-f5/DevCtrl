@@ -4,12 +4,12 @@ namespace DevCtrl\Controller;
 
 use DevCtrl\Domain;
 use DevCtrl\Service\ProjectService;
+use DevCtrl\Domain\Item\Property\Type\TypeInterface;
+use DevCtrl\Domain\Value\Value;
+use DevCtrl\Domain\Value\NativeValueInterface;
 use Ctrl\Controller\AbstractController as Controller;
 use Zend\View\Model\ViewModel;
-use DevCtrl\Domain\Item\Property\Type\TypeInterface;
-use DevCtrl\Domain\Item\Property\Value\Value;
 use DevCtrl\Domain\Exception;
-use DevCtrl\Domain\Item\Property\Value\NativeValueInterface;
 
 abstract class AbstractController extends Controller
 {
@@ -46,7 +46,7 @@ abstract class AbstractController extends Controller
 
     /**
      * @param $typeName
-     * @return NativeValueInterface
+     * @return NativeValueInterface|Value
      * @throws \DevCtrl\Domain\Exception
      */
     public function getNativeValueType($typeName)

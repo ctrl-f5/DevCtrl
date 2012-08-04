@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\Property\Value\IntValue" table="nativeValue_int">
+    <entity name="DevCtrl\Domain\Value\IntValue" table="nativeValue_int">
         <field name="value" column="value" type="int" nullable="false" unique="false" />
     </entity>
 </doctrine-mapping>

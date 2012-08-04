@@ -154,6 +154,8 @@ return array(
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
             'Property' => 'DevCtrl\Service\PropertyService',
             'ValueList' => 'DevCtrl\Service\ValueListService',
+            'ListValue' => 'DevCtrl\Service\ListValueService',
+            'Value' => 'DevCtrl\Service\ValueService',
             'StateList' => 'DevCtrl\Service\StateListService',
             'State' => 'DevCtrl\Service\StateService',
             'ItemProperty' => 'DevCtrl\Service\ItemPropertyService',

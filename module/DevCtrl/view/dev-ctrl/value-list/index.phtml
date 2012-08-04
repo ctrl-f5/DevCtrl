@@ -1,7 +1,7 @@
-<?php $this->page = 'value-list'; ?>
+<?php $this->configTab = 'value-list'; ?>
 <?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
-<h1>Custom lists</h1>
+<?php echo $this->pageTitle('Custom lists'); ?>
 <p></p>
 <div class="btn-group">
     <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
@@ -32,11 +32,24 @@
             <td><?php echo $l->getName(); ?></td>
             <td><?php echo $l->getNativeType(); ?></td>
             <td><?php echo count($l->getValues()) ?></td>
-            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'value-list',
-                'action' => 'detail',
-                'id' => $l->getId()
-            )); ?>">detail</a></td>
+            <td>
+                <?php echo $this->ctrlButton('link', array(
+                'value' => 'detail',
+                'href' => $this->url('default/id', array(
+                    'controller' => 'value-list',
+                    'action' => 'detail',
+                    'id' => $l->getId()
+                ))), 'info') ?>
+                <?php if(!count($l->getValues())): ?>
+                <?php echo $this->ctrlButton('link', array(
+                    'value' => 'delete',
+                    'confirm' => true,
+                    'href' => $this->url('default/id', array(
+                        'controller' => 'state-list',
+                        'action' => 'delete',
+                        'id' => $l->getId()
+                    ))), 'danger') ?>
+                <?php endif; ?>
         </tr>
         <?php endforeach; ?>
     </table>

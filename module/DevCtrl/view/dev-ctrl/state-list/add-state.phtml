@@ -1,24 +1,17 @@
-<?php $list = $this->list; /** @var $list \DevCtrl\Domain\Item\State\StateList */ ?>
-<h1>Add a state<small>to <?php echo $list->getName(); ?></small>
-</h1>
+<?php
+/** @var $list \DevCtrl\Domain\Item\State\StateList */
+$list = $this->list;
+/** @var $form \Ctrl\Form\Form */
+$form = $this->form;
 
-<form class="form-horizontal ctrljs-validate" method="post"
-      id="<?php echo $this->form->getName(); ?>"
-      action="<?php echo $this->url('default/id', array(
-            'controller' => 'state-list',
-            'action' => 'add-state',
-            'id' => $list->getId(),
-        )); ?>">
-    <fieldset class="part-1">
-        <legend>Configure your state</legend>
-        <?php
-        foreach ($this->form->getElements() as $e) {
-            echo $this->ctrlFormInput($e);
-        }
-        ?>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="save" />
-            <a class="btn" href="<?php echo $this->form->getReturnUrl(); ?>">cancel</a>
-        </div>
-    </fieldset>
-</form>
+echo $this->pageTitle('Add a state', $list->getName());
+
+echo $this->ctrlForm()->start($form->setName('please provide some info'));
+foreach ($this->form->getElements() as $e) {
+    echo $this->ctrlFormInput($e);
+}
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $this->form->getReturnUrl()))
+));
+echo $this->ctrlForm()->end($form);

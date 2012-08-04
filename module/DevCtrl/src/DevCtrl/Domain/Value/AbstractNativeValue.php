@@ -1,5 +1,5 @@
 <?php
-namespace DevCtrl\Domain\Item\Property\Value;
+namespace DevCtrl\Domain\Value;
 
 class AbstractNativeValue implements NativeValueInterface
 {
@@ -15,7 +15,7 @@ class AbstractNativeValue implements NativeValueInterface
 
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->id;
     }
 
     public function getValue()

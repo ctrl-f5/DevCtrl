@@ -1,13 +1,14 @@
-<?php $this->page = 'state-list'; ?>
+<?php $this->configTab = 'state-list'; ?>
 <?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
-<h1>State lists</h1>
+<?php echo $this->pageTitle('State lists'); ?>
 <p></p>
 <div class="btn-group">
-    <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
+    <?php echo $this->ctrlButton('link', array('value' => 'Add new set',
+    'href' => $this->url('default', array(
         'controller' => 'state-list',
         'action' => 'create'
-    )); ?>">Add new set</a>
+    ))), 'primary') ?>
 </div>
 <p></p>
 <div class="">
@@ -27,17 +28,19 @@
             <td><?php echo count($l->getStates()); ?></td>
             <td><?php echo count($l->getItemTypes()) ? 'yes': 'no'; ?></td>
             <td>
-                <a class="btn btn-info" href="<?php echo $this->url('default/id', array(
+                <?php echo $this->ctrlButton('link', array('value' => 'detail',
+                'href' => $this->url('default/id', array(
                     'controller' => 'state-list',
                     'action' => 'detail',
                     'id' => $l->getId()
-                )); ?>">detail</a>
+                ))), 'info') ?>
                 <?php if(!count($l->getItemTypes())): ?>
-                <a class="btn btn-danger ctrljs-confirm" href="<?php echo $this->url('default/id', array(
-                    'controller' => 'state-list',
-                    'action' => 'delete',
-                    'id' => $l->getId()
-                )); ?>">delete</a>
+                <?php echo $this->ctrlButton('link', array('value' => 'delete', 'confirm' => true,
+                    'href' => $this->url('default/id', array(
+                        'controller' => 'state-list',
+                        'action' => 'delete',
+                        'id' => $l->getId()
+                    ))), 'danger') ?>
                 <?php endif; ?>
             </td>
         </tr>

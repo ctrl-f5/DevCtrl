@@ -1,30 +1,48 @@
 <?php $list = $this->list; /** @var $list \DevCtrl\Domain\Item\Property\Value\ValueList */ ?>
-<div class="page-header"><h1>Value list <small><?php echo $this->list->getName(); ?></small></h1></div>
+
+<?php $this->configTab = 'value-list'; ?>
+<?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
+
+<?php echo $this->pageTitle($list->getName(), 'Custom list'); ?>
 
 <div class="btn-group">
-    <a class="btn btn-primary" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
+    <?php echo $this->ctrlButton('link', array('value' => 'Add value',
+    'href' => $this->url('default/id', array(
         'controller' => 'value-list',
         'action' => 'add-value',
         'id' => $list->getId(),
-    )); ?>">Add value</a>
+    ))), 'primary') ?>
+    <?php echo $this->ctrlButton('link', array('value' => 'Back to index',
+    'href' => $this->url('default', array(
+        'controller' => 'value-list',
+        'action' => 'index',
+    )))) ?>
 </div>
 <p></p>
 <div class="">
     <table class="table table-striped">
         <tr>
-            <th>id</th>
+            <th width="50">order</th>
             <th>value</th>
-            <th>actions</th>
+            <th width="200">actions</th>
         </tr>
         <?php foreach ($list->getValues() as $v): ?>
         <tr>
-            <td><?php echo $v->getId(); ?></td>
-            <td><?php echo $v->getValue(); ?></td>
-            <td><a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
-                'controller' => 'value-list',
-                'action' => 'detail',
-                'id' => $v->getId()
-            )); ?>">delete</a></td>
+            <td><?php echo $v->getOrder(); ?></td>
+            <td><?php echo $v->getValue()->getValue(); ?></td>
+            <td>
+                <?php echo $this->orderControls('default/id/query', array(
+                    'controller' => 'value-list',
+                    'action' => 'change-value-order',
+                    'id' => $v->getId(),
+                )); ?>
+                <?php echo $this->ctrlButton('link', array('value' => 'delete', 'confirm' => true,
+                'href' => $this->url('default/id', array(
+                    'controller' => 'value-list',
+                    'action' => 'delete-value',
+                    'id' => $v->getId()
+                ))), 'danger') ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>

@@ -1,5 +1,5 @@
 <?php
-namespace DevCtrl\Domain\Item\Property\Value;
+namespace DevCtrl\Domain\Value;
 
 class IntValue
 {

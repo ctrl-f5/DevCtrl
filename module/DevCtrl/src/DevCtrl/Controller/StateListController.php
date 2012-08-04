@@ -26,6 +26,10 @@ class StateListController extends AbstractController
         $listService = $this->getDomainService('StateList');
 
         $form = $listService->getForm(new StateList());
+        $form->setAttribute('action', $this->url()->fromRoute('default', array(
+            'controller' => 'state-list',
+            'action' => 'create',
+        )));
         $form->setReturnUrl($this->url()->fromRoute('default', array(
             'controller' => 'state-list',
             'action' => 'index',
@@ -81,6 +85,11 @@ class StateListController extends AbstractController
         /** @var $stateService StateService */
         $stateService = $this->getDomainService('State');
         $form = $stateService->getForm();
+        $form->setAttribute('action', $this->url()->fromRoute('default', array(
+            'controller' => 'state-list',
+            'action' => 'add-state',
+            'id' => $list->getId()
+        )));
         $form->setReturnUrl($this->url()->fromRoute('default/id', array(
             'controller' => 'state-list',
             'action' => 'detail',

@@ -28,8 +28,9 @@
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="save" />
             <a class="btn" href="<?php echo $this->url('default/id', array(
-                'controller' => 'item-type',
-                'action' => 'index',
+                'controller' => 'value-list',
+                'action' => 'detail',
+                'id' => $list->getId(),
             )); ?>">cancel</a>
         </div>
     </fieldset>

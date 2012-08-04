@@ -1,20 +1,16 @@
-<?php $form = $this->form; /** @var $form \Ctrl\Form\Form */ ?>
-<h1>New state</h1>
+<?php
 
-<form class="form-horizontal ctrljs-validate" method="post" id="<?php echo $form->getName(); ?>" action="<?php echo $this->url('default', array(
-    'controller' => 'state-list',
-    'action' => 'create'
-    )); ?>">
-    <fieldset>
-        <legend>state config</legend>
-        <?php
-        foreach ($this->form->getElements() as $e) {
-            echo $this->ctrlFormInput($e);
-        }
-        ?>
-        <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="save">
-            <a class="btn" href="<?php echo $this->form->getReturnUrl(); ?>">cancel</a>
-        </div>
-    </fieldset>
-</form>
+/** @var $form \Ctrl\Form\Form */
+$form = $this->form;
+
+echo $this->pageTitle('New', 'state list');
+
+echo $this->ctrlForm()->start($form->setName('please provide some info'));
+foreach ($this->form->getElements() as $e) {
+    echo $this->ctrlFormInput($e);
+}
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $this->form->getReturnUrl()))
+));
+echo $this->ctrlForm()->end($form);

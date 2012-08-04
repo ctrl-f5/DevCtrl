@@ -2,14 +2,16 @@
 
 namespace DevCtrl\Controller;
 
-use DevCtrl\Domain;
 use DevCtrl\Service\ProjectService;
 use DevCtrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
+use DevCtrl\Domain\Value\Value;
 use DevCtrl\Domain\Item\Property\Type\TypeInterface;
-use DevCtrl\Domain\Item\Property\Value\Value;
+use DevCtrl\Domain\Item\Property\Value\ListValue;
 use DevCtrl\Domain\Item\Property\Value\ValueList;
 use DevCtrl\Service\ValueListService;
+use DevCtrl\Service\ValueService;
+use DevCtrl\Service\ListValueService;
 
 class ValueListController extends AbstractController
 {
@@ -59,6 +61,54 @@ class ValueListController extends AbstractController
         return new ViewModel(array(
             'list' => $list,
             'nativeType' => $this->getNativeValueType($list->getNativeType())
+        ));
+    }
+
+    public function deleteValueAction()
+    {
+        /** @var $valueService ListValueService */
+        $valueService = $this->getDomainService('ListValue');
+        /** @var $value ListValue */
+        $value = $valueService->getById($this->params()->fromRoute('id'));
+
+        if ($value) {
+            $valueService->remove($value);
+
+            return $this->redirect()->toRoute('default/id', array(
+                'controller' => 'value-list',
+                'action' => 'detail',
+                'id' => $value->getList()->getId(),
+            ));
+        }
+
+        return $this->redirect()->toRoute('default', array(
+            'controller' => 'value-list',
+        ));
+    }
+
+    public function changeValueOrderAction()
+    {
+        /** @var $valueService \DevCtrl\Service\ListValueService */
+        $valueService = $this->getDomainService('ListValue');
+        /** @var $value ListValue */
+        $value = $valueService->getById($this->params()->fromRoute('id'));
+
+        $dir = $this->params()->fromQuery('dir');
+
+        $value->getList()->setValues(
+            $valueService->switchOrderInCollection(
+                $value->getList()->getValues(),
+                $value->getId(),
+                $dir
+            )
+        );
+
+        $valueService->persist($value);
+
+        return $this->redirect()->toRoute('default/id', array(
+            'controller' => 'value-list',
+            'action' => 'detail',
+            'id' => $value->getList()->getId()
         ));
     }
 }

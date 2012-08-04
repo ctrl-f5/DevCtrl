@@ -1,0 +1,33 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\Value\Value"
+            table="nativeValue" inheritance-type="JOINED">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <discriminator-column name="nativeType" type="integer" field-name="nativeType" />
+
+        <discriminator-map>
+            <discriminator-mapping value="string" class="DevCtrl\Domain\Value\StringValue" />
+            <discriminator-mapping value="text" class="DevCtrl\Domain\Value\TextValue" />
+            <discriminator-mapping value="int" class="DevCtrl\Domain\Value\IntValue" />
+        </discriminator-map>
+
+        <many-to-many field="propertyValueLists" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList">
+            <join-table name="propertyValueList_nativeValue">
+                <join-columns>
+                    <join-column name="nativeValue_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="propertyValueList_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+    </entity>
+</doctrine-mapping>
