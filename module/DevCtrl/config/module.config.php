@@ -109,7 +109,7 @@ return array(
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
-                        'controller'    => 'project',
+                        'controller'    => 'item',
                         'action'        => 'index',
                     ),
                 ),

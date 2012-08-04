@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\Type\TypeProperty" table="itemType_property">
+    <entity name="DevCtrl\Domain\Item\Type\TypeProperty" table="itemtype_property">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -10,12 +10,12 @@
         </id>
 
         <field name="required" column="required" type="boolean" nullable="false" unique="false" />
-        <field name="defaultProvider" column="defaultProvider" type="string" nullable="false" unique="false" />
-        <field name="defaultProviderConfig" column="defaultProviderConfig" type="string" nullable="false" unique="false" />
+        <field name="defaultProvider" column="defaultprovider" type="string" nullable="false" unique="false" />
+        <field name="defaultProviderConfig" column="defaultproviderconfig" type="string" nullable="false" unique="false" />
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
         <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type">
-            <join-column name="itemType_id" referenced-column-name="id" />
+            <join-column name="itemtype_id" referenced-column-name="id" />
         </one-to-one>
 
         <one-to-one field="property" target-entity="DevCtrl\Domain\Item\Property\Property">

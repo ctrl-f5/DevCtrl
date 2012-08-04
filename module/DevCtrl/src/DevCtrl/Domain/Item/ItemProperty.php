@@ -5,9 +5,9 @@ namespace DevCtrl\Domain\Item;
 use \DevCtrl\Domain;
 use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\Type\TypeProperty;
-use DevCtrl\Domain\Item\Property\Value\NativeValueInterface;
+use Ctrl\Domain\PersistableModel;
 
-class PropertyValue
+class ItemProperty extends PersistableModel
 {
     /**
      * @var int

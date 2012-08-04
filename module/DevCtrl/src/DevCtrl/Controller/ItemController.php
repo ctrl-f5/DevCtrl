@@ -10,11 +10,11 @@ class ItemController extends AbstractController
 {
     public function indexAction()
     {
-        /** @var $projectService ProjectService */
-        $projectService = $this->getDomainService('project');
+        /** @var $itemService ItemService */
+        $itemService = $this->getDomainService('Item');
 
         return new ViewModel(array(
-            'projects' => $projectService->getAll()
+            'items' => $itemService->getAll()
         ));
     }
 
