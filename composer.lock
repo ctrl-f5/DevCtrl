@@ -4,8 +4,8 @@
         {
             "package": "composer/installers",
             "version": "dev-master",
-            "source-reference": "305f3cebc0f6170de349af93e56b4df90f14941e",
-            "commit-date": "1343944399"
+            "source-reference": "d82819c2f2d73fbee8e49487efa35866b6c05ca2",
+            "commit-date": "1344119345"
         },
         {
             "package": "ctrl-f5/ctrljs",
@@ -46,8 +46,8 @@
         {
             "package": "doctrine/doctrine-orm-module",
             "version": "dev-master",
-            "source-reference": "5d1c5c9d5962e034fa463d2265dab77b22fe7b76",
-            "commit-date": "1343827918"
+            "source-reference": "052e3fca1fbd30f6eebcd4e288461205874e3f8b",
+            "commit-date": "1344180603"
         },
         {
             "package": "doctrine/migrations",
