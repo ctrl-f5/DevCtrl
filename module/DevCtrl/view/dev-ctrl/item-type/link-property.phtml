@@ -30,28 +30,31 @@
                         <option><?php echo $p->getName(); ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <span class="help-block">if the provider allows it, you will be able to choose the default value on the next page</span>
                 </div>
             </div>
-            <?php foreach ($defaultProviders as $k => $p): ?>
-                <?php if (($p->requiresValuesProvider() && !$property->getType()->supportsProvidingValues()) || !$p->requiresConfiguration()) continue; ?>
+            <?php foreach ($defaultProviders as $k => $p):?>
+                <?php $name = $p->getName(); ?>
+                <?php if (!$p->requiresConfiguration() ||
+                      $property->getValuesProvider() && !$property->getValuesProvider()->supportsDefaultValue()
+                      && ($p->requiresValuesProvider() && !$property->getType()->supportsProvidingValues())
+                      ) continue; ?>
                     <div class="control-group">
                         <label class="control-label">provider config: <?php echo $p->getName()?></label>
                         <div class="controls">
                             <?php switch ($property->getType()->getRepresentedPorpertyType()):
                             case 'string':
                             case 'integer': ?>
-                                <input type="text" class="input-xxlarge required" name="default-provider-config" />
+                                <input type="text" class="input-xxlarge" name="default-provider-config-<?php echo $name; ?>" />
                                 <?php break; ?>
                                 <?php
                             case 'boolean': ?>
-                                <input type="checkbox" name="default-provider-config" />
+                                <input type="checkbox" name="default-provider-config-<?php echo $name; ?>" />
                                 <?php break; ?>
                                 <?php
                             case 'select': ?>
-                                <select class="input-large required" name="default-provider-config">
-                                    <?php foreach ($property->getValuesProvider()->getValues($property, $property->getValuesProviderConfig()) as $k => $v): ?>
-                                    <option value="<?php echo $k; ?>"><?php echo $v->getValue(); ?></option>
+                                <select class="input-large required" name="default-provider-config-<?php echo $name; ?>">
+                                    <?php foreach ($property->getValuesProvider()->getValues($property, $property->getValuesProviderConfig()) as $kk => $v): ?>
+                                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <?php break; ?>

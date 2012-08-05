@@ -47,6 +47,14 @@ class Value extends AbstractNativeValue
         return self::$nativeValueTypes;
     }
 
+    public static function getNativeValueInstance($type)
+    {
+        if (!isset(self::$nativeValueTypes[$type]))
+            throw new \Devctrl\Exception('NativeValue not found: '.$type);
+
+        return new self::$nativeValueTypes[$type]['class'];
+    }
+
     /**
      * @param $lists
      * @return Value

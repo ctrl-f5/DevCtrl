@@ -8,6 +8,7 @@ use DevCtrl\Domain\Item\Type\TypeProperty;
 interface ProviderInterface
 {
     public function getName();
+    public function __toString();
     public function getDefaultValue(TypeProperty $typeProperty = null);
     public function requiresValuesProvider();
     public function requiresConfiguration();

@@ -3,9 +3,12 @@
 namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
+use DevCtrl\Domain\Item\Type\Type;
+use DevCtrl\Domain\Item\State\State;
 use \DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\Timing\Counter;
 
-class Item
+class Item extends \Ctrl\Domain\PersistableModel
 {
     /**
      * @var int
@@ -32,10 +35,18 @@ class Item
      */
     protected $state;
 
+    protected $timeCounter;
+
     /**
      * @var ItemProperty[]
      */
     protected $itemProperties;
+
+    public function __construct(Type $type)
+    {
+        $this->itemProperties = new \DevCtrl\Domain\Collection();
+        $this->itemType = $type;
+    }
 
     /**
      * @param string $description
@@ -56,21 +67,34 @@ class Item
     }
 
     /**
-     * @param \DevCtrl\Domain\Item\State $state
+     * @param State $state
      * @return Item
      */
     public function setState($state)
     {
-        $this->state = $state;
+        $this->setStateById($state->getId());
         return $this;
     }
 
+    public function setStateById($state)
+    {
+        foreach ($this->getItemType()->getStates()->getStates() as $s) {
+            if ($s->getId() == $state) {
+                $this->state = $s;
+                return $this;
+            }
+        }
+        throw new Exception('State not found');
+    }
+
     /**
-     * @return \DevCtrl\Domain\Item\State
+     * @return State
      */
     public function getState()
     {
-        return $this->state;
+        if ($this->getItemType()->hasStates())
+            return $this->state;
+        return null;
     }
 
     /**
@@ -105,9 +129,16 @@ class Item
         return $this;
     }
 
+    /**
+     * @return ItemProperty[]
+     */
     public function getItemProperties()
     {
-        return $this->itemProperties;
+        /** @var $model ItemProperty */
+        $ordered = $this->_orderModelArray($this->itemProperties, function ($model) {
+            return $model->getTypeProperty()->getOrder();
+        });
+        return new \DevCtrl\Domain\Collection($ordered);
     }
 
     /**
@@ -122,16 +153,41 @@ class Item
                 return $ip;
             }
         }
-        throw new Domain\Exception('Item has no PropertyValue for the given Property');
+        throw new Exception('Property not found in Item');
+    }
+
+    /**
+     * @param Property\Property $property
+     * @param mixed $value
+     * @return ItemProperty
+     * @throws Domain\Exception
+     */
+    public function setItemProperty(Property $property, $value)
+    {
+        try {
+            return $this->getItemProperty($property);
+        } catch (Exception $e) { // only catch Domain\Item\Exceptions!
+            foreach ($this->getItemType()->getTypeProperties() as $tp) {
+                if ($tp->getProperty()->getId() === $property->getId()) {
+                    $itemProp = new ItemProperty($tp);
+                    $itemProp->setItem($this)
+                        ->setTypeProperty($tp)
+                        ->getValue()->setValue($value);
+                    $this->itemProperties[] = $itemProp;
+                    return $this;
+                }
+            }
+        }
+        throw new Exception('Property not found in Item');
     }
 
     protected function hasAllRequiredPropertyValues()
     {
         foreach ($this->getItemType()->getTypeProperties() as $itp) {
             $val = null;
-            foreach ($this->getPropertyValues() as $pv) {
-                if ($pv->getProperty() === $itp->getProperty()) {
-                    $val = $pv->getValue();
+            foreach ($this->getItemProperties() as $pv) {
+                if ($pv->getTypeProperty()->getProperty() === $itp->getProperty()) {
+                    $val = $pv->getValue()->getValue();
                     break;
                 }
             }
@@ -140,5 +196,19 @@ class Item
             }
         }
         return true;
+    }
+
+    public function setTimeCounter($timeCounter)
+    {
+        $this->timeCounter = $timeCounter;
+        return $this;
+    }
+
+    /**
+     * @return Counter
+     */
+    public function getTimeCounter()
+    {
+        return $this->timeCounter;
     }
 }

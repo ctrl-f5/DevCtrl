@@ -2,30 +2,18 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\ItemProperty" table="item_type_property_value">
+    <entity name="DevCtrl\Domain\Item\Timing\Counter" table="itemtiming">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="autoinc" allocation-size="100" initial-value="1" />
         </id>
 
+        <field name="estimated" column="estimated" type="integer" nullable="false" unique="false" />
+        <field name="executed" column="executed" type="integer" nullable="false" unique="false" />
+
         <one-to-one field="item" target-entity="DevCtrl\Domain\Item\Item">
             <join-column name="item_id" referenced-column-name="id" />
-            <cascade>
-                <cascade-persist/>
-            </cascade>
         </one-to-one>
-
-        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value">
-            <join-column name="nativevalue_id" referenced-column-name="id" />
-            <cascade>
-                <cascade-persist/>
-            </cascade>
-        </one-to-one>
-
-        <one-to-one field="typeProperty" target-entity="DevCtrl\Domain\Item\Type\TypeProperty">
-            <join-column name="itemtype_property_id" referenced-column-name="id" />
-        </one-to-one>
-
     </entity>
 </doctrine-mapping>

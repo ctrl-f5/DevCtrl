@@ -1,0 +1,31 @@
+<?php use DevCtrl\Domain\Item\Item; ?>
+<?php $item = $this->item; /** @var $item Item */ ?>
+
+<?php echo $this->pageTitle('Item detail', $item->getItemType()->getName()); ?>
+
+<table class="table table-bordered">
+    <tr>
+        <th width="200">title</th>
+        <td><?php echo $item->getTitle(); ?></td>
+        <th width="200">state</th>
+        <td><?php echo $item->getItemType()->hasStates() ? $item->getState()->getLabel() : '' ?></td>
+    </tr>
+    <?php if ($item->getItemType()->supportsTiming()): ?>
+    <tr>
+        <th>estimated</th>
+        <td><?php echo $item->getTimeCounter()->getEstimated(); ?></td>
+        <th>executed</th>
+        <td><?php echo $item->getTimeCounter()->getExecuted(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <tr>
+        <th>description</th>
+        <td colspan="3"><?php echo $item->getDescription(); ?></td>
+    </tr>
+    <?php foreach($item->getItemProperties() as $ip): ?>
+    <tr>
+        <th><?php echo $ip->getTypeProperty()->getProperty()->getName(); ?></th>
+        <td colspan="3"><?php echo $ip->getDisplayValue(); ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>

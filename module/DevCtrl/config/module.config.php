@@ -158,9 +158,9 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
+            'PropertyTypeLoader'        => 'DevCtrl\Domain\Item\Property\Type\TypeLoaderFactory',
             'ValuesProviderLoader'      => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProviderLoaderFactory',
             'DefaultProviderLoader'     => 'DevCtrl\Domain\Item\Property\DefaultProvider\ProviderLoaderFactory',
-            'PropertyTypeLoader'     => 'DevCtrl\Domain\Item\Property\Type\TypeLoaderFactory',
         ),
     ),
     'view_manager' => array(

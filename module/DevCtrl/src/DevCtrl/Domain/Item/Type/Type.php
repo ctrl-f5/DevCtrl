@@ -120,6 +120,21 @@ class Type extends \Ctrl\Domain\PersistableModel
     }
 
     /**
+     * @param Property $property
+     * @return TypeProperty
+     * @throws Exception
+     */
+    public function getTypeProperty(Property $property)
+    {
+        foreach ($this->typeProperties as $tp) {
+            if ($tp->getProperty()->getId() == $property->getId()) {
+                return $tp;
+            }
+        }
+        throw new Exception('Property not found');
+    }
+
+    /**
      * @return boolean
      */
     public function supportsTiming()

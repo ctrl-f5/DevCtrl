@@ -1,27 +1,20 @@
-<?php use DevCtrl\Domain\Item\Property\Property; ?>
-<?php $itemType = $this->itemType; /** @var $itemType \DevCtrl\Domain\Item\Type\Type */ ?>
-<?php echo $this->pageTitle('New item'); ?>
+<?php
+/** @var $this \Ctrl\View\PhpView
+ * @var $itemType \DevCtrl\Domain\Item\Type\Type
+ * @var $form \Ctrl\Form\Form */
+use DevCtrl\Domain\Item\Property\Property;
+echo $this->pageTitle('New item');
 
-<form class="form-horizontal ctrljs-validate" method="post" id="form-item-create" action="<?php echo $this->url('item_create', array(
-    'controller' => 'item',
-    'action' => 'create',
-    'item-type' => $itemType->getId(),
-)); ?>">
-    <fieldset class="part-1">
-        <legend>Configure your item</legend>
-        <?php
-        foreach ($form->getElements() as $e) {
-            echo $this->ctrlFormInput($e);
-        }
+$form->setLabel('Please provide some info');
+echo $this->ctrlForm()->start($form);
 
-        echo $this->ctrlFormActions(array(
-            $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
-            $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
-        ));
-        ?>
-    </fieldset>
-</form>
+foreach ($form->getElements() as $e) {
+    echo $this->ctrlFormInput($e);
+}
 
-<script type="text/javascript">
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
+));
 
-</script>
+echo $this->ctrlForm()->end($form);

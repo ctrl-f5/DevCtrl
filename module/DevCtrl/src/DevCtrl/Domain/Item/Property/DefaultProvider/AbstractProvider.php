@@ -24,4 +24,9 @@ abstract class AbstractProvider implements ProviderInterface
     {
         return false;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

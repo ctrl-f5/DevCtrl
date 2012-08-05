@@ -138,9 +138,11 @@ class Property extends PersistableServiceLocatorAwareModel
      */
     public function getValuesProvider()
     {
-        return $this->getServiceLocator()
-            ->get('ValuesProviderLoader')
-            ->get($this->valuesProvider);
+        if ($this->getType()->supportsProvidingValues())
+            return $this->getServiceLocator()
+                ->get('ValuesProviderLoader')
+                ->get($this->valuesProvider);
+        return null;
     }
 
     /**

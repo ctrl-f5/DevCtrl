@@ -5,25 +5,17 @@ namespace DevCtrl\Domain\Item;
 use \DevCtrl\Domain;
 use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\Type\TypeProperty;
+use DevCtrl\Domain\Item\Property\Property;
 use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Value\NativeValueInterface;
+use DevCtrl\Domain\Value\Value;
 
 class ItemProperty extends PersistableModel
 {
     /**
-     * @var int
-     */
-    protected $id;
-
-    /**
      * @var Item
      */
     protected $item;
-
-    /**
-     * @var TypeProperty
-     */
-    protected $typeProperty;
 
     /**
      * @var NativeValueInterface
@@ -31,26 +23,18 @@ class ItemProperty extends PersistableModel
     protected $value;
 
     /**
-     * @param int $id
-     * @return PropertyValue
+     * @var TypeProperty
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
+    protected $typeProperty;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function __construct(TypeProperty $typeProperty)
     {
-        return $this->id;
+        $this->typeProperty = $typeProperty;
     }
 
     /**
      * @param Item $item
-     * @return PropertyValue
+     * @return ItemProperty
      */
     public function setItem($item)
     {
@@ -67,26 +51,8 @@ class ItemProperty extends PersistableModel
     }
 
     /**
-     * @param Property $property
-     * @return PropertyValue
-     */
-    public function setTypeProperty($property)
-    {
-        $this->property = $property;
-        return $this;
-    }
-
-    /**
-     * @return TypeProperty
-     */
-    public function getTypeProperty()
-    {
-        return $this->property;
-    }
-
-    /**
      * @param mixed $value
-     * @return PropertyValue
+     * @return ItemProperty
      */
     public function setValue($value)
     {
@@ -99,6 +65,40 @@ class ItemProperty extends PersistableModel
      */
     public function getValue()
     {
+        if (!$this->value) {
+            $this->value = Value::getNativeValueInstance($this->getTypeProperty()->getProperty()->getType()->getNativeValueType());
+        }
         return $this->value;
+    }
+
+    public function getDisplayValue()
+    {
+        $prop = $this->getTypeProperty()->getProperty();
+        if ($prop->getType()->supportsProvidingValues() && $prop->getValuesProvider()) {
+            $values = $prop->getValuesProvider()->getValues($prop);
+            if (isset($values[$this->getValue()->getValue()])) {
+                return $values[$this->getValue()->getValue()];
+            }
+            return null;
+        }
+        return $this->getValue()->getValue();
+    }
+
+    /**
+     * @param TypeProperty $typeProperty
+     * @return ItemProperty
+     */
+    public function setTypeProperty($typeProperty)
+    {
+        $this->typeProperty = $typeProperty;
+        return $this;
+    }
+
+    /**
+     * @return TypeProperty
+     */
+    public function getTypeProperty()
+    {
+        return $this->typeProperty;
     }
 }

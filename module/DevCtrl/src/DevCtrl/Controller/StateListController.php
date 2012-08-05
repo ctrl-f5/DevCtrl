@@ -85,7 +85,7 @@ class StateListController extends AbstractController
         /** @var $stateService StateService */
         $stateService = $this->getDomainService('State');
         $form = $stateService->getForm();
-        $form->setAttribute('action', $this->url()->fromRoute('default', array(
+        $form->setAttribute('action', $this->url()->fromRoute('default/id', array(
             'controller' => 'state-list',
             'action' => 'add-state',
             'id' => $list->getId()

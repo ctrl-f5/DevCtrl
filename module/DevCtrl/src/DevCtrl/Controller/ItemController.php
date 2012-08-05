@@ -2,12 +2,13 @@
 
 namespace DevCtrl\Controller;
 
-use DevCtrl\Service\ProjectService;
 use Ctrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use DevCtrl\Service\ItemService;
 use DevCtrl\Service\ItemTypeService;
 use DevCtrl\Domain\Item\Type\Type;
+use DevCtrl\Domain\Item\Item;
+use DevCtrl\Domain\Item\ItemProperty;
 
 class ItemController extends AbstractController
 {
@@ -27,10 +28,10 @@ class ItemController extends AbstractController
     public function detailAction()
     {
         $id = $this->params('id');
-        $project = $this->getDomainService('project')->getById($id);
+        $item = $this->getDomainService('Item')->getById($id);
 
         return new ViewModel(array(
-            'project' => $project
+            'item' => $item
         ));
     }
 
@@ -41,28 +42,48 @@ class ItemController extends AbstractController
         /** @var $itemService \DevCtrl\Service\ItemService */
         $itemService = $this->getDomainService('Item');
         $form = $itemService->getFormForType($itemType);
+        $form->setAttribute('action', $this->url()->fromRoute('item_create', array(
+            'controller' => 'item',
+            'action' => 'create',
+            'type' => $itemType->getId(),
+        )));
+        $form->setReturnUrl($this->url()->fromRoute('default', array(
+            'controller' => 'item',
+            'action' => 'index',
+        )));
 
         if ($this->getRequest()->isPost()) {
 
-            $userId = 1; //TODO fetch correct user
-            $user = $userService = $this->getDomainService('User')->getById($userId);
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $item = new \DevCtrl\Domain\Item\Item($itemType);
+                $elements = $form->getElements();
+                $item->setTitle($elements['title']->getValue());
+                $item->setDescription($elements['description']->getValue());
 
-            $item = $itemService->createItem(
-                $this->params()->fromPost('title'),
-                $user,
-                $project,
-                $itemType,
-                $this->params()->fromPost('item-type-property')
-            );
+                if ($itemType->supportsTiming()) {
+                    $counter = new \DevCtrl\Domain\Item\Timing\Counter();
+                    $counter->setItem($item)
+                        ->setEstimated($elements['timing-estimated']->getValue())
+                        ->setExecuted(0);
+                    $itemService->getEntityManager()->persist($counter);
+                }
+                if ($itemType->hasStates()) {
+                    $item->setStateById($elements['state']->getValue());
+                }
 
-            $itemService->getEntityManager()->persist($item);
-            $itemService->getEntityManager()->flush();
+                foreach ($itemType->getTypeProperties() as $tp) {
+                    $k = 'property-'.$tp->getId();
+                    if (isset($elements[$k])) {
+                        $item->setItemProperty($tp->getProperty(), $elements[$k]->getValue());
+                    }
+                }
 
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'project',
-                'action' => 'items',
-                'id' => $project->getId()
-            ));
+                $itemService->getEntityManager()->persist($item);
+                $itemService->getEntityManager()->flush();
+
+                return $this->redirect()->toUrl($form->getReturnurl());
+            }
         }
 
         return new ViewModel(array(
