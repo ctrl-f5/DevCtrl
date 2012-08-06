@@ -14,16 +14,25 @@
         <field name="defaultProviderConfig" column="defaultProviderConfig" type="string" nullable="false" unique="false" />
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type">
+        <many-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type" inversed-by="typeProperties">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
             <join-column name="itemType_id" referenced-column-name="id" />
-        </one-to-one>
+        </many-to-one>
 
-        <one-to-one field="property" target-entity="DevCtrl\Domain\Item\Property\Property">
+        <many-to-one field="property" target-entity="DevCtrl\Domain\Item\Property\Property" inversed-by="typeProperties">
             <cascade>
                 <cascade-persist/>
             </cascade>
             <join-column name="property_id" referenced-column-name="id" />
-        </one-to-one>
+        </many-to-one>
+
+        <one-to-many field="itemProperties" target-entity="DevCtrl\Domain\Item\ItemProperty" mapped-by="typeProperty">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
 
     </entity>
 </doctrine-mapping>

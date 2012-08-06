@@ -20,43 +20,15 @@
 <div class="">
     <table class="table table-striped">
         <tr>
-            <th>id</th>
+            <th>order</th>
             <th>name</th>
             <th>type</th>
-            <th>order</th>
-            <th>change order</th>
-            <th>actions</th>
         </tr>
         <?php foreach ($itemType->getStates()->getStates() as $s): ?>
         <tr>
-            <td><?php echo $s->getId(); ?></td>
+            <td><?php echo $s->getOrder(); ?></td>
             <td><?php echo $s->getLabel(); ?></td>
             <td><?php echo $s->getNativeState(); ?></td>
-            <td><?php echo $s->getOrder(); ?></td>
-            <td>
-                <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
-                    'id' => $itemType->getId(),
-                    'state' => $s->getId(),
-                    'direction' => 'up',
-                )); ?>"><i class="icon-circle-arrow-up"></i></a>
-                <a class="btn" href="<?php echo $this->url('item_state_order_change', array(
-                    'id' => $itemType->getId(),
-                    'state' => $s->getId(),
-                    'direction' => 'down',
-                )); ?>"><i class="icon-circle-arrow-down"></i></a>
-            </td>
-            <td>
-                <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
-                    'controller' => 'item-type',
-                    'action' => 'detail',
-                    'id' => $itemType->getId()
-                )); ?>">edit</a>
-                <a class="btn btn-danger" href="<?php echo $this->url('default/id', array(
-                    'controller' => 'item-type',
-                    'action' => 'detail',
-                    'id' => $itemType->getId()
-                )); ?>">delete</a>
-            </td>
         </tr>
         <?php endforeach; ?>
     </table>

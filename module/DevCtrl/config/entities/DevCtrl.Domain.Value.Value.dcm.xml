@@ -15,19 +15,14 @@
         <discriminator-map>
             <discriminator-mapping value="string" class="DevCtrl\Domain\Value\StringValue" />
             <discriminator-mapping value="text" class="DevCtrl\Domain\Value\TextValue" />
-            <discriminator-mapping value="int" class="DevCtrl\Domain\Value\IntValue" />
+            <discriminator-mapping value="integer" class="DevCtrl\Domain\Value\IntValue" />
         </discriminator-map>
 
-        <many-to-many field="propertyValueLists" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList">
-            <join-table name="propertyValueList_nativevalue">
-                <join-columns>
-                    <join-column name="nativeValue_id" referenced-column-name="id" />
-                </join-columns>
-                <inverse-join-columns>
-                    <join-column name="propertyValueList_id" referenced-column-name="id" />
-                </inverse-join-columns>
-            </join-table>
-        </many-to-many>
+        <one-to-many field="itemProperties" target-entity="DevCtrl\Domain\Item\ItemProperty" mapped-by="value">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
 
     </entity>
 </doctrine-mapping>

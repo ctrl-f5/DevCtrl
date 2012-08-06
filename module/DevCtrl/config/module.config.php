@@ -15,7 +15,7 @@ return array(
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
-                        'controller'    => 'project',
+                        'controller'    => 'index',
                         'action'        => 'index',
                         'id'            => false
                     ),
@@ -84,10 +84,11 @@ return array(
                 'type'    => 'Segment',
                 'may_terminate' => true,
                 'options' => array(
-                    'route'    => '/item/create/[:type]',
+                    'route'    => '/item/create/[:type]/[:project]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'type'     => '[0-9]+',
+                        'project'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
@@ -108,7 +109,7 @@ return array(
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'DevCtrl\Controller',
-                        'controller'    => 'item',
+                        'controller'    => 'project',
                         'action'        => 'index',
                     ),
                 ),

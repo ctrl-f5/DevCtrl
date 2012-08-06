@@ -17,7 +17,7 @@
                 <order-by-field name="order" direction="ASC" />
             </order-by>
             <cascade>
-                <cascade-all/>
+                <cascade-persist/>
             </cascade>
         </one-to-many>
     </entity>

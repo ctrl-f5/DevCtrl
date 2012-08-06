@@ -3,6 +3,7 @@
 namespace DevCtrl\Domain\Item\Type;
 
 use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\Item\ItemProperty;
 use Ctrl\Domain\PersistableServiceLocatorAwareModel;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use DevCtrl\Domain\Item\Type\Type;
@@ -45,6 +46,11 @@ class TypeProperty extends PersistableServiceLocatorAwareModel
      * @var int
      */
     protected $order;
+
+    /**
+     * @var ItemProperty
+     */
+    protected $itemProperties;
 
     public function __construct(ServiceLocatorInterface $serviceLocator, Property $property, $defaultProvider)
     {

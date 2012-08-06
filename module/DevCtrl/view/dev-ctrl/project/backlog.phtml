@@ -1,8 +1,9 @@
-<?php $p = $this->project /** @var $p \DevCtrl\Domain\Project */ ?>
-<?php $itemTypes = $this->itemTypes /** @var $itemTypes \DevCtrl\Domain\Item\ItemType[] */ ?>
-<div class="page-header"><h1><?php echo $this->project->getName(); ?></h1></div>
+<?php /** @var $this \Ctrl\View\PhpView */ ?>
+<?php $project = $this->project     /** @var $project   \DevCtrl\Domain\Project */ ?>
+<?php $types = $this->itemTypes;    /** @var $types     \DevCtrl\Domain\Item\Type\Type[] */ ?>
+<?php echo $this->pageTitle('Project', $this->project->getName()); ?>
 
-<?php $this->page = 'items'; ?>
+<?php $this->page = 'backlog'; ?>
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 
 <div class="btn-group">
@@ -11,11 +12,11 @@
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
-        <?php foreach ($itemTypes as $it): ?>
-            <li><a href="<?php echo $this->url('item_create', array(
-                'project' => $this->project->getId(),
-                'item-type' => $it->getId()
-            )); ?>"><?php echo $it->getName(); ?></a></li>
+        <?php foreach ($types as $t): ?>
+        <li><a href="<?php echo $this->url('item_create', array(
+            'type' => $t->getId(),
+            'project' => $project->getId()
+        )); ?>"><?php echo $t->getName(); ?></a></li>
         <?php endforeach; ?>
     </ul>
 </div>
@@ -28,16 +29,15 @@
             <th>description</th>
             <th>actions</th>
         </tr>
-        <?php /** @var $p \DevCtrl\Domain\Item\Item */ ?>
-        <?php foreach ($p->getItems() as $i): ?>
+        <?php foreach ($project->getBacklog() as $i): ?>
         <tr>
             <td><?php echo $i->getId(); ?></td>
             <td><?php echo $i->getTitle(); ?></td>
             <td><?php echo $i->getDescription(); ?></td>
             <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'project',
+                'controller' => 'item',
                 'action' => 'detail',
-                'id' => $p->getId()
+                'id' => $i->getId()
             )); ?>">detail</a></td>
         </tr>
         <?php endforeach; ?>

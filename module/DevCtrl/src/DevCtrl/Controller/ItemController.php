@@ -9,6 +9,7 @@ use DevCtrl\Service\ItemTypeService;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\ItemProperty;
+use DevCtrl\Domain\Project;
 
 class ItemController extends AbstractController
 {
@@ -39,17 +40,19 @@ class ItemController extends AbstractController
     {
         /** @var $itemType Type */
         $itemType = $this->getDomainService('ItemType')->getById($this->params()->fromRoute('type'));
+        /** @var $project Project */
+        $project = $this->getDomainService('Project')->getById($this->params()->fromRoute('project'));
         /** @var $itemService \DevCtrl\Service\ItemService */
         $itemService = $this->getDomainService('Item');
         $form = $itemService->getFormForType($itemType);
         $form->setAttribute('action', $this->url()->fromRoute('item_create', array(
-            'controller' => 'item',
-            'action' => 'create',
             'type' => $itemType->getId(),
+            'project' => $project->getId(),
         )));
         $form->setReturnUrl($this->url()->fromRoute('default', array(
-            'controller' => 'item',
-            'action' => 'index',
+            'controller' => 'project',
+            'action' => 'backlog',
+            'id' => $project->getId(),
         )));
 
         if ($this->getRequest()->isPost()) {
@@ -79,7 +82,8 @@ class ItemController extends AbstractController
                     }
                 }
 
-                $itemService->getEntityManager()->persist($item);
+                $project->addToBacklog($item);
+                $itemService->getEntityManager()->persist($project);
                 $itemService->getEntityManager()->flush();
 
                 return $this->redirect()->toUrl($form->getReturnurl());
@@ -88,6 +92,7 @@ class ItemController extends AbstractController
 
         return new ViewModel(array(
             'itemType' => $itemType,
+            'project' => $project,
             'form' => $form,
         ));
     }

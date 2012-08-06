@@ -11,7 +11,7 @@ class ProjectController extends AbstractController
     public function indexAction()
     {
         /** @var $projectService ProjectService */
-        $projectService = $this->getDomainService('project');
+        $projectService = $this->getDomainService('Project');
 
         return new ViewModel(array(
             'projects' => $projectService->getAll()
@@ -61,7 +61,7 @@ class ProjectController extends AbstractController
         ));
     }
 
-    public function itemsAction()
+    public function backlogAction()
     {
         return new ViewModel(array(
             'project' => $this->getDomainService('project')->getById($this->params('id')),

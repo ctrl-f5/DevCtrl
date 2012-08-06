@@ -4,6 +4,7 @@ namespace DevCtrl\Domain\Value;
 
 use DevCtrl\Domain\Collection;
 use DevCtrl\Domain\Item\Property\Value\ValueList as PropertyValueList;
+use DevCtrl\Domain\Item\ItemProperty;
 
 class Value extends AbstractNativeValue
 {
@@ -32,10 +33,8 @@ class Value extends AbstractNativeValue
      */
     protected $nativeType;
 
-    /**
-     * @var PropertyValueList[]
-     */
-    protected $propertyValueLists;
+    /** @var ItemProperty[] */
+    protected $itemProperties;
 
     public function __construc()
     {
@@ -54,23 +53,4 @@ class Value extends AbstractNativeValue
 
         return new self::$nativeValueTypes[$type]['class'];
     }
-
-    /**
-     * @param $lists
-     * @return Value
-     */
-    public function setPropertyValueLists($lists)
-    {
-        $this->propertyValueLists = $lists;
-        return $this;
-    }
-
-    /**
-     * @return PropertyValueList
-     */
-    public function getPropertyValueList()
-    {
-        return $this->propertyValueLists;
-    }
-
 }

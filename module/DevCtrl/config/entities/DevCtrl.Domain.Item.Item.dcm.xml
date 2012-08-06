@@ -26,6 +26,12 @@
             </cascade>
         </one-to-one>
 
+        <many-to-one field="project" target-entity="DevCtrl\Domain\Project">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+
         <one-to-many field="itemProperties" target-entity="DevCtrl\Domain\Item\ItemProperty" mapped-by="item">
             <cascade>
                 <cascade-persist/>

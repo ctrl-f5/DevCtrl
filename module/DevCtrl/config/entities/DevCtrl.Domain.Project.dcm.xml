@@ -10,26 +10,21 @@
         </id>
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
-        <field name="state" column="state" type="string" length="255" nullable="false" unique="false" />
-        <field name="dateCreated" column="date_created" type="datetime" nullable="false" unique="false" />
-        <field name="dateDue" column="date_due" type="datetime" nullable="true" unique="false" />
+        <field name="description" column="description" type="text" nullable="true" unique="false" />
 
-
-        <one-to-one field="parentProject" target-entity="Auth\Domain\User">
-            <join-column name="parent_id" referenced-column-name="id" />
-        </one-to-one>
-
-        <one-to-one field="createdByUser" target-entity="Auth\Domain\User">
-            <join-column name="created_by" referenced-column-name="id" />
-        </one-to-one>
-
-        <one-to-many field="linkedUsers" target-entity="DevCtrl\Domain\ProjectUserLink" mapped-by="project" />
-
-        <one-to-many field="items" target-entity="DevCtrl\Domain\Item\Item" mapped-by="project">
+        <many-to-many field="backlog" target-entity="DevCtrl\Domain\Item\Item">
             <cascade>
-                <cascade-persist/>
+                <cascade-all/>
             </cascade>
-        </one-to-many>
+            <join-table name="project_backlog">
+                <join-columns>
+                    <join-column name="project_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="item_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
 
     </entity>
 </doctrine-mapping>

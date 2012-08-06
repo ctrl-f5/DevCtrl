@@ -1,7 +1,7 @@
 <?php use DevCtrl\Domain\Item\Type\Type; ?>
 <?php $type = $this->itemType; /** @var $type Type */ ?>
 
-<?php $this->configTab = 'property'; ?>
+<?php $this->configTab = 'item-type'; ?>
 <?php echo $this->render('dev-ctrl/partial/configuration-tabs.phtml'); ?>
 
 <?php echo $this->pageTitle('Item type', $this->itemType->getName()); ?>

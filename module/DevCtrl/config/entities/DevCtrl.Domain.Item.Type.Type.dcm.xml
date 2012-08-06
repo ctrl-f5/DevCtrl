@@ -13,15 +13,11 @@
         <field name="description" column="description" type="text" nullable="true" unique="false" />
         <field name="supportsTiming" column="supportsTiming" type="boolean" nullable="false" unique="false" />
 
-        <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType">
-            <cascade>
-                <cascade-persist/>
-            </cascade>
-        </one-to-many>
+        <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType" />
 
-        <one-to-one field="states" target-entity="DevCtrl\Domain\Item\State\StateList">
+        <many-to-one field="states" target-entity="DevCtrl\Domain\Item\State\StateList" inversed-by="itemTypes">
             <join-column name="itemStateList_id" referenced-column-name="id" />
-        </one-to-one>
+        </many-to-one>
 
     </entity>
 </doctrine-mapping>

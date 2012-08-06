@@ -1,18 +1,8 @@
 <?php
 namespace DevCtrl\Domain\Value;
 
-class TextValue
+class TextValue extends Value
 {
-    /**
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $value;
-
     /**
      * @var string
      */

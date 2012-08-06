@@ -12,7 +12,7 @@
         <field name="estimated" column="estimated" type="integer" nullable="false" unique="false" />
         <field name="executed" column="executed" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="item" target-entity="DevCtrl\Domain\Item\Item">
+        <one-to-one field="item" target-entity="DevCtrl\Domain\Item\Item" inversed-by="timeCounter">
             <join-column name="item_id" referenced-column-name="id" />
         </one-to-one>
     </entity>

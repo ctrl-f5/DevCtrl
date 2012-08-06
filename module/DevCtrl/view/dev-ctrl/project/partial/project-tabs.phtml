@@ -4,11 +4,11 @@
         'action' => 'detail',
         'id' => $this->project->getId()
     )); ?>">Info</a></li>
-    <li<?php if ($this->page == 'items') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+    <li<?php if ($this->page == 'backlog') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'project',
-        'action' => 'items',
+        'action' => 'backlog',
         'id' => $this->project->getId()
-    )); ?>">Items</a></li>
+    )); ?>">Backlog</a></li>
     <li<?php if ($this->page == 'sprints') echo ' class="active"'; ?>><a href="#">Sprints</a></li>
     <li<?php if ($this->page == 'users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'project',

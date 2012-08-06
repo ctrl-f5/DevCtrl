@@ -3,6 +3,6 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity name="DevCtrl\Domain\Value\IntValue" table="nativevalue_int">
-        <field name="value" column="value" type="int" nullable="false" unique="false" />
+        <field name="value" column="value" type="integer" nullable="false" unique="false" />
     </entity>
 </doctrine-mapping>

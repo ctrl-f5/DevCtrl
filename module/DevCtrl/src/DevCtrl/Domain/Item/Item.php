@@ -3,6 +3,7 @@
 namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
+use DevCtrl\Domain\Project;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\State\State;
 use \DevCtrl\Domain\Item\Property\Property;
@@ -36,6 +37,9 @@ class Item extends \Ctrl\Domain\PersistableModel
     protected $state;
 
     protected $timeCounter;
+
+    /** @var Project */
+    protected $project;
 
     /**
      * @var ItemProperty[]
@@ -210,5 +214,23 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function getTimeCounter()
     {
         return $this->timeCounter;
+    }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project $project
+     * @return Item
+     */
+    public function setProject(Project $project)
+    {
+        $this->project = $project;
+        return $this;
     }
 }

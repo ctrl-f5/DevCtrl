@@ -18,9 +18,9 @@
             </cascade>
         </one-to-one>
 
-        <one-to-one field="list" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList">
+        <many-to-one field="list" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList" inversed-by="values">
             <join-column name="propertyValueList_id" referenced-column-name="id" />
-        </one-to-one>
+        </many-to-one>
 
     </entity>
 </doctrine-mapping>

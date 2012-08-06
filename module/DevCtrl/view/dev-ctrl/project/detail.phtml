@@ -1,5 +1,8 @@
-<div class="page-header"><h1><?php echo $this->project->getName(); ?></h1></div>
-
+<?php /** @var $this \Ctrl\View\PhpView */ ?>
+<?php /** @var $project \DevCtrl\Domain\Project */ ?>
+<?php $project = $this->project ?>
+<?php echo $this->pageTitle('Project', $this->project->getName()); ?>
+<p><?php echo $project->getDescription(); ?></p>
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 
@@ -9,17 +12,3 @@
     <a class="btn" href="#">close</a>
 </div>
 <p></p>
-<table class="table table-bordered">
-    <tr>
-        <th>state</th>
-        <td><span class="label label-success"><?php echo $this->project->getState(); ?></span></td>
-        <th>sprint in progress</th>
-        <td><span class="label label-inverse">no<span</td>
-    </tr>
-    <tr>
-        <th>creation date</th>
-        <td><?php echo $this->project->getDateCreated()->format('Y-m-d'); ?></td>
-        <th>created by</th>
-        <td><?php echo $this->project->getCreatedByUser()->getUsername(); ?></td>
-    </tr>
-</table>
