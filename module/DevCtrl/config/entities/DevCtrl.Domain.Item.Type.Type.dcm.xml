@@ -11,7 +11,7 @@
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
-        <field name="supportsTiming" column="supportstiming" type="boolean" nullable="false" unique="false" />
+        <field name="supportsTiming" column="supportsTiming" type="boolean" nullable="false" unique="false" />
 
         <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType">
             <cascade>
@@ -20,7 +20,7 @@
         </one-to-many>
 
         <one-to-one field="states" target-entity="DevCtrl\Domain\Item\State\StateList">
-            <join-column name="itemstatelist_id" referenced-column-name="id" />
+            <join-column name="itemStateList_id" referenced-column-name="id" />
         </one-to-one>
 
     </entity>

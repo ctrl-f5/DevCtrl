@@ -10,7 +10,7 @@
         </id>
 
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
-        <field name="nativeType" column="nativetype" type="string" length="255" nullable="false" unique="false" />
+        <field name="nativeType" column="nativeType" type="string" length="255" nullable="false" unique="false" />
 
         <one-to-many field="values" target-entity="DevCtrl\Domain\Item\Property\Value\ListValue" mapped-by="list">
             <order-by>

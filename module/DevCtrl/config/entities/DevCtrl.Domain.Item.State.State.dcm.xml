@@ -15,7 +15,7 @@
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
         <one-to-one field="list" target-entity="DevCtrl\Domain\Item\State\StateList">
-            <join-column name="itemstatelist_id" referenced-column-name="id" />
+            <join-column name="itemStateList_id" referenced-column-name="id" />
         </one-to-one>
 
     </entity>

@@ -13,11 +13,11 @@
         <field name="description" column="description" type="text" nullable="true" unique="false" />
 
         <one-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type">
-            <join-column name="itemtype_id" referenced-column-name="id" />
+            <join-column name="itemType_id" referenced-column-name="id" />
         </one-to-one>
 
         <one-to-one field="state" target-entity="DevCtrl\Domain\Item\State\State">
-            <join-column name="itemstate_id" referenced-column-name="id" />
+            <join-column name="itemState_id" referenced-column-name="id" />
         </one-to-one>
 
         <one-to-one field="timeCounter" target-entity="DevCtrl\Domain\Item\Timing\Counter" mapped-by="item">

@@ -17,14 +17,14 @@
         </one-to-one>
 
         <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value">
-            <join-column name="nativevalue_id" referenced-column-name="id" />
+            <join-column name="nativeValue_id" referenced-column-name="id" />
             <cascade>
                 <cascade-persist/>
             </cascade>
         </one-to-one>
 
         <one-to-one field="typeProperty" target-entity="DevCtrl\Domain\Item\Type\TypeProperty">
-            <join-column name="itemtype_property_id" referenced-column-name="id" />
+            <join-column name="itemType_property_id" referenced-column-name="id" />
         </one-to-one>
 
     </entity>

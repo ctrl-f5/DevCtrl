@@ -1,3 +1,12 @@
+CREATE TABLE `item` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `itemType_id` int(10) unsigned NOT NULL,
+  `itemState_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
 CREATE TABLE `itemstate` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `itemStateList_id` int(10) unsigned NOT NULL,
@@ -11,6 +20,14 @@ CREATE TABLE `itemstate` (
 CREATE TABLE `itemstatelist` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `itemtiming` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(10) unsigned NOT NULL,
+  `estimated` int(10) unsigned NOT NULL,
+  `executed` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -31,6 +48,14 @@ CREATE TABLE `itemtype_property` (
   `defaultProvider` varchar(255) DEFAULT NULL,
   `defaultProviderConfig` varchar(255) DEFAULT NULL,
   `order` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `item_type_property_value` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(10) unsigned NOT NULL,
+  `itemType_property_id` int(10) unsigned NOT NULL,
+  `nativeValue_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
