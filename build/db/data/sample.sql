@@ -1,7 +1,7 @@
 SET foreign_key_checks = 0;
 
-INSERT INTO `item` (`id`, `project_id`, `title`, `description`, `itemType_id`, `itemState_id`) VALUES
-(1, NULL, 'First Bug reported!', 'I found something that does not work as expected', 1, 1);
+INSERT INTO `item` (`id`, `project_id`, `title`, `description`, `dateCreated`, `itemType_id`, `itemState_id`) VALUES
+(1, NULL, 'First Bug reported!', 'I found something that does not work as expected', '2012-08-13 08:23:54', 1, 1);
 
 INSERT INTO `itemstate` (`id`, `label`, `color`, `nativeState`, `order`, `itemStateList_id`) VALUES
 (1, 'open', '', 'open', 1, 1),

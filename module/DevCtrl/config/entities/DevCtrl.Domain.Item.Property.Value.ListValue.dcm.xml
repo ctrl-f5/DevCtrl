@@ -11,12 +11,12 @@
 
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value" orphan-removal="true">
+        <many-to-one field="value" target-entity="DevCtrl\Domain\Value\Value" orphan-removal="true">
             <join-column name="nativeValue_id" referenced-column-name="id" />
             <cascade>
                 <cascade-persist/>
             </cascade>
-        </one-to-one>
+        </many-to-one>
 
         <many-to-one field="list" target-entity="DevCtrl\Domain\Item\Property\Value\ValueList" inversed-by="values">
             <join-column name="propertyValueList_id" referenced-column-name="id" />

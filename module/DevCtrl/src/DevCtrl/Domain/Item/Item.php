@@ -8,6 +8,7 @@ use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\State\State;
 use \DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\Item\Timing\Counter;
+use DateTime;
 
 class Item extends \Ctrl\Domain\PersistableModel
 {
@@ -46,10 +47,16 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     protected $itemProperties;
 
+    /**
+     * @var DateTime
+     */
+    protected $dateCreated;
+
     public function __construct(Type $type)
     {
         $this->itemProperties = new \DevCtrl\Domain\Collection();
         $this->itemType = $type;
+        $this->dateCreated = new DateTime();
     }
 
     /**
@@ -232,5 +239,13 @@ class Item extends \Ctrl\Domain\PersistableModel
     {
         $this->project = $project;
         return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
     }
 }

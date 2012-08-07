@@ -49,7 +49,7 @@ class ItemController extends AbstractController
             'type' => $itemType->getId(),
             'project' => $project->getId(),
         )));
-        $form->setReturnUrl($this->url()->fromRoute('default', array(
+        $form->setReturnUrl($this->url()->fromRoute('default/id', array(
             'controller' => 'project',
             'action' => 'backlog',
             'id' => $project->getId(),

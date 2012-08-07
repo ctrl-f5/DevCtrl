@@ -2,6 +2,7 @@
 
 namespace DevCtrl\Domain\Item\Type;
 
+use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\Item\Type\TypeProperty;
 use DevCtrl\Domain\Item\State\StateList;
