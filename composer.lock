@@ -16,8 +16,8 @@
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "ea9891b8860ba807e417cb1378c3a95e2f2ab408",
-            "commit-date": "1344300468"
+            "source-reference": "b4b5ac6d6c4a64bf760534814df289a2ce5fa69d",
+            "commit-date": "1344362918"
         },
         {
             "package": "doctrine/common",
@@ -72,12 +72,6 @@
             "version": "dev-master",
             "source-reference": "d68f45aaf4f5d074c3ac7c0f2d27951a11ecc04c",
             "commit-date": "1344326863"
-        },
-        {
-            "package": "symfony/yaml",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/yaml",
