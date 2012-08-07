@@ -1,14 +1,27 @@
 <?xml version="1.0" ?>
-<project name="DevCtrl" basedir="." default="migrate">
+<project name="DevCtrl" default="db-reload">
 
     <!-- Sets the DSTAMP, TSTAMP and TODAY properties -->
     <tstamp/>
 
     <!-- Load our configuration -->
-    <property file="./build.properties" />
+    <property file="build.properties" />
 
-    <!-- create our migration task -->
-    <target name="migrate" description="Database Migrations">
+    <target name="db-drop" description="drops the database completely">
+        <exec
+            command="${progs.mysql} -h${db.host} -u${db.user} -p${db.pass} -e 'DROP DATABASE IF EXISTS `${db.name}`'"
+            dir="${build.dir}"
+            checkreturn="true" />
+    </target>
+
+    <target name="db-create" description="creates an empty database with the configured name">
+        <exec
+                command="${progs.mysql} -h${db.host} -u${db.user} -p${db.pass} -e 'CREATE DATABASE `${db.name}`'"
+                dir="${build.dir}"
+                checkreturn="true" />
+    </target>
+
+    <target name="db-migrate" description="Database Migrations">
 
         <!-- load the dbdeploy task -->
         <taskdef name="dbdeploy" classname="phing.tasks.ext.dbdeploy.DbDeployTask"/>
@@ -38,4 +51,17 @@
             dir="${build.dir}"
             checkreturn="true" />
     </target>
+
+    <target name="db-load-sampledata" description="loads sample data">
+        <exec
+            command="${progs.mysql} -h${db.host} -u${db.user} -p${db.pass} ${db.name} &lt; ${build.dir}/db/data/sample.sql"
+            dir="${build.dir}"
+            checkreturn="true" />
+    </target>
+
+    <target name="db-reset" description="drops, creates and migrates"
+            depends="db-drop, db-create, db-migrate" />
+
+    <target name="db-reload" description="drops, creates, migrates and loads sample data"
+            depends="db-drop, db-create, db-migrate, db-load-sampledata" />
 </project>

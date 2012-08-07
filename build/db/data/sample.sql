@@ -1,82 +1,52 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET foreign_key_checks = 0;
 
---
--- Database: `dev_ctrl`
---
+INSERT INTO `item` (`id`, `project_id`, `title`, `description`, `itemType_id`, `itemState_id`) VALUES
+(1, NULL, 'First Bug reported!', 'I found something that does not work as expected', 1, 1);
 
---
--- Dumping data for table `auth_users`
---
+INSERT INTO `itemstate` (`id`, `label`, `color`, `nativeState`, `order`, `itemStateList_id`) VALUES
+(1, 'open', '', 'open', 1, 1),
+(2, 'blocked', '', 'blocked', 3, 1),
+(3, 'closed', '', 'closed', 2, 1);
 
-INSERT INTO `auth_users` (`id`, `username`, `password`) VALUES
-(1, 'test1', 'tester1'),
-(2, 'test2', 'tester2'),
-(3, 'test3', 'tester3'),
-(4, 'test4', 'tester4'),
-(5, 'test5', 'tester5');
+INSERT INTO `itemstatelist` (`id`, `name`) VALUES
+(1, 'minimal');
 
---
--- Dumping data for table `items`
---
+INSERT INTO `itemtype` (`id`, `name`, `description`, `supportsTiming`, `itemStateList_id`) VALUES
+(1, 'Bug', 'software bug', 0, 1);
 
-INSERT INTO `items` (`id`, `project_id`, `item_type_id`, `title`, `description`, `created_by_user_id`, `state`) VALUES
-(1, 1, 1, 'first item', 'THis is the first item ever!', 1, '1');
+INSERT INTO `itemtype_property` (`id`, `property_id`, `required`, `defaultProvider`, `defaultProviderConfig`, `order`, `itemType_id`) VALUES
+(1, 3, 1, 'Last', NULL, 0, 1);
 
---
--- Dumping data for table `item_item_properties`
---
+INSERT INTO `item_type_property_value` (`id`, `item_id`, `nativeValue_id`, `itemType_property_id`) VALUES
+(1, 1, 4, 1);
 
-INSERT INTO `item_item_properties` (`id`, `item_type_id`, `item_property_id`, `required`) VALUES
-(1, 1, 3, 0),
-(2, 1, 4, 0);
+INSERT INTO `nativevalue` (`id`, `nativeType`) VALUES
+(1, 'string'),
+(2, 'string'),
+(3, 'string'),
+(4, 'string');
 
---
--- Dumping data for table `item_properties`
---
+INSERT INTO `nativevalue_string` (`id`, `value`) VALUES
+(1, 'normal'),
+(2, 'high'),
+(3, 'blocking'),
+(4, '2');
 
-INSERT INTO `item_properties` (`id`, `type`, `name`, `description`) VALUES
-(3, 1, 'software version', 'the version of the software the bug was found in'),
-(4, 1, 'URL', 'the URL of the page the bug was encountered');
+INSERT INTO `projects` (`id`, `name`, `description`) VALUES
+(1, 'New Project', 'This is a new example project');
 
---
--- Dumping data for table `item_property_values`
---
+INSERT INTO `project_backlog` (`project_id`, `item_id`) VALUES
+(1, 1);
 
-INSERT INTO `item_property_values` (`id`, `item_property_id`, `item_id`, `value`) VALUES
-(1, 3, 1, 'testvalue'),
-(2, 4, 1, 'testvalue');
+INSERT INTO `property` (`id`, `name`, `description`, `valuesProvider`, `valuesProviderConfig`, `propertyType`) VALUES
+(3, 'priority', 'how important is it?', 'CustomList', '1', 'select');
 
---
--- Dumping data for table `item_types`
---
+INSERT INTO `propertyvaluelist` (`id`, `name`, `nativeType`) VALUES
+(1, 'priority', 'string');
 
-INSERT INTO `item_types` (`id`, `name`, `description`) VALUES
-(1, 'bug', 'A bug relates to a problem in the project'),
-(2, 'feature', 'a feature is something new that could be integrated into the project');
+INSERT INTO `propertyvaluelist_nativevalue` (`id`, `order`, `nativeValue_id`, `propertyValueList_id`) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 1),
+(3, 3, 3, 1);
 
---
--- Dumping data for table `projects`
---
-
-INSERT INTO `projects` (`id`, `name`, `parent_id`, `created_by`, `state`, `date_created`, `date_due`) VALUES
-(1, 'testproject', NULL, 1, 'closed', '2012-07-22 00:00:00', '2012-07-22 00:00:00');
-
---
--- Dumping data for table `project_users`
---
-
-INSERT INTO `project_users` (`id`, `project_id`, `user_id`, `level`) VALUES
-(1, 1, 1, 'developer'),
-(3, 1, 4, 'viewer');
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `auth_user_id`, `firstname`, `lastname`) VALUES
-(1, 1, 'test', 'tester'),
-(2, 2, 'test', 'tester'),
-(3, 3, 'test', 'tester'),
-(4, 4, 'test', 'tester'),
-(5, 5, 'test', 'tester');
+SET foreign_key_checks = 1;

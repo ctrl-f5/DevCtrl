@@ -1,48 +1,36 @@
-INSERT INTO `item` (`id`, `project_id`, `title`, `description`, `itemType_id`, `itemState_id`) VALUES
-(1, NULL, 'First Bug reported!', 'Something went wrong...', 1, 1);
+CREATE TABLE nativevalue_string (id INT NOT NULL, value VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE item_type_property_value (id INT AUTO_INCREMENT NOT NULL, item_id INT DEFAULT NULL, nativeValue_id INT DEFAULT NULL, itemType_property_id INT DEFAULT NULL, INDEX IDX_124C076F126F525E (item_id), INDEX IDX_124C076FC19A852A (nativeValue_id), INDEX IDX_124C076FCFAE834E (itemType_property_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE itemstate (id INT AUTO_INCREMENT NOT NULL, `label` VARCHAR(255) NOT NULL, color VARCHAR(255) DEFAULT NULL, nativeState VARCHAR(255) NOT NULL, `order` INT NOT NULL, itemStateList_id INT DEFAULT NULL, INDEX IDX_3686E61BA400260B (itemStateList_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE projects (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE project_backlog (project_id INT NOT NULL, item_id INT NOT NULL, INDEX IDX_96389E60166D1F9C (project_id), INDEX IDX_96389E60126F525E (item_id), PRIMARY KEY(project_id, item_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE itemtype_property (id INT AUTO_INCREMENT NOT NULL, property_id INT DEFAULT NULL, required TINYINT(1) NOT NULL, defaultProvider VARCHAR(255) NOT NULL, defaultProviderConfig VARCHAR(255) DEFAULT NULL, `order` INT NOT NULL, itemType_id INT DEFAULT NULL, INDEX IDX_D30CA44A753B2743 (itemType_id), INDEX IDX_D30CA44A549213EC (property_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE property (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, valuesProvider VARCHAR(255) DEFAULT NULL, valuesProviderConfig VARCHAR(255) DEFAULT NULL, propertyType VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE itemtype (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, supportsTiming TINYINT(1) NOT NULL, itemStateList_id INT DEFAULT NULL, INDEX IDX_26A035E1A400260B (itemStateList_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE nativevalue_int (id INT NOT NULL, value INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE propertyvaluelist_nativevalue (id INT AUTO_INCREMENT NOT NULL, `order` INT NOT NULL, nativeValue_id INT DEFAULT NULL, propertyValueList_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_66E61C7C19A852A (nativeValue_id), INDEX IDX_66E61C75E8A3E61 (propertyValueList_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE propertyvalueList (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, nativeType VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE itemstatelist (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE item (id INT AUTO_INCREMENT NOT NULL, project_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, itemType_id INT DEFAULT NULL, itemState_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_1F1B251E753B2743 (itemType_id), UNIQUE INDEX UNIQ_1F1B251E83BB99BE (itemState_id), INDEX IDX_1F1B251E166D1F9C (project_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE nativevalue (id INT AUTO_INCREMENT NOT NULL, nativeType VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE nativevalue_text (id INT NOT NULL, value LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE TABLE itemtiming (id INT AUTO_INCREMENT NOT NULL, item_id INT DEFAULT NULL, estimated INT NOT NULL, executed INT NOT NULL, UNIQUE INDEX UNIQ_B32E61A7126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+ALTER TABLE nativevalue_string ADD CONSTRAINT FK_1AFC9E76BF396750 FOREIGN KEY (id) REFERENCES nativevalue (id) ON DELETE CASCADE;
+ALTER TABLE item_type_property_value ADD CONSTRAINT FK_124C076F126F525E FOREIGN KEY (item_id) REFERENCES item (id);
+ALTER TABLE item_type_property_value ADD CONSTRAINT FK_124C076FC19A852A FOREIGN KEY (nativeValue_id) REFERENCES nativevalue (id);
+ALTER TABLE item_type_property_value ADD CONSTRAINT FK_124C076FCFAE834E FOREIGN KEY (itemType_property_id) REFERENCES itemtype_property (id);
+ALTER TABLE itemstate ADD CONSTRAINT FK_3686E61BA400260B FOREIGN KEY (itemStateList_id) REFERENCES itemstatelist (id);
+ALTER TABLE project_backlog ADD CONSTRAINT FK_96389E60166D1F9C FOREIGN KEY (project_id) REFERENCES projects (id);
+ALTER TABLE project_backlog ADD CONSTRAINT FK_96389E60126F525E FOREIGN KEY (item_id) REFERENCES item (id);
+ALTER TABLE itemtype_property ADD CONSTRAINT FK_D30CA44A753B2743 FOREIGN KEY (itemType_id) REFERENCES itemtype (id);
+ALTER TABLE itemtype_property ADD CONSTRAINT FK_D30CA44A549213EC FOREIGN KEY (property_id) REFERENCES property (id);
+ALTER TABLE itemtype ADD CONSTRAINT FK_26A035E1A400260B FOREIGN KEY (itemStateList_id) REFERENCES itemstatelist (id);
+ALTER TABLE nativevalue_int ADD CONSTRAINT FK_260E63D2BF396750 FOREIGN KEY (id) REFERENCES nativevalue (id) ON DELETE CASCADE;
+ALTER TABLE propertyvaluelist_nativevalue ADD CONSTRAINT FK_66E61C7C19A852A FOREIGN KEY (nativeValue_id) REFERENCES nativevalue (id);
+ALTER TABLE propertyvaluelist_nativevalue ADD CONSTRAINT FK_66E61C75E8A3E61 FOREIGN KEY (propertyValueList_id) REFERENCES propertyvalueList (id);
+ALTER TABLE item ADD CONSTRAINT FK_1F1B251E753B2743 FOREIGN KEY (itemType_id) REFERENCES itemtype (id);
+ALTER TABLE item ADD CONSTRAINT FK_1F1B251E83BB99BE FOREIGN KEY (itemState_id) REFERENCES itemstate (id);
+ALTER TABLE item ADD CONSTRAINT FK_1F1B251E166D1F9C FOREIGN KEY (project_id) REFERENCES projects (id);
+ALTER TABLE nativevalue_text ADD CONSTRAINT FK_EF02C89CBF396750 FOREIGN KEY (id) REFERENCES nativevalue (id) ON DELETE CASCADE;
+ALTER TABLE itemtiming ADD CONSTRAINT FK_B32E61A7126F525E FOREIGN KEY (item_id) REFERENCES item (id);
 
-INSERT INTO `itemstate` (`id`, `label`, `color`, `nativeState`, `order`, `itemStateList_id`) VALUES
-(1, 'open', '', 'open', 1, 1),
-(2, 'blocked', '', 'blocked', 3, 1),
-(3, 'closed', '', 'closed', 2, 1);
-
-INSERT INTO `itemstatelist` (`id`, `name`) VALUES
-(1, 'minimal');
-
-INSERT INTO `itemtype` (`id`, `name`, `description`, `supportsTiming`, `itemStateList_id`) VALUES
-(1, 'Bug', 'software bug', 0, 1);
-
-INSERT INTO `itemtype_property` (`id`, `property_id`, `required`, `defaultProvider`, `defaultProviderConfig`, `order`, `itemType_id`) VALUES
-(1, 3, 1, 'Last', NULL, 0, 1);
-
-INSERT INTO `item_type_property_value` (`id`, `item_id`, `nativeValue_id`, `itemType_property_id`) VALUES
-(1, 1, 4, 1);
-
-INSERT INTO `nativevalue` (`id`, `nativeType`) VALUES
-(1, 'string'),
-(2, 'string'),
-(3, 'string'),
-(4, 'string');
-
-INSERT INTO `nativevalue_string` (`id`, `value`) VALUES
-(1, 'normal'),
-(2, 'high'),
-(3, 'blocking'),
-(4, '2');
-
-INSERT INTO `projects` (`id`, `name`, `description`) VALUES
-(1, 'New Project', 'This is A new example project');
-
-INSERT INTO `project_backlog` (`project_id`, `item_id`) VALUES
-(1, 1);
-
-INSERT INTO `property` (`id`, `name`, `description`, `valuesProvider`, `valuesProviderConfig`, `propertyType`) VALUES
-(3, 'priority', 'how important is it?', 'CustomList', '1', 'select');
-
-INSERT INTO `propertyvaluelist` (`id`, `name`, `nativeType`) VALUES
-(1, 'priority', 'string');
-
-INSERT INTO `propertyvaluelist_nativevalue` (`id`, `order`, `nativeValue_id`, `propertyValueList_id`) VALUES
-(1, 1, 1, 1),
-(2, 2, 2, 1),
-(3, 3, 3, 1);
+--//@UNDO
