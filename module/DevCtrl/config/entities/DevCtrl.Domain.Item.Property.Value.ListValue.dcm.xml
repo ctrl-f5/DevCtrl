@@ -11,7 +11,7 @@
 
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
-        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value">
+        <one-to-one field="value" target-entity="DevCtrl\Domain\Value\Value" orphan-removal="true">
             <join-column name="nativeValue_id" referenced-column-name="id" />
             <cascade>
                 <cascade-persist/>

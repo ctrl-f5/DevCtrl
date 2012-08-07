@@ -20,6 +20,18 @@ class LastProvider  extends AbstractProvider
 
     protected function _getDefaultValue(TypeProperty $typeProperty = null)
     {
+        if (!$typeProperty->getProperty()->getType()->supportsDefaultValue()
+            || !$typeProperty->getDefaultProvider())
+            return null;
+
+        if ($typeProperty->getProperty()->getType()->supportsProvidingValues()
+            && $typeProperty->getProperty()->getValuesProvider()) {
+            $vals = $typeProperty->getProperty()->getValuesProvider()->getValues(
+                $typeProperty->getProperty()
+            );
+            $vals = array_flip($vals);
+            if ($vals) return end($vals);
+        }
         return null;
     }
 }

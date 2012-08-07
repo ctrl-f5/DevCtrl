@@ -31,7 +31,7 @@ class PropertyController extends AbstractController
         $form->setAttribute('action', $this->url()->fromRoute('property_create', array(
             'controller' => 'property',
             'action' => 'create',
-            'type' => $propertyType->getNativeValueType()
+            'type' => $propertyType->getRepresentedPorpertyType()
         )));
         $form->setReturnUrl($this->url()->fromRoute('default', array(
             'controller' => 'property',

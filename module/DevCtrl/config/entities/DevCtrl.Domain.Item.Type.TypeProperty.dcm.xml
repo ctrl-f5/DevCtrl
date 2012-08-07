@@ -11,7 +11,7 @@
 
         <field name="required" column="required" type="boolean" nullable="false" unique="false" />
         <field name="defaultProvider" column="defaultProvider" type="string" nullable="false" unique="false" />
-        <field name="defaultProviderConfig" column="defaultProviderConfig" type="string" nullable="false" unique="false" />
+        <field name="defaultProviderConfig" column="defaultProviderConfig" type="string" nullable="true" unique="false" />
         <field name="order" column="`order`" type="integer" nullable="false" unique="false" />
 
         <many-to-one field="itemType" target-entity="DevCtrl\Domain\Item\Type\Type" inversed-by="typeProperties">

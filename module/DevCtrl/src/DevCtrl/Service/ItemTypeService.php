@@ -39,14 +39,14 @@ class ItemTypeService extends \Ctrl\Service\AbstractDomainModelService
         $input->setLabel('state set');
         /** @var $states StateList[] */
         $states = $this->getDomainService('StateList')->getAll();
+        $stateOptions = array('');//add empty first selection
         if (count($states)) {
             if ($type && $type->hasStates()) $input->setValue($type->getStates()->getId());
-            $stateOptions = array('');//add empty first selection
             foreach ($states as $s) {
                 $stateOptions[$s->getId()] = $s->getName();
             }
-            $input->setAttribute('options', $stateOptions);
         }
+        $input->setAttribute('options', $stateOptions);
         $form->add($input);
 
         $form->setInputFilter($this->getModelInputFilter());

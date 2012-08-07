@@ -20,7 +20,7 @@ class Value extends AbstractNativeValue
         'integer' => array(
             'name' => 'Int',
             'class' => '\DevCtrl\Domain\Value\IntValue'
-        ),
+        )
     );
 
     /**
