@@ -24,14 +24,17 @@
 <div class="">
     <table class="table table-striped">
         <tr>
-            <th>id</th>
+            <th width="30">progress</th>
             <th>title</th>
             <th>date created</th>
             <th>state</th>
             <th>actions</th>
         </tr>
-        <?php foreach ($project->getBacklog() as $i): ?>
+        <?php foreach ($backlog as $i): ?>
         <tr>
+            <td rowspan="2">
+                <button class="btn"><canvas class="ctrljs-3stage-gauge" guage-value="1<?php echo $i->getProgress(); ?>" width="50" height="50"></canvas></button>
+            </td>
             <td><?php echo $i->getId(); ?></td>
             <td><?php echo $i->getTitle(); ?></td>
             <td><?php echo $this->formatDate($i->getDateCreated()); ?></td>
@@ -41,6 +44,9 @@
                 'action' => 'detail',
                 'id' => $i->getId()
             )); ?>">detail</a></td>
+        </tr>
+        <tr>
+            <td colspan="5"><?php echo $i->getDescription(); ?></td>
         </tr>
         <?php endforeach; ?>
     </table>

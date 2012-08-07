@@ -33,17 +33,15 @@ class Type extends \Ctrl\Domain\PersistableModel
     protected $typeProperties;
 
     /**
-     * @var Collection|StateList[]
+     * @var StateList
      */
     protected $states;
 
-    public function __construct($supportsTiming, $supportsStates)
+    public function __construct($supportsTiming)
     {
         $this->supportsTiming = (bool)$supportsTiming;
-        $this->supportsStates = (bool)$supportsStates;
 
         $this->typeProperties = new Collection();
-        $this->states = new Collection();
     }
 
     /**

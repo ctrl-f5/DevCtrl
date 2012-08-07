@@ -64,8 +64,34 @@ class Project extends PersistableModel
      */
     public function addToBacklog(Item $item)
     {
+        $item->setProject($this);
         $this->backlog[] = $item;
         return $this;
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getProgress()
+    {
+        $estimated = 0;
+        $executed = 0;
+        foreach ($this->getBacklog() as $i) {
+            if ($i->getItemType()->supportsTiming()) {
+                $estimated += $i->getTimeCounter()->getEstimated();
+                if ($i->getItemType()->hasStates()
+                    && $i->getState()->getNativeState() == \DevCtrl\Domain\Item\State\State::STATE_CLOSED) {
+                    $estimated += $i->getTimeCounter()->getEstimated();
+                } else {
+                    $executed += $i->getTimeCounter()->getExecuted();
+                }
+            }
+        }
+        $percent = 0;
+        if ($estimated) {
+            $percent = round($executed / $estimated * 100);
+        }
+        return $percent;
     }
 
     /**

@@ -7,6 +7,10 @@ use DevCtrl\Domain\Exception;
 
 class State extends PersistableModel
 {
+    const STATE_OPEN        = 1;
+    const STATE_BLOCKED     = 2;
+    const STATE_CLOSED      = 3;
+
     /**
      * @var array
      */

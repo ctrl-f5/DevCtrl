@@ -2,6 +2,7 @@
 
 namespace DevCtrl\Controller;
 
+use DevCtrl\Domain\Project;
 use DevCtrl\Service\ProjectService;
 use Ctrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
@@ -63,8 +64,17 @@ class ProjectController extends AbstractController
 
     public function backlogAction()
     {
+        $id = $this->params('id');
+        /** @var $projectService ProjectService */
+        $projectService = $this->getDomainService('project');
+        /** @var $project Project */
+        $project = $projectService->getById($id);
+
+        $backlog = $projectService->getBacklogItems($project);
+
         return new ViewModel(array(
-            'project' => $this->getDomainService('project')->getById($this->params('id')),
+            'project' => $project,
+            'backlog' => $backlog,
             'itemTypes' => $this->getDomainService('ItemType')->getAll()
         ));
     }

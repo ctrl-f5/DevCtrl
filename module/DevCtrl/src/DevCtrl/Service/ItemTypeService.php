@@ -32,7 +32,7 @@ class ItemTypeService extends \Ctrl\Service\AbstractDomainModelService
 
         $input = new CheckboxInput('supports-timing');
         $input->setLabel('supports timing');
-        if ($type) $input->setValue($type->supportsTiming());
+        $input->setValue(1);
         $form->add($input);
 
         $input = new SelectInput('state-list');

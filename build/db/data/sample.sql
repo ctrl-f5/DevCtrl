@@ -1,7 +1,10 @@
 SET foreign_key_checks = 0;
 
 INSERT INTO `item` (`id`, `project_id`, `title`, `description`, `dateCreated`, `itemType_id`, `itemState_id`) VALUES
-(1, NULL, 'First Bug reported!', 'I found something that does not work as expected', '2012-08-13 08:23:54', 1, 1);
+(1, 1, 'First Bug reported!', 'I found something that does not work as expected', '2012-08-13 08:23:54', 1, 1);
+
+INSERT INTO `itemtiming` (`id`, `item_id`, `estimated`, `executed`) VALUES
+('1', '1', '40', '0');
 
 INSERT INTO `itemstate` (`id`, `label`, `color`, `nativeState`, `order`, `itemStateList_id`) VALUES
 (1, 'open', '', 'open', 1, 1),
@@ -12,7 +15,7 @@ INSERT INTO `itemstatelist` (`id`, `name`) VALUES
 (1, 'minimal');
 
 INSERT INTO `itemtype` (`id`, `name`, `description`, `supportsTiming`, `itemStateList_id`) VALUES
-(1, 'Bug', 'software bug', 0, 1);
+(1, 'Bug', 'software bug', 1, 1);
 
 INSERT INTO `itemtype_property` (`id`, `property_id`, `required`, `defaultProvider`, `defaultProviderConfig`, `order`, `itemType_id`) VALUES
 (1, 3, 1, 'Last', NULL, 0, 1);

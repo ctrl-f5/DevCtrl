@@ -71,19 +71,23 @@ class ItemTypeController extends AbstractController
         if ($this->getRequest()->isPost()) {
 
             $itemType = new Type(
-                $this->params()->fromPost('supports-timing'),
-                $this->params()->fromPost('supports-states')
+                $this->params()->fromPost('supports-timing')
             );
             $itemType->setName($this->params()->fromPost('name'))
                 ->setDescription($this->params()->fromPost('description'));
 
             /** @var $stateList StateList */
-            $stateList = $this->getDomainService('StateList')
-                ->getById($this->params()->fromPost('state-list'));
-            if (!$stateList) {
-                throw new Exception('Failed to load state list: '.$this->params()->fromPost('state-list'));
+            try {
+                $stateList = $this->getDomainService('StateList')
+                    ->getById($this->params()->fromPost('state-list'));
+
+                if (!$stateList) {
+                    throw new Exception('Failed to load state list: '.$this->params()->fromPost('state-list'));
+                }
+                $itemType->setStates($stateList);
+            } catch (\Exception $e) {
+                //no state list passed
             }
-            $itemType->setStates($stateList);
 
             $typeService->getEntityManager()->persist($itemType);
             $typeService->getEntityManager()->flush();

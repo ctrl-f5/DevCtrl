@@ -223,6 +223,17 @@ class Item extends \Ctrl\Domain\PersistableModel
         return $this->timeCounter;
     }
 
+    public function getProgress()
+    {
+        if ($this->getItemType()->supportsTiming()) {
+            if ($this->getItemType()->hasStates() && $this->getState()->getNativeState() == State::STATE_CLOSED) {
+                return $this->getTimeCounter()->getEstimated();
+            } else {
+                return $this->getTimeCounter()->getExecuted();
+            }
+        }
+    }
+
     /**
      * @return Project
      */

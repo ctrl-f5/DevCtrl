@@ -12,3 +12,8 @@
     <a class="btn" href="#">close</a>
 </div>
 <p></p>
+
+<?php $percentageCompleted = $project->getProgress(); ?>
+<p class="alert alert<?php echo $percentageCompleted < 100 ? '-success': '-danger'; ?>">
+<button class="btn"><canvas class="ctrl-three-stage-gauge" guage-value="1<?php echo $percentageCompleted; ?>" width="60" height="60"></canvas></button>
+</p>
