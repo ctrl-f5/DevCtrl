@@ -9,10 +9,10 @@
         'action' => 'backlog',
         'id' => $this->project->getId()
     )); ?>">Backlog</a></li>
-    <li<?php if ($this->page == 'sprints') echo ' class="active"'; ?>><a href="#">Sprints</a></li>
+    <li<?php if ($this->page == 'milestones') echo ' class="active"'; ?>><a href="#">Milestones</a></li>
     <li<?php if ($this->page == 'users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'project',
-        'action' => 'users',
+        'action' => 'versions',
         'id' => $this->project->getId()
-    )); ?>">Users</a></li>
+    )); ?>">Versions</a></li>
 </ul>

@@ -1,6 +1,7 @@
 <?php /** @var $this \Ctrl\View\PhpView */ ?>
 <?php $project = $this->project     /** @var $project   \DevCtrl\Domain\Project */ ?>
 <?php $types = $this->itemTypes;    /** @var $types     \DevCtrl\Domain\Item\Type\Type[] */ ?>
+<?php $backlog = $this->backlog;   /** @var $backlog   \DevCtrl\Domain\Item\Item[] */ ?>
 <?php echo $this->pageTitle('Project', $this->project->getName()); ?>
 
 <?php $this->page = 'backlog'; ?>
@@ -21,33 +22,46 @@
     </ul>
 </div>
 <p></p>
-<div class="">
-    <table class="table table-striped">
-        <tr>
-            <th width="30">progress</th>
-            <th>title</th>
-            <th>date created</th>
-            <th>state</th>
-            <th>actions</th>
-        </tr>
-        <?php foreach ($backlog as $i): ?>
-        <tr>
-            <td rowspan="2">
-                <button class="btn"><canvas class="ctrljs-3stage-gauge" guage-value="1<?php echo $i->getProgress(); ?>" width="50" height="50"></canvas></button>
-            </td>
-            <td><?php echo $i->getId(); ?></td>
-            <td><?php echo $i->getTitle(); ?></td>
-            <td><?php echo $this->formatDate($i->getDateCreated()); ?></td>
-            <td><?php if ($i->getItemType()->hasStates()) echo $i->getState()->getLabel(); ?></td>
-            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'item',
-                'action' => 'detail',
-                'id' => $i->getId()
-            )); ?>">detail</a></td>
-        </tr>
-        <tr>
-            <td colspan="5"><?php echo $i->getDescription(); ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+
+<?php foreach ($backlog as $i): ?>
+<div class="container-fluid well" style="padding: 5px;">
+    <div class="row-fluid">
+        <div class="span1">
+            <canvas class="ctrljs-3stage-gauge" guage-value="<?php echo $i->getProgress(); ?>" width="50" height="50"></canvas>
+        </div>
+        <div class="span11">
+            <div class="row">
+                <div class="span1">
+                    <a href="<?php echo $this->url('default/id', array('controller' => 'item', 'action' => 'detail', 'id' => $i->getId())); ?>">
+                        #<?php echo $i->getId(); ?>
+                    </a>
+                </div>
+                <div class="span9">
+                    <strong><?php echo $i->getTitle(); ?></strong>
+                </div>
+                <div class="span2">
+                    <?php
+                    if ($i->getItemType()->supportsTiming())
+                        echo '<span class="icon-time"></span> '.
+                            $i->getTimeCounter()->getExecuted().' / '.
+                            $i->getTimeCounter()->getEstimated()
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span1">
+                    <?php if ($i->getItemType()->hasStates()): ?>
+                        <span class="label label-success"><?php echo $i->getState()->getLabel() ?></span>
+                    <?php endif; ?>
+                </div>
+                <div class="span9">
+                    <?php echo $i->getDescription(); ?>
+                </div>
+                <div class="span1">
+                    <?php echo $this->formatDate($i->getDateCreated(), 'Y-m-d'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<?php endforeach; ?>
