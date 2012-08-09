@@ -6,36 +6,111 @@
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 
-<div class="btn-group">
+<div class="btn-group" style="float: right">
     <a class="btn" href="#">edit</a>
     <a class="btn btn-success disabled" href="#">follow</a>
-    <a class="btn" href="#">close</a>
+    <a class="btn" href="#">view all projects</a>
 </div>
+<?php echo $this->pageTitle('Overview', null, array('level' => 3)); ?>
 <p></p>
-
-<div class="row-fluid alert alert<?php echo $percentageCompleted < 100 ? '-success': '-danger'; ?>">
+<div class="row-fluid well" style="padding-right: 0; padding-left: 0;">
     <div class="row-fluid">
         <div class="span2" style="text-align: center">
             <?php $percentageCompleted = $project->getProgress(); ?>
                 <button class="btn"><canvas class="ctrljs-3stage-gauge" guage-value="<?php echo $percentageCompleted; ?>" width="60" height="60"></canvas></button>
         </div>
-        <div class="span10" style="text-align: center">
+        <div class="span10" style="text-align: left">
             <div class="row-fluid">
-                <div class="span2" style="text-align: center">
+                <div class="span2" style="text-align: right">
+                    <strong>name: </strong>
+                </div>
+                <div class="span3">
+                    <a href="<?php echo $this->url('default/id', array(
+                        'controller' => 'project',
+                        'action' => 'detail',
+                        'id' => $project->getId(),
+                    ));?>"><?php echo $project->getName(); ?></a>
+                </div>
+                <div class="span2" style="text-align: right">
                     <strong>status: </strong>
                 </div>
-                <div class="span1" style="text-align: center">
-                    <span class="label label-success">healthy</span><br />
+                <div class="span3">
+                    <span class="label label-success">healthy</span>
                 </div>
             </div>
             <div class="row-fluid">
-                <div class="span2" style="text-align: center">
+                <div class="span2" style="text-align: right">
+                    <strong>description: </strong>
+                </div>
+                <div class="span3">
+                    ...
+                </div>
+                <div class="span2" style="text-align: right">
                     <strong>item count: </strong>
                 </div>
-                <div class="span1" style="text-align: center">
+                <div class="span3">
                     <?php echo count($project->getBacklog()); ?>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2" style="text-align: right">
+                    <strong>people involved: </strong>
+                </div>
+                <div class="span3">
+                    4
+                </div>
+                <div class="span2" style="text-align: right">
+                    <strong>last activity: </strong>
+                </div>
+                <div class="span3">
+                    today
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php echo $this->pageTitle('Items involving me', null, array('level' => 3)); ?>
+<p></p>
+<?php foreach ($project->getBacklog() as $i): ?>
+<div class="container-fluid well" style="padding: 5px;">
+    <div class="row-fluid">
+        <div class="span1">
+            <canvas class="ctrljs-3stage-gauge" guage-value="<?php echo $i->getProgress(); ?>" width="50" height="50"></canvas>
+        </div>
+        <div class="span11">
+            <div class="row">
+                <div class="span1">
+                    <a href="<?php echo $this->url('default/id', array('controller' => 'item', 'action' => 'detail', 'id' => $i->getId())); ?>">
+                        #<?php echo $i->getId(); ?>
+                    </a>
+                </div>
+                <div class="span9">
+                    <strong><?php echo $i->getTitle(); ?></strong>
+                </div>
+                <div class="span2">
+                    <?php
+                    if ($i->getItemType()->supportsTiming())
+                        echo '<span class="icon-time"></span> '.
+                            $i->getTimeCounter()->getExecuted().' / '.
+                            $i->getTimeCounter()->getEstimated()
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span1">
+                    <?php if ($i->getItemType()->hasStates()): ?>
+                    <span class="label label-success"><?php echo $i->getState()->getLabel() ?></span>
+                    <?php endif; ?>
+                </div>
+                <div class="span9">
+                    <?php echo $i->getDescription(); ?>
+                </div>
+                <div class="span1">
+                    <?php echo $this->formatDate($i->getDateCreated(), 'Y-m-d'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach; ?>

@@ -16,8 +16,8 @@
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "b4b5ac6d6c4a64bf760534814df289a2ce5fa69d",
-            "commit-date": "1344362918"
+            "source-reference": "586226d53d841b7e8444be16b55198df3f6c2454",
+            "commit-date": "1344545493"
         },
         {
             "package": "doctrine/common",
@@ -40,14 +40,14 @@
         {
             "package": "doctrine/doctrine-module",
             "version": "dev-master",
-            "source-reference": "dd6ec9a75d187085041e046475bfd69d3c00db6d",
-            "commit-date": "1343934116"
+            "source-reference": "8dc84a9febb76967c9537f427c5c83df3a7ec85a",
+            "commit-date": "1344537161"
         },
         {
             "package": "doctrine/doctrine-orm-module",
             "version": "dev-master",
-            "source-reference": "71b0e5a7cd3231097f8e128da24646de91575f2a",
-            "commit-date": "1344276053"
+            "source-reference": "c4d2d1a2e9f75b09d61f0ac888a5f50bcacc5435",
+            "commit-date": "1344540284"
         },
         {
             "package": "doctrine/migrations",
