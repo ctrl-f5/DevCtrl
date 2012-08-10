@@ -24,6 +24,7 @@
 <p></p>
 
 <?php foreach ($backlog as $i): ?>
+<?php $detailUrl = $this->url('default/id', array('controller' => 'item', 'action' => 'detail', 'id' => $i->getId())); ?>
 <div class="container-fluid well" style="padding: 5px;">
     <div class="row-fluid">
         <div class="span1">
@@ -32,12 +33,21 @@
         <div class="span11">
             <div class="row">
                 <div class="span1">
-                    <a href="<?php echo $this->url('default/id', array('controller' => 'item', 'action' => 'detail', 'id' => $i->getId())); ?>">
+                    <a href="<?php echo $detailUrl; ?>">
                         #<?php echo $i->getId(); ?>
                     </a>
                 </div>
                 <div class="span9">
-                    <strong><?php echo $i->getTitle(); ?></strong>
+                    <div class="btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <?php echo $i->getTitle(); ?>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo $detailUrl; ?>">detail</a></li>
+                        <li><a href="<?php echo $detailUrl; ?>">assign to me</a></li>
+                    </ul>
+                    </div>
                 </div>
                 <div class="span2">
                     <?php
@@ -51,7 +61,9 @@
             <div class="row">
                 <div class="span1">
                     <?php if ($i->getItemType()->hasStates()): ?>
-                        <span class="label label-success"><?php echo $i->getState()->getLabel() ?></span>
+                        <span class="label label-<?php
+                            echo ($i->getState()->getNativeState() == $i->getState()->getNativeStates(\DevCtrl\Domain\Item\State\State::STATE_CLOSED)) ?
+                                'inverse': 'success'; ?>"><?php echo $i->getState()->getLabel() ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="span9">
@@ -65,3 +77,15 @@
     </div>
 </div>
 <?php endforeach; ?>
+
+<script type="text/javascript">
+$(function () {
+    $('.well .btn-group a.btn.dropdown-toggle').on('mouseleave', function () {
+        $(this).removeClass('btn btn-mini dropdown-toggle');
+        $(this).find('span').hide();
+    }).on('mouseover', function () {
+        $(this).addClass('btn btn-mini dropdown-toggle');
+        $(this).find('span').show();
+    }).trigger('mouseleave');
+});
+</script>

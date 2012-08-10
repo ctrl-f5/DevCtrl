@@ -1,0 +1,35 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\User\UserItem" table="user_item">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="itemitemproperty_autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="type" column="required" type="string" nullable="false" unique="false" />
+
+        <many-to-one field="item" target-entity="DevCtrl\Domain\Item\Item" inversed-by="typeProperties">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-column name="itemType_id" referenced-column-name="id" />
+        </many-to-one>
+
+        <many-to-one field="property" target-entity="DevCtrl\Domain\Item\Property\Property" inversed-by="typeProperties">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+            <join-column name="property_id" referenced-column-name="id" />
+        </many-to-one>
+
+        <one-to-many field="itemProperties" target-entity="DevCtrl\Domain\Item\ItemProperty" mapped-by="typeProperty">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+    </entity>
+</doctrine-mapping>

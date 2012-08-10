@@ -3,19 +3,30 @@
 
 <?php echo $this->pageTitle('Item detail', $item->getItemType()->getName()); ?>
 
+<?php $this->itemTab = 'detail'; ?>
+<?php echo $this->render('dev-ctrl/item/partial/item-tabs.phtml'); ?>
+
 <table class="table table-bordered">
     <tr>
         <th width="200">title</th>
         <td><?php echo $item->getTitle(); ?></td>
         <th width="200">state</th>
-        <td><?php echo $item->getItemType()->hasStates() ? $item->getState()->getLabel() : '' ?></td>
+        <td>
+            <?php if ($item->getItemType()->hasStates()): ?>
+            <span class="label label-<?php
+                echo ($item->getState()->getNativeState() == $item->getState()->getNativeStates(\DevCtrl\Domain\Item\State\State::STATE_CLOSED)) ?
+                    'inverse': 'success'; ?>"><?php echo $item->getState()->getLabel() ?></span>
+            <?php endif; ?>
+        </td>
     </tr>
     <?php if ($item->getItemType()->supportsTiming()): ?>
     <tr>
-        <th>estimated</th>
-        <td><?php echo $item->getTimeCounter()->getEstimated(); ?></td>
-        <th>executed</th>
-        <td><?php echo $item->getTimeCounter()->getExecuted(); ?></td>
+        <th>timing</th>
+        <td><?php echo $item->getTimeCounter()->getEstimated(); ?> / <?php echo $item->getTimeCounter()->getExecuted(); ?></td>
+        <th>created by</th>
+        <td>
+            <a href="#"><?php echo $item->getCreatedBy()->getUsername(); ?></a>
+        </td>
     </tr>
     <?php endif; ?>
     <tr>
@@ -29,3 +40,5 @@
     </tr>
     <?php endforeach; ?>
 </table>
+
+<?php echo $this->pageTitle('Last comments', null, array('level' => 3)); ?>

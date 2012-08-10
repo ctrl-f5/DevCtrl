@@ -2,7 +2,6 @@
 
 namespace DevCtrl\Controller;
 
-use Ctrl\Controller\AbstractController;
 use Zend\View\Model\ViewModel;
 use DevCtrl\Service\ItemService;
 use DevCtrl\Service\ItemTypeService;
@@ -59,7 +58,7 @@ class ItemController extends AbstractController
 
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $item = new \DevCtrl\Domain\Item\Item($itemType);
+                $item = new \DevCtrl\Domain\Item\Item($itemType, $this->getCurrentUser());
                 $elements = $form->getElements();
                 $item->setTitle($elements['title']->getValue());
                 $item->setDescription($elements['description']->getValue());
@@ -94,6 +93,16 @@ class ItemController extends AbstractController
             'itemType' => $itemType,
             'project' => $project,
             'form' => $form,
+        ));
+    }
+
+    public function relatedUsersAction()
+    {
+        $id = $this->params('id');
+        $item = $this->getDomainService('Item')->getById($id);
+
+        return new ViewModel(array(
+            'item' => $item
         ));
     }
 }

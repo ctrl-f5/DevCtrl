@@ -57,4 +57,12 @@ abstract class AbstractController extends Controller
 
         throw new Exception('native type not found: '.$typeName);
     }
+
+    /**
+     * @return \DevCtrl\Domain\User\User
+     */
+    public function getCurrentUser()
+    {
+        return $this->getDomainService('User')->getCurrentUser();
+    }
 }

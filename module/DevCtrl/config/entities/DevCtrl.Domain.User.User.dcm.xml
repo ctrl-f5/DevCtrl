@@ -9,9 +9,16 @@
             <sequence-generator sequence-name="items_autoinc" allocation-size="100" initial-value="1" />
         </id>
 
-        <field name="username" column="username" type="string" length="255" nullable="false" unique="false" />
-        <field name="firstName" column="firstName" type="text" nullable="true" unique="false" />
-        <field name="lastName" column="lastName" type="datetime" nullable="false" unique="false" />
+        <field name="username"      column="username"   type="string" length="255" nullable="false" unique="false" />
+        <field name="firstName"     column="firstName"  type="string" length="255" nullable="false" unique="false" />
+        <field name="lastName"      column="lastName"   type="string" length="255" nullable="false" unique="false" />
+        <field name="email"         column="email"      type="string" length="255" nullable="false" unique="false" />
+
+        <one-to-many field="itemsCreated" target-entity="DevCtrl\Domain\Item\Item" mapped-by="createdBy">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
 
     </entity>
 </doctrine-mapping>

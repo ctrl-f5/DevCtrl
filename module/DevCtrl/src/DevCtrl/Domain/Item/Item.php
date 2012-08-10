@@ -4,6 +4,7 @@ namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
 use DevCtrl\Domain\Project;
+use DevCtrl\Domain\User\User;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\State\State;
 use \DevCtrl\Domain\Item\Property\Property;
@@ -52,10 +53,16 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     protected $dateCreated;
 
-    public function __construct(Type $type)
+    /**
+     * @var User
+     */
+    protected $createdBy;
+
+    public function __construct(Type $type, User $createdBy)
     {
         $this->itemProperties = new \DevCtrl\Domain\Collection();
         $this->itemType = $type;
+        $this->createdBy = $createdBy;
         $this->dateCreated = new DateTime();
     }
 
@@ -227,9 +234,13 @@ class Item extends \Ctrl\Domain\PersistableModel
     {
         if ($this->getItemType()->supportsTiming()) {
             if ($this->getItemType()->hasStates() && $this->getState()->getNativeState() == State::STATE_CLOSED) {
-                return $this->getTimeCounter()->getEstimated();
+                return 100;
             } else {
-                return $this->getTimeCounter()->getExecuted();
+                $est = $this->getTimeCounter()->getEstimated();
+                if ($est) {
+                    return round($this->getTimeCounter()->getExecuted()/$est*100);
+                }
+                return 0;
             }
         }
     }
@@ -258,5 +269,13 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+
+    /**
+     * @return User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
     }
 }
