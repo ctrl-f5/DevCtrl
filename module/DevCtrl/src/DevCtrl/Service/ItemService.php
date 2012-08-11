@@ -20,7 +20,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Item';
 
-    public function getForm(Item $item = null)
+    public function getForm(Item $project = null)
     {
         throw new Exception('this method is not supported on this service, use the getFormForType() function instead');
     }
@@ -153,9 +153,18 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
 
     public function getItemsAssignedToUser(User $user, Project $project = null)
     {
-        return $this->getEntityManager()
-            ->createQuery('SELECT i FROM '.$this->entity.' i JOIN i.assignedUsers iu WHERE iu.id = :userid')
-            ->setParameter('userid', $user->getId())
-            ->getResult();
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('i')
+            ->from('DevCtrl\Domain\Item\Item', 'i')
+            ->join('i.assignedUsers', 'iu')
+            ->where('iu.id = :userid')
+            ->setParameter('userid', $user->getId());
+        if ($project) {
+            $qb->join('i.project', 'p')
+                ->andWhere('p.id = :projectid')
+                ->setParameter('projectid', $project->getId());
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

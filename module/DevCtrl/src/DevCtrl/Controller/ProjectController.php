@@ -24,6 +24,41 @@ class ProjectController extends AbstractController
         ));
     }
 
+    public function createAction()
+    {
+        /** @var $projectService ProjectService */
+        $projectService = $this->getDomainService('Project');
+
+        $form = $projectService->getForm();
+        $form->setAttribute('action', $this->url()->fromRoute('default', array(
+            'controller' => 'project',
+            'action' => 'create',
+        )));
+        $form->setReturnUrl($this->url()->fromRoute('default/id', array(
+            'controller' => 'project',
+            'action' => 'index',
+        )));
+
+        if ($this->getRequest()->isPost()) {
+
+            $form->setData($this->getRequest()->getPost());
+            if ($form->isValid()) {
+                $project = new Project();
+                $elements = $form->getElements();
+                $project->setName($elements['name']->getValue());
+                $project->setDescription($elements['description']->getValue());
+
+                $projectService->persist($project);
+
+                return $this->redirect()->toUrl($form->getReturnurl());
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $form,
+        ));
+    }
+
     public function detailAction()
     {
         try {

@@ -1,6 +1,14 @@
 <?php /** @var $this \Ctrl\View\PhpView */ ?>
 <?php echo $this->pageTitle('Projects', count($this->projects)); ?>
-
+<p></p>
+<div class="btn-group">
+    <?php echo $this->ctrlButton('link', array('value' => 'Add new project',
+    'href' => $this->url('default', array(
+        'controller' => 'project',
+        'action' => 'create',
+    ))), 'primary') ?>
+</div>
+<p></p>
 <div class="">
     <table class="table table-striped">
         <tr>
