@@ -15,6 +15,11 @@ use DevCtrl\Service\ListValueService;
 
 class ValueListController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    protected $controllerName = 'value-list';
+
     public function indexAction()
     {
         /** @var $listService \DevCtrl\Service\ValueListService */
@@ -27,8 +32,11 @@ class ValueListController extends AbstractController
 
     public function detailAction()
     {
-        $id = $this->params('id');
-        $list = $this->getDomainService('ValueList')->getById($id);
+        try {
+            $list = $this->getDomainService('ValueList')->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+        }
 
         return new ViewModel(array(
             'list' => $list,
@@ -77,10 +85,14 @@ class ValueListController extends AbstractController
 
     public function addValueAction()
     {
-        /** @var $listService ValueListService */
-        $listService = $this->getDomainService('ValueList');
-        /** @var $list ValueList */
-        $list = $listService->getById($this->params()->fromRoute('id'));
+        try {
+            /** @var $listService ValueListService */
+            $listService = $this->getDomainService('ValueList');
+            /** @var $list ValueList */
+            $list = $this->getDomainService('ValueList')->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+        }
 
         if ($this->getRequest()->isPost()) {
 
@@ -105,23 +117,21 @@ class ValueListController extends AbstractController
 
     public function deleteValueAction()
     {
-        /** @var $valueService ListValueService */
-        $valueService = $this->getDomainService('ListValue');
-        /** @var $value ListValue */
-        $value = $valueService->getById($this->params()->fromRoute('id'));
-
-        if ($value) {
-            $valueService->remove($value);
-
-            return $this->redirect()->toRoute('default/id', array(
-                'controller' => 'value-list',
-                'action' => 'detail',
-                'id' => $value->getList()->getId(),
-            ));
+        try {
+            /** @var $valueService ListValueService */
+            $valueService = $this->getDomainService('ListValue');
+            /** @var $value ListValue */
+            $value = $valueService->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
         }
 
-        return $this->redirect()->toRoute('default', array(
+        $valueService->remove($value);
+
+        return $this->redirect()->toRoute('default/id', array(
             'controller' => 'value-list',
+            'action' => 'detail',
+            'id' => $value->getList()->getId(),
         ));
     }
 

@@ -77,8 +77,8 @@ class StateListController extends AbstractController
 
     public function detailAction()
     {
-        $listService = $this->getDomainService('StateList');
         try {
+            $listService = $this->getDomainService('StateList');
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
             return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
