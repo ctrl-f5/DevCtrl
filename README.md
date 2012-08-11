@@ -33,7 +33,8 @@ to create a database with sample data execute the following task:
 
     phing db-reload
 
-phing is currently configured with the following tasks
+if something goes wrong while building the database you can always add the -verbose flag.
+phing is currently configured with the following tasks:
 
     phing -l
     Buildfile: /my/project/dir/build/build.xml

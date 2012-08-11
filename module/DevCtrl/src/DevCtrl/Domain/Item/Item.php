@@ -4,6 +4,7 @@ namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
 use DevCtrl\Domain\Project;
+use DevCtrl\Domain\Item\ItemRelation;
 use DevCtrl\Domain\User\User;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\State\State;
@@ -54,6 +55,16 @@ class Item extends \Ctrl\Domain\PersistableModel
     protected $dateCreated;
 
     /**
+     * @var User[]
+     */
+    protected $assignedUsers;
+
+    /**
+     * @var ItemRelation[]
+     */
+    protected $itemRelations;
+
+    /**
      * @var User
      */
     protected $createdBy;
@@ -61,6 +72,8 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function __construct(Type $type, User $createdBy)
     {
         $this->itemProperties = new \DevCtrl\Domain\Collection();
+        $this->itemRelations = new \DevCtrl\Domain\Collection();
+        $this->assignedUsers = new \DevCtrl\Domain\Collection();
         $this->itemType = $type;
         $this->createdBy = $createdBy;
         $this->dateCreated = new DateTime();
@@ -277,5 +290,40 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * @param \DevCtrl\Domain\User\User $user
+     */
+    public function assignUser(User $user)
+    {
+        $this->assignedUsers[] = $user;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\User\User[]
+     */
+    public function getAssignedUsers()
+    {
+        return $this->assignedUsers;
+    }
+
+    /**
+     * @param Item $item
+     * @param $relationType
+     * @return Item
+     */
+    public function addRelatedItem(Item $item, $relationType)
+    {
+        //$this->itemRelations = $itemRelations;
+        return $this;
+    }
+
+    /**
+     * @return ItemRelation[]
+     */
+    public function getItemRelations()
+    {
+        return $this->itemRelations;
     }
 }

@@ -1,0 +1,40 @@
+<?php $item = $this->item; /** @var $item \DevCtrl\Domain\Item\Item */ ?>
+<?php echo $this->pageTitle('Assigned users', $item->getTitle()); ?>
+<?php $this->itemTab = 'assigned-users'; ?>
+<?php echo $this->render('dev-ctrl/item/partial/item-tabs.phtml'); ?>
+<div class="btn-group">
+    <a class="btn btn-primary" href="<?php echo $this->url('default/id', array(
+            'controller' => 'item',
+            'action' => 'assign-user',
+            'id' => $item->getId()
+        )); ?>">
+        Assign new user
+    </a>
+</div>
+<?php //echo $this->partial('dev-ctrl/user/partial/widget.phtml', array('user' => $item->getCreatedBy())); ?>
+<p></p>
+<div class="">
+    <table class="table table-striped">
+        <tr>
+            <th>username</th>
+            <th>name</th>
+            <th>email</th>
+            <th>actions</th>
+        </tr>
+        <?php foreach ($item->getAssignedUsers() as $u): ?>
+        <tr>
+            <td><?php echo $u->getUsername(); ?></td>
+            <td><?php echo $u->getFirstName().' '.$u->getLastName(); ?></td>
+            <td><?php echo $u->getEmail(); ?></td>
+            <td>
+                <?php echo $this->ctrlButton('link', array('value' => 'profile',
+                'href' => $this->url('default/id', array(
+                    'controller' => 'user',
+                    'action' => 'profile',
+                    'id' => $u->getId()
+                ))), 'info') ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>

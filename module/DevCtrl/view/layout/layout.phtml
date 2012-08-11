@@ -19,29 +19,33 @@
         ?>
         <!-- Custom Scripts -->
         <?php //echo $this->headScript()->appendFile($this->basePath() . '/js/ctrljs.config.js'); ?>
-  </head>
-  <body>
+    </head>
+    <body>
 
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-            <a class="brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Dev Ctrl') ?></a>
-          <div class="nav-collapse">
-            <ul class="nav">
-                <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                <li class="active"><a href="<?php echo $this->url('default', array(
-                    'controller' => 'item-type',
-                )) ?>"><?php echo $this->translate('Configuration') ?></a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Dev Ctrl') ?></a>
+                <ul class="nav">
+                    <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                    <li class="active"><a href="<?php echo $this->url('default', array(
+                        'controller' => 'item-type',
+                    )) ?>"><?php echo $this->translate('Configuration') ?></a></li>
+                </ul>
+                <ul class="nav pull-right">
+                    <li><a href="#"><span class="icon icon-user icon-white"></span> <strong>username</strong></a></li>
+                    <li class="divider-vertical"></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="icon icon-wrench icon-white"></span> <b class="carret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><strong>settings</strong></a></li>
+                            <li><a href="#"><strong>profile</strong></a></li>
+                            <li><a href="#"><strong>logout</strong></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="container">

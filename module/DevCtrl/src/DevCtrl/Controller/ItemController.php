@@ -96,13 +96,47 @@ class ItemController extends AbstractController
         ));
     }
 
-    public function relatedUsersAction()
+    public function assignedUsersAction()
     {
         $id = $this->params('id');
         $item = $this->getDomainService('Item')->getById($id);
 
         return new ViewModel(array(
             'item' => $item
+        ));
+    }
+
+    public function assignUserAction()
+    {
+        $id = $this->params('id');
+        /** @var $item Item */
+        $item = $this->getDomainService('Item')->getById($id);
+        /** @var $userService \DevCtrl\Service\UserService */
+        $userService = $this->getDomainService('User');
+
+        $returnUrl = $this->url()->fromRoute('default/id', array(
+            'controller' => 'item',
+            'action' => 'assigned-users',
+            'id' => $item->getId(),
+        ));
+
+        $userId = $this->params()->fromQuery('user');
+        if ($userId) {
+            try {
+                $user = $userService->getById($userId);
+            } catch (\Exception $e) {
+                return $this->redirect()->toUrl($returnUrl);
+            }
+
+            $item->assignUser($user);
+            $userService->persist($item);
+
+            return $this->redirect()->toUrl($returnUrl);
+        }
+
+        return new ViewModel(array(
+            'item' => $item,
+            'users' => $userService->getUsersNotAssignedToItem($item)
         ));
     }
 }

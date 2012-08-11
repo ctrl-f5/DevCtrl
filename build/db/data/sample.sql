@@ -8,6 +8,8 @@ INSERT INTO `itemtiming` (`id`, `item_id`, `estimated`, `executed`) VALUES
 ('1', '1', '40', '48'),
 ('2', '2', '80', '32');
 
+INSERT INTO `item_user` (`item_id`, `user_id`) VALUES
+(2, 1);
 
 INSERT INTO `itemstate` (`id`, `label`, `color`, `nativeState`, `order`, `itemStateList_id`) VALUES
 (1, 'open', '', 'open', 1, 1),
@@ -60,8 +62,8 @@ INSERT INTO `propertyvaluelist_nativevalue` (`id`, `order`, `nativeValue_id`, `p
 (3, 3, 3, 1);
 
 INSERT INTO `user` (`id`, `username`, `lastName`, `firstName`, `email`) VALUES
-(1, 'johnd', 'john', 'doe', 'john.doe@example.com'),
-(2, 'ronny', 'ron', 'swanson', 'ron.swanson@meatlovers.com'),
-(3, 'geargk', 'george', 'kastanza', 'george.kastanza@nyc.com');
+(1, 'johnd', 'doe', 'john', 'john.doe@example.com'),
+(2, 'ronny', 'swanson', 'ron', 'ron.swanson@meatlovers.com'),
+(3, 'geargk', 'kastanza', 'george', 'george.kastanza@nyc.com');
 
 SET foreign_key_checks = 1;

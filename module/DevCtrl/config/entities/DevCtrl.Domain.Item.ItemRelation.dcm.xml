@@ -1,0 +1,24 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="DevCtrl\Domain\Item\ItemRelation" table="itemrelation">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="autoinc" allocation-size="100" initial-value="1" />
+        </id>
+
+        <field name="type" column="type" type="string" length="255" nullable="false" unique="false" />
+        <field name="description" column="description" type="text" nullable="true" unique="false" />
+
+        <many-to-one field="item" target-entity="DevCtrl\Domain\Item\Item" inversed-by="itemRelations">
+            <join-column name="item_id" referenced-column-name="id" />
+        </many-to-one>
+
+        <many-to-one field="relatedItem" target-entity="DevCtrl\Domain\Item\Item">
+            <join-column name="related_item_id" referenced-column-name="id" />
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>

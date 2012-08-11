@@ -1,12 +1,17 @@
 <ul class="nav nav-tabs">
+    <li class="primary"><a href="<?php echo $this->url('default/id', array(
+        'controller' => 'project',
+        'action' => 'detail',
+        'id' => $this->item->getProject()->getId()
+    )); ?>"><span class="icon icon-chevron-up"></span> Got to project</a></li>
     <li<?php if ($this->itemTab == 'detail') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item',
         'action' => 'detail',
         'id' => $this->item->getId()
     )); ?>">Detail</a></li>
-    <li<?php if ($this->itemTab == 'related-users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+    <li<?php if ($this->itemTab == 'assigned-users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item',
-        'action' => 'related-users',
+        'action' => 'assigned-users',
         'id' => $this->item->getId()
     )); ?>">Assigned users</a></li>
     <li<?php if ($this->itemTab == 'states') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(

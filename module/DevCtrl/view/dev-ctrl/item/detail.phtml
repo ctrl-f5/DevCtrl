@@ -41,4 +41,47 @@
     <?php endforeach; ?>
 </table>
 
+
+<?php echo $this->pageTitle('Related items', null, array('level' => 3)); ?>
+<div class="btn-group">
+    <a class="btn btn-primary btn-mini" href="<?php echo $this->url('default/id', array(
+        'controller' => 'item',
+        'action' => 'add-relation',
+        'id' => $item->getId()
+    )); ?>">
+        Add new relation
+    </a>
+</div>
+
+<p></p>
+<?php if (count($item->getItemRelations())): ?>
+<table class="table table-striped">
+    <tr>
+        <th>type</th>
+        <th>id</th>
+        <th>title</th>
+    </tr>
+    <?php foreach ($item->getItemRelations() as $ir): ?>
+    <tr>
+        <td><?php echo $ir->getType(); ?></td>
+        <td><?php echo $ir->getItem()->getId(); ?></td>
+        <td><?php echo $ir->getItem()->getTitle(); ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php else: ?>
+<p>No relations</p>
+<?php endif; ?>
+
+<p></p>
 <?php echo $this->pageTitle('Last comments', null, array('level' => 3)); ?>
+<div class="btn-group">
+    <a class="btn btn-primary btn-mini" href="<?php echo $this->url('default/id', array(
+        'controller' => 'item',
+        'action' => 'add-relation',
+        'id' => $item->getId()
+    )); ?>">
+        Add comment
+    </a>
+</div>
+<p>No comments</p>
