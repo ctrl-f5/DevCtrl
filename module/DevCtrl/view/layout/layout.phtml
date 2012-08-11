@@ -49,16 +49,16 @@
     </div>
 
     <div class="container">
+        <?php echo $this->render('dev-ctrl/partial/app-messages.phtml'); ?>
+    <?php echo $this->content; ?>
 
-      <?php echo $this->content; ?>
+    <hr>
 
-      <hr>
-
-      <footer>
+    <footer>
         <p>&copy; 0.0.0 development</p>
-      </footer>
+    </footer>
 
     </div> <!-- /container -->
 
-  </body>
+    </body>
 </html>

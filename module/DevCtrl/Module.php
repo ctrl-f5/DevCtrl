@@ -17,6 +17,7 @@ class Module
      */
     public function onBootstrap($e)
     {
+        /** @var $eventManager \Zend\EventManager\EventManager */
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -31,6 +32,22 @@ class Module
             array(\Doctrine\ORM\Events::prePersist),
             new ProviderToStringSubscriber($e->getApplication()->getServiceManager())
         );
+
+        //feed the flashMessenger vars into the layout
+        $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function ($e) {
+            $view = $e->getViewModel();
+            if ($view->getTemplate() == 'layout/layout') {
+                /** @var $flashMessenger \Zend\Mvc\Controller\Plugin\FlashMessenger */
+                $flashMessenger = $e->getApplication()->getServiceManager()->get('ControllerPluginManager')->get('flashMessenger');
+                $messages = array();
+                foreach (array('error', 'success', 'info') as $ns) {
+                    if ($flashMessenger->setNamespace($ns)->hasMessages()) {
+                        $messages[$ns] = $flashMessenger->getMessages();
+                    }
+                }
+                $view->appMessages = $messages;
+            }
+        });
     }
 
     public function getConfig()

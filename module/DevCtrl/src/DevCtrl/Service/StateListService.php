@@ -21,16 +21,21 @@ class StateListService extends \Ctrl\Service\AbstractDomainModelService
         $property->setValue($state->getName())
             ->setLabel('name');
 
+        $form->setInputFilter($this->getInputFilter());
+        $form->add($property);
+
+        return $form;
+    }
+
+    public function getInputFilter()
+    {
         $factory = new FilterFactory();
         $filter = new \Zend\InputFilter\InputFilter();
         $filter->add($factory->createInput(array(
             'name'     => 'name',
             'required' => true,
         )));
-        $form->setInputFilter($filter);
-        $form->add($property);
-
-        return $form;
+        return $filter;
     }
 
     public function canRemove(StateList $list)

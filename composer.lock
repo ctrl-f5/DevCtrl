@@ -10,8 +10,8 @@
         {
             "package": "ctrl-f5/ctrljs",
             "version": "dev-master",
-            "source-reference": "547237c686890a297431082d04a9acd888a6af85",
-            "commit-date": "1344369232"
+            "source-reference": "4e917f6c4193fb93dcd9f77405e3001eabd444c8",
+            "commit-date": "1344705422"
         },
         {
             "package": "ctrl-f5/ctrllib",
@@ -70,8 +70,8 @@
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "d68f45aaf4f5d074c3ac7c0f2d27951a11ecc04c",
-            "commit-date": "1344326863"
+            "source-reference": "3b66f1056f5ac37146d3b755964e8a43a205f2f5",
+            "commit-date": "1344349441"
         },
         {
             "package": "symfony/yaml",

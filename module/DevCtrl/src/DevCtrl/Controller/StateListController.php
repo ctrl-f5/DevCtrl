@@ -79,8 +79,16 @@ class StateListController extends AbstractController
     {
         /** @var $listService StateListService */
         $listService = $this->getDomainService('StateList');
-        /** @var $list StateList */
-        $list = $listService->getById($this->params()->fromRoute('id'));
+        try {
+            /** @var $list StateList */
+            $list = $listService->getById($this->params()->fromRoute('id'));
+        } catch (Exception $e) {
+            $this->flashMessenger()->addMessage('Looks like we couldn\'nt find that list...');
+            return $this->redirect()->toRoute('default', array(
+                'controller' => 'state-list',
+                'action' => 'index',
+            ));
+        }
 
         /** @var $stateService StateService */
         $stateService = $this->getDomainService('State');
