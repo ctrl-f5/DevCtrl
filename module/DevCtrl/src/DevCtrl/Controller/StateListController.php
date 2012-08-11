@@ -62,7 +62,7 @@ class StateListController extends AbstractController
         try {
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         if ($listService->canRemove($list)) {
@@ -81,7 +81,7 @@ class StateListController extends AbstractController
             $listService = $this->getDomainService('StateList');
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         return new ViewModel(array(
@@ -97,7 +97,7 @@ class StateListController extends AbstractController
             /** @var $list StateList */
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         /** @var $stateService StateService */
@@ -147,7 +147,7 @@ class StateListController extends AbstractController
             /** @var $state State */
             $state = $stateService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that state...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that state...');
         }
 
         try {
@@ -156,7 +156,7 @@ class StateListController extends AbstractController
                 $stateService->remove($state);
             }
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like something went wrong while removing...');
+            return $this->redirectWithError('Looks like something went wrong while removing...');
         }
 
         return $this->redirect()->toRoute('default/id', array(
@@ -174,7 +174,7 @@ class StateListController extends AbstractController
         try {
             $list = $listService->getById($this->params()->fromQuery('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         $stateId = $this->params()->fromQuery('state');
@@ -190,7 +190,7 @@ class StateListController extends AbstractController
             );
             $listService->persist($list);
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks something went wrong while ordering...', $list->getId(), null, 'detail');
+            return $this->redirectWithError('Looks something went wrong while ordering...', $list->getId(), null, 'detail');
         }
 
         return $this->redirect()->toRoute('default/id', array(

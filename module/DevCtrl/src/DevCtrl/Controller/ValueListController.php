@@ -35,7 +35,7 @@ class ValueListController extends AbstractController
         try {
             $list = $this->getDomainService('ValueList')->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         return new ViewModel(array(
@@ -91,7 +91,7 @@ class ValueListController extends AbstractController
             /** @var $list ValueList */
             $list = $this->getDomainService('ValueList')->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         if ($this->getRequest()->isPost()) {
@@ -123,7 +123,7 @@ class ValueListController extends AbstractController
             /** @var $value ListValue */
             $value = $valueService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
         }
 
         $valueService->remove($value);

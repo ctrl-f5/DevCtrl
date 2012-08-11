@@ -65,4 +65,15 @@ abstract class AbstractController extends Controller
     {
         return $this->getDomainService('User')->getCurrentUser();
     }
+
+    public function renderErrorPage($message = null)
+    {
+        $view = new ViewModel(array(
+            'error' => 'We didnt couldn\'t find that page for you',
+            'message' => $message,
+        ));
+        $view->setTemplate('dev-ctrl/error/custom-error');
+
+        return $view;
+    }
 }

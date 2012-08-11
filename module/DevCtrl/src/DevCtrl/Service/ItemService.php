@@ -37,10 +37,16 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         if ($item) $input->setValue($item->getDescription());
         $form->add($input);
 
-        if ($type->supportsTiming()) {
+        if ($type->supportsTiming() && $item->getTimeCounter()) {
             $input = new TextInput('timing-estimated');
             $input->setLabel('estimated time');
-            //if ($item) $input->setValue($item->get());
+            if ($item) $input->setValue($item->getTimeCounter()->getEstimated());
+            $form->add($input);
+
+            $input = new TextInput('timing-executed');
+            $input->setLabel('executed time');
+            if ($item) $input->setValue($item->getTimeCounter()->getExecuted());
+            else $input->setValue(0);
             $form->add($input);
         }
 
@@ -52,6 +58,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
                 $states[$s->getId()] = $s->getLabel();
             }
             $input->setAttribute('options', $states);
+            if ($item) $input->setValue($item->getState()->getId());
             $form->add($input);
         }
 
@@ -98,6 +105,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         return $form;
     }
 
+
     protected function getModelInputFilter(Type $type)
     {
         $factory = new FilterFactory();
@@ -116,6 +124,11 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         if ($type->supportsTiming()) {
             $filter->add($factory->createInput(array(
                 'name'     => 'timing-estimated',
+                'required' => true,
+            )));
+
+            $filter->add($factory->createInput(array(
+                'name'     => 'timing-executed',
                 'required' => true,
             )));
         }

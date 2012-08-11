@@ -45,6 +45,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $detailUrl; ?>">detail</a></li>
+                        <li><a href="<?php echo $this->url('default/id', array('controller' => 'item', 'action' => 'edit', 'id' => $i->getId())); ?> ?>">edit</a></li>
                         <li><a href="<?php echo $detailUrl; ?>">assign to me</a></li>
                     </ul>
                     </div>
