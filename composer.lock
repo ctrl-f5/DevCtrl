@@ -4,8 +4,8 @@
         {
             "package": "composer/installers",
             "version": "dev-master",
-            "source-reference": "d82819c2f2d73fbee8e49487efa35866b6c05ca2",
-            "commit-date": "1344119345"
+            "source-reference": "2cc9ad106e2a617adba8fd0f948e8873297efd3b",
+            "commit-date": "1344721334"
         },
         {
             "package": "ctrl-f5/ctrljs",
@@ -16,8 +16,8 @@
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "964b9c74b91051a283ae0b76687d8ef70487ddc1",
-            "commit-date": "1344712396"
+            "source-reference": "38f22eea8a304af4ba6b9d074738930610ccd283",
+            "commit-date": "1344723431"
         },
         {
             "package": "doctrine/common",
