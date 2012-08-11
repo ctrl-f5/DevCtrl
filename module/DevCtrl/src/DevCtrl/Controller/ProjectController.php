@@ -9,6 +9,11 @@ use Zend\View\Model\ViewModel;
 
 class ProjectController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    protected $controllerName = 'project';
+
     public function indexAction()
     {
         /** @var $projectService ProjectService */
@@ -21,8 +26,19 @@ class ProjectController extends AbstractController
 
     public function detailAction()
     {
+        try {
+            $projectService = $this->getDomainService('Project');
+            $itemService = $this->getDomainService('Item');
+            $userService = $this->getDomainService('User');
+            $project = $projectService->getById($this->params()->fromRoute('id'));
+            $userItems = $itemService->getItemsAssignedToUser($userService->getCurrentUser(), $project);
+        } catch (\Exception $e) {
+            return $this->redirectWithError('Project detail could not be loaded.');
+        }
+
         return new ViewModel(array(
-            'project' => $this->getDomainService('project')->getById($this->params('id'))
+            'project' => $project,
+            'userItems' => $userItems,
         ));
     }
 

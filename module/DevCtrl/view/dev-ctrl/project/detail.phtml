@@ -70,9 +70,9 @@
     </div>
 </div>
 
-<?php echo $this->pageTitle('Items involving me', null, array('level' => 3)); ?>
+<?php echo $this->pageTitle('Items assigned to me', null, array('level' => 3)); ?>
 <p></p>
-<?php foreach ($project->getBacklog() as $i): ?>
+<?php foreach ($userItems as $i): ?>
 <div class="container-fluid well" style="padding: 5px;">
     <div class="row-fluid">
         <div class="span1">

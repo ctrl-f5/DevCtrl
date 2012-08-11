@@ -6,6 +6,8 @@ use \DevCtrl\Domain;
 use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Property\Property;
+use DevCtrl\Domain\User\User;
+use DevCtrl\Domain\Project;
 use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 use Zend\InputFilter\Factory as FilterFactory;
 use Zend\InputFilter\InputFilter;
@@ -105,8 +107,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         return $form;
     }
 
-
-    protected function getModelInputFilter(Type $type)
+    public function getModelInputFilter(Type $type)
     {
         $factory = new FilterFactory();
         $filter = new InputFilter();
@@ -148,5 +149,13 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         }
 
         return $filter;
+    }
+
+    public function getItemsAssignedToUser(User $user, Project $project = null)
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT i FROM '.$this->entity.' i JOIN i.assignedUsers iu WHERE iu.id = :userid')
+            ->setParameter('userid', $user->getId())
+            ->getResult();
     }
 }

@@ -13,17 +13,17 @@
         'controller' => 'item',
         'action' => 'assigned-users',
         'id' => $this->item->getId()
-    )); ?>">Assigned users</a></li>
+    )); ?>">Assigned users <span class="label label-info"><?php echo count($this->item->getAssignedUsers()); ?></span></a></li>
     <li<?php if ($this->itemTab == 'states') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item-type',
         'action' => 'states',
         'id' => $this->item->getId()
-    )); ?>">Comments (0)</a></li>
+    )); ?>">Comments <span class="label">0<?php //echo count($this->item->getAssignedUsers()); ?></span></a></li>
     <li<?php if ($this->itemTab == 'states') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item-type',
         'action' => 'states',
         'id' => $this->item->getId()
-    )); ?>">Attachments (0)</a></li>
+    )); ?>">Attachments <span class="label">0<?php //echo count($this->item->getAssignedUsers()); ?></span></a></li>
     <li<?php if ($this->itemTab == 'edit') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item',
         'action' => 'edit',
