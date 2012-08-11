@@ -35,10 +35,14 @@ class Module
 
         //feed the flashMessenger vars into the layout
         $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function ($e) {
+            $serviceManager = $e->getApplication()->getServiceManager();
             $view = $e->getViewModel();
             if ($view->getTemplate() == 'layout/layout') {
+                /**
+                 * add flash messages
+                 */
                 /** @var $flashMessenger \Zend\Mvc\Controller\Plugin\FlashMessenger */
-                $flashMessenger = $e->getApplication()->getServiceManager()->get('ControllerPluginManager')->get('flashMessenger');
+                $flashMessenger = $serviceManager->get('ControllerPluginManager')->get('flashMessenger');
                 $messages = array();
                 foreach (array('error', 'success', 'info') as $ns) {
                     if ($flashMessenger->setNamespace($ns)->hasMessages()) {
@@ -46,6 +50,11 @@ class Module
                     }
                 }
                 $view->appMessages = $messages;
+
+                /**
+                 * add user
+                 */
+                $view->appCurrentUser = $serviceManager->get('DomainServiceLoader')->get('User')->getCurrentUser();
             }
         });
     }
