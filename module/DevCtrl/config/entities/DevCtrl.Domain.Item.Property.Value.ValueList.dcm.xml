@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="DevCtrl\Domain\Item\Property\Value\ValueList" table="propertyvalueList">
+    <entity name="DevCtrl\Domain\Item\Property\Value\ValueList" table="propertyvaluelist">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
