@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilter;
 use DevCtrl\Domain\Item\Property\ValuesProvider\ProviderInterface as ValuesProvider;
 use Ctrl\Form\Form;
 use Ctrl\Form\Element\Text as TextInput;
-use Ctrl\Form\Element\Select as SelectInput;
+use Ctrl\Form\Element\Textarea as TextareaInput;
 
 class ProjectService extends \Ctrl\Service\AbstractDomainModelService
 {
@@ -39,7 +39,7 @@ class ProjectService extends \Ctrl\Service\AbstractDomainModelService
         if ($project) $input->setValue($project->getName());
         $form->add($input);
 
-        $input = new TextInput('description');
+        $input = new TextareaInput('description');
         $input->setLabel('description');
         if ($project) $input->setValue($project->getDescription());
         $form->add($input);

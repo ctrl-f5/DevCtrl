@@ -2,7 +2,6 @@
 <?php /** @var $project \DevCtrl\Domain\Project */ ?>
 <?php $project = $this->project ?>
 <?php echo $this->pageTitle('Project', $this->project->getName()); ?>
-<p><?php echo $project->getDescription(); ?></p>
 <?php $this->page = 'info'; ?>
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 
@@ -11,6 +10,7 @@
     <a class="btn btn-success disabled" href="#">follow</a>
     <a class="btn" href="#">view all projects</a>
 </div>
+<p class="well well-small" style="display: inline-block; max-width: 75%"><?php echo nl2br($project->getDescription()); ?></p>
 <?php echo $this->pageTitle('Overview', null, array('level' => 3)); ?>
 <p></p>
 <div class="row-fluid well" style="padding-right: 0; padding-left: 0;">
