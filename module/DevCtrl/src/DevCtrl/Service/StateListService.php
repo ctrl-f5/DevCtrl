@@ -18,11 +18,11 @@ class StateListService extends \Ctrl\Service\AbstractDomainModelService
         $form = new Form('create-state-list');
 
         $property = new TextInput('name');
-        $property->setValue($state->getName())
-            ->setLabel('name');
+        $property->setLabel('name');
+        if ($state) $property->setValue($state->getName());
+        $form->add($property);
 
         $form->setInputFilter($this->getInputFilter());
-        $form->add($property);
 
         return $form;
     }

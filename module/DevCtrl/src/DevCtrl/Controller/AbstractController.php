@@ -13,11 +13,6 @@ use DevCtrl\Domain\Exception;
 
 abstract class AbstractController extends Controller
 {
-    public function __construct()
-    {
-        //var_dump($this->flashMessenger()->getSessionManager());
-    }
-
     public function getPropertyType($typeName)
     {
         $loader = $this->getServiceLocator()->get('PropertyTypeLoader');

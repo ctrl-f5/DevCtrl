@@ -11,6 +11,11 @@ use DevCtrl\Domain\Item\State\State;
 
 class StateListController extends AbstractController
 {
+    /**
+     * @var string
+     */
+    protected $controllerName = 'state-list';
+
     public function indexAction()
     {
         /** @var $listService \DevCtrl\Service\StateListService */
@@ -54,8 +59,13 @@ class StateListController extends AbstractController
     {
         /** @var $listService StateListService */
         $listService = $this->getDomainService('StateList');
-        $list = $this->getDomainService('StateList')->getById($this->params('id'));
-        if ($list && $listService->canRemove($list)) {
+        try {
+            $list = $listService->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+        }
+
+        if ($listService->canRemove($list)) {
             $listService->remove($list);
         }
 
@@ -67,8 +77,12 @@ class StateListController extends AbstractController
 
     public function detailAction()
     {
-        $id = $this->params('id');
-        $list = $this->getDomainService('StateList')->getById($id);
+        $listService = $this->getDomainService('StateList');
+        try {
+            $list = $listService->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+        }
 
         return new ViewModel(array(
             'list' => $list
@@ -82,12 +96,8 @@ class StateListController extends AbstractController
         try {
             /** @var $list StateList */
             $list = $listService->getById($this->params()->fromRoute('id'));
-        } catch (Exception $e) {
-            $this->flashMessenger()->addMessage('Looks like we couldn\'nt find that list...');
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'state-list',
-                'action' => 'index',
-            ));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
         }
 
         /** @var $stateService StateService */
@@ -133,11 +143,20 @@ class StateListController extends AbstractController
     {
         /** @var $stateService StateService */
         $stateService = $this->getDomainService('State');
-        /** @var $state State */
-        $state = $stateService->getById($this->params('id'));
-        $list = $state->getList();
-        if ($state && $stateService->canRemove($state)) {
-            $stateService->remove($state);
+        try {
+            /** @var $state State */
+            $state = $stateService->getById($this->params()->fromRoute('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that state...');
+        }
+
+        try {
+            $list = $state->getList();
+            if ($state && $stateService->canRemove($state)) {
+                $stateService->remove($state);
+            }
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like something went wrong while removing...');
         }
 
         return $this->redirect()->toRoute('default/id', array(
@@ -151,21 +170,28 @@ class StateListController extends AbstractController
     {
         /** @var $itemService \DevCtrl\Service\StateListService */
         $listService = $this->getDomainService('StateList');
-        /** @var $list StateList */
         $list = $listService->getById($this->params()->fromQuery('id'));
+        try {
+            $list = $listService->getById($this->params()->fromQuery('id'));
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks like we couldn\'nt find that list...');
+        }
 
         $stateId = $this->params()->fromQuery('state');
         $dir = $this->params()->fromQuery('dir');
 
-        $list->setStates(
-            $listService->switchOrderInCollection(
-                $list->getStates(),
-                $stateId,
-                $dir
-            )
-        );
-
-        $listService->persist($list);
+        try {
+            $list->setStates(
+                $listService->switchOrderInCollection(
+                    $list->getStates(),
+                    $stateId,
+                    $dir
+                )
+            );
+            $listService->persist($list);
+        } catch (\Exception $e) {
+            return $this->redirectToIndexWithError('Looks something went wrong while ordering...', $list->getId(), null, 'detail');
+        }
 
         return $this->redirect()->toRoute('default/id', array(
             'controller' => 'state-list',
