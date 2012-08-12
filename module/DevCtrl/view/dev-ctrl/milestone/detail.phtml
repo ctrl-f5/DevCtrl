@@ -12,7 +12,16 @@
         'action' => 'add-item',
         'id' => $milestone->getId(),
     ))), 'primary') ?>
-    <a class="btn" href="#">edit</a>
+    <a class="btn" href="<?php echo $this->url('default/id', array(
+        'controller' => 'milestone',
+        'action' => 'edit',
+        'id' => $milestone->getId(),
+    )); ?>">config <span class="icon icon-cog"></span></a>
+    <a class="btn" href="<?php echo $this->url('default/id', array(
+        'controller' => 'milestone',
+        'action' => 'index',
+        'id' => $milestone->getProject()->getId(),
+    )); ?>">show all milestones</a>
 </div>
 <?php echo $this->pageTitle('Milestone', $milestone->getLabel(), array('level' => 1)); ?>
 <p class="well well-small" style="display: inline-block; max-width: 75%"><?php echo nl2br($milestone->getDescription()); ?></p>
@@ -75,6 +84,20 @@
                 </div>
                 <div class="span4">
                     today
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2" style="text-align: right">
+                    <strong>date start: </strong>
+                </div>
+                <div class="span4">
+                    <?php echo $this->formatDate($milestone->getDateStart(), 'date'); ?>
+                </div>
+                <div class="span2" style="text-align: right">
+                    <strong>date end: </strong>
+                </div>
+                <div class="span4">
+                    <?php echo $this->formatDate($milestone->getDateEnd(), 'date'); ?>
                 </div>
             </div>
         </div>

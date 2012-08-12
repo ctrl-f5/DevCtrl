@@ -405,4 +405,12 @@ class Item extends \Ctrl\Domain\PersistableModel
     {
         return $this->versionReported;
     }
+
+    /**
+     * @return Milestone[]
+     */
+    public function getMilestones()
+    {
+        return $this->milestones;
+    }
 }

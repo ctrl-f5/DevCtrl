@@ -1,0 +1,20 @@
+<?php
+/** @var $this \Ctrl\View\PhpView
+ * @var $milestone \DevCtrl\Domain\Project\Milestone
+ * @var $form \Ctrl\Form\Form */
+use DevCtrl\Domain\Project\Milestone;
+echo $this->pageTitle('New milestone in', $project->getName());
+
+$form->setLabel('Please make your changes');
+echo $this->ctrlForm()->start($form);
+
+foreach ($form->getElements() as $e) {
+    echo $this->ctrlFormInput($e);
+}
+
+echo $this->ctrlFormActions(array(
+    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
+    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
+));
+
+echo $this->ctrlForm()->end($form);

@@ -16,23 +16,23 @@ class VersionService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Project\Version';
 
-    public function getForm(Version $version = null)
+    public function getForm(Version $milestone = null)
     {
         $form = new Form('form-project-version');
 
         $input = new TextInput('version');
         $input->setLabel('version');
-        if ($version) $input->setValue($version->getVersion());
+        if ($milestone) $input->setValue($milestone->getVersion());
         $form->add($input);
 
         $input = new TextInput('label');
         $input->setLabel('label');
-        if ($version) $input->setValue($version->getLabel());
+        if ($milestone) $input->setValue($milestone->getLabel());
         $form->add($input);
 
         $input = new TextInput('description');
         $input->setLabel('description');
-        if ($version) $input->setValue($version->getDescription());
+        if ($milestone) $input->setValue($milestone->getDescription());
         $form->add($input);
 
         $form->setInputFilter($this->getModelInputFilter());

@@ -52,6 +52,27 @@
     <?php endforeach; ?>
 </table>
 
+<?php if (count($item->getMilestones())): $milestone = $item->getMilestones()->first();?>
+    <?php echo $this->pageTitle('Project milestone', null, array('level' => 3)); ?>
+    <table class="table table-striped">
+        <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>items</th>
+            <th>actions</th>
+        </tr>
+        <tr>
+            <td><?php echo $milestone->getLabel(); ?></td>
+            <td><?php echo $milestone->getDescription(); ?></td>
+            <td><?php echo count($milestone->getBacklog()); ?></td>
+            <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
+                'controller' => 'milestone',
+                'action' => 'detail',
+                'id' => $milestone->getId()
+            )); ?>">detail</a></td>
+        </tr>
+    </table>
+<?php endif; ?>
 
 <?php echo $this->pageTitle('Related items', null, array('level' => 3)); ?>
 <div class="btn-group">

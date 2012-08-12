@@ -43,9 +43,7 @@
             <div class="row-fluid">
                 <div class="span1">
                     <?php if ($i->getItemType()->supportsStates()): ?>
-                    <span class="label label-<?php
-                        echo ($i->getState()->getNativeState() == $i->getState()->getNativeStates(\DevCtrl\Domain\Item\State\State::STATE_CLOSED)) ?
-                            'inverse': 'success'; ?>"><?php echo $i->getState()->getLabel() ?></span>
+                    <?php echo $this->itemState($i->getState()); ?>
                     <?php endif; ?>
                 </div>
                 <div class="span7">
@@ -58,7 +56,7 @@
                     <?php if ($i->getVersionFixed()) echo $i->getVersionFixed()->getVersion(); ?>
                 </div>
                 <div class="span2">
-                    <?php echo $this->formatDate($i->getDateCreated(), 'Y-m-d'); ?>
+                    <?php echo $this->formatDate($i->getDateCreated(), 'date'); ?>
                 </div>
             </div>
         </div>

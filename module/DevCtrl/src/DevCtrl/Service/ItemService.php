@@ -21,7 +21,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Item';
 
-    public function getForm(Item $version = null)
+    public function getForm(Item $milestone = null)
     {
         throw new Exception('this method is not supported on this service, use the getFormForType() function instead');
     }
@@ -188,6 +188,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
             ->from('DevCtrl\Domain\Item\Item', 'i')
             ->join('i.assignedUsers', 'iu')
             ->where('iu.id = :userid')
+            ->orderBy('i.dateUpdate', 'DESC')
             ->setParameter('userid', $user->getId());
 
         if ($context instanceof Project) {

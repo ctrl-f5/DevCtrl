@@ -30,18 +30,18 @@ class ProjectService extends \Ctrl\Service\AbstractDomainModelService
             ->getResult();
     }
 
-    public function getForm(Project $version = null)
+    public function getForm(Project $milestone = null)
     {
         $form = new Form('form-project');
 
         $input = new TextInput('name');
         $input->setLabel('name');
-        if ($version) $input->setValue($version->getName());
+        if ($milestone) $input->setValue($milestone->getName());
         $form->add($input);
 
         $input = new TextareaInput('description');
         $input->setLabel('description');
-        if ($version) $input->setValue($version->getDescription());
+        if ($milestone) $input->setValue($milestone->getDescription());
         $form->add($input);
 
         $form->setInputFilter($this->getModelInputFilter());

@@ -5,9 +5,10 @@
 <p></p>
 <div class="btn-group">
     <?php echo $this->ctrlButton('link', array('value' => 'Add new milestone',
-    'href' => $this->url('default', array(
-        'controller' => 'project',
+    'href' => $this->url('default/id', array(
+        'controller' => 'milestone',
         'action' => 'create',
+        'id' => $project->getId(),
     ))), 'primary') ?>
 </div>
 <p></p>

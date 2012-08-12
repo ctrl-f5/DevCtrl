@@ -23,7 +23,7 @@
             <join-column name="version_id" referenced-column-name="id" />
         </many-to-one>
 
-        <many-to-many field="backlog" target-entity="DevCtrl\Domain\Item\Item">
+        <many-to-many field="backlog" target-entity="DevCtrl\Domain\Item\Item" inversed-by="milestones">
             <cascade>
                 <cascade-all/>
             </cascade>

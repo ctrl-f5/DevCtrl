@@ -18,12 +18,15 @@ class Module
     public function onBootstrap($e)
     {
         /** @var $eventManager \Zend\EventManager\EventManager */
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
+        $eventManager           = $e->getApplication()->getEventManager();
+        $serviceManager         = $e->getApplication()->getServiceManager();
+        $moduleRouteListener    = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        $this->setViewHelpers($serviceManager);
+
         /** @var $entityManager \Doctrine\ORM\EntityManager */
-        $entityManager = $e->getApplication()->getServiceManager()->get('doctrine.entitymanager.orm_default');
+        $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
         $entityManager->getEventManager()->addEventListener(
             array(\Doctrine\ORM\Events::postLoad),
             new PostLoadSubscriber($e->getApplication()->getServiceManager())
@@ -57,6 +60,16 @@ class Module
                 $view->appCurrentUser = $serviceManager->get('DomainServiceLoader')->get('User')->getCurrentUser();
             }
         });
+    }
+
+    protected function setViewHelpers($serviceManager)
+    {
+        /** @var $viewManager \Zend\Mvc\View\Http\ViewManager */
+        $viewManager = $serviceManager->get('ViewManager');
+        if (method_exists($viewManager, 'getHelperManager')) {
+            $viewManager->getHelperManager()
+                ->setInvokableClass('ItemState', 'DevCtrl\View\Helper\ItemState');
+        }
     }
 
     public function getConfig()
