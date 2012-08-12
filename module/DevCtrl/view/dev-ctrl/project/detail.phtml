@@ -7,8 +7,10 @@
 
 <div class="btn-group" style="float: right">
     <a class="btn" href="#">edit</a>
-    <a class="btn btn-success disabled" href="#">follow</a>
-    <a class="btn" href="#">view all projects</a>
+    <a class="btn" href="<?php echo $this->url('default', array(
+        'controller' => 'project',
+        'action' => 'index',
+    )); ?>">view all projects</a>
 </div>
 <p class="well well-small" style="display: inline-block; max-width: 75%"><?php echo nl2br($project->getDescription()); ?></p>
 <?php echo $this->pageTitle('Overview', null, array('level' => 1)); ?>
@@ -95,7 +97,7 @@
     </table>
 </div>
 
-<?php echo $this->pageTitle('Items', null, array('level' => 1)); ?>
+<?php echo $this->pageTitle('Item overview', null, array('level' => 1)); ?>
 <?php echo $this->pageTitle('Items assigned to me', null, array('level' => 3)); ?>
 <p></p>
 <?php foreach ($userItems as $i): ?>

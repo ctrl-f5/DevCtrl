@@ -154,7 +154,6 @@ return array(
     ),
     Module::ITEM_PROP_VALUES_PROVIDERS => array(
         'CustomList'            => 'DevCtrl\Domain\Item\Property\ValuesProvider\CustomListProvider',
-        'ProjectProperty'    => 'DevCtrl\Domain\Item\Property\ValuesProvider\ProjectPropertyProvider',
     ),
     Module::ITEM_PROP_TYPES => array(
         'string' => 'DevCtrl\Domain\Item\Property\Type\StringType',

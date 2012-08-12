@@ -7,7 +7,7 @@
 <?php $this->page = 'backlog'; ?>
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 
-<div class="btn-group">
+<div class="btn-group" style="display: inline-block;">
     <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
         New item
         <span class="caret"></span>
@@ -21,6 +21,71 @@
         <?php endforeach; ?>
     </ul>
 </div>
+
+<ul class="nav nav-pills" style="float: right;">
+    <li class="active"><a href="#">closed items</a></li>
+    <li><a href="#">items without milestone</a></li>
+    <li><a href="#">assigned to me</a></li>
+</ul>
+
+<p></p>
+
+<div class="row-fluid well" style="padding-right: 0; padding-left: 0;">
+    <div class="row-fluid">
+        <div class="span2" style="text-align: right">
+            <strong>item state: </strong>
+        </div>
+        <div class="span1" style="text-align: left">
+            <select class="input-small" name="closed-items">
+                <option>all</option>
+                <option>open</option>
+                <option>closed</option>
+                <option>blocked</option>
+            </select>
+        </div>
+        <div class="span2" style="text-align: right">
+            <strong>order by: </strong>
+        </div>
+        <div class="span7" style="text-align: left">
+            <select class="input-medium" name="closed-items">
+                <option>date modified</option>
+                <option>date created</option>
+            </select>
+            <select class="input-small" name="closed-items">
+                <option>asc</option>
+                <option selected="selected">desc</option>
+            </select>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2" style="text-align: right">
+            <strong>with milestone: </strong>
+        </div>
+        <div class="span1" style="text-align: left">
+            <select class="input-small" name="closed-items">
+                <option>yes</option>
+                <option>no</option>
+            </select>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2" style="text-align: right">
+            <strong>assigned to me: </strong>
+        </div>
+        <div class="span1" style="text-align: left">
+            <select class="input-small" name="closed-items">
+                <option>yes</option>
+                <option>no</option>
+            </select>
+        </div>
+        <div class="span2" style="text-align: left">
+        </div>
+        <div class="span2" style="text-align: left">
+            <a href="#" class="btn btn-info">filter</a>
+        </div>
+    </div>
+</div>
+
 <p></p>
 
 <?php foreach ($backlog as $i): ?>
