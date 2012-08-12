@@ -8,6 +8,7 @@ use DevCtrl\Service\ItemTypeService;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\ItemProperty;
+use DevCtrl\Domain\Item\ItemRelation;
 use DevCtrl\Domain\Project\Project;
 
 class ItemController extends AbstractController
@@ -252,6 +253,47 @@ class ItemController extends AbstractController
         return new ViewModel(array(
             'item' => $item,
             'users' => $userService->getUsersNotAssignedToItem($item)
+        ));
+    }
+
+    public function addRelationAction()
+    {
+        try {
+            /** @var $itemService ItemService */
+            $itemService = $this->getDomainService('Item');
+            /** @var $item Item */
+            $item = $itemService->getById($this->params()->fromRoute('id'));
+            $items = $itemService->getAll();
+            $type = $this->params()->fromQuery('type');
+            if (!in_array($type, ItemRelation::getTypes())) {
+                return $this->redirectWithError('Can not add relation: invalid relation type', $item->getId(), 'item', 'detail');
+            }
+        } catch (\Exception $e) {
+            return $this->renderErrorPage('Relation can not be added.');
+        }
+
+        $relatedItemId = $this->params()->fromQuery('related-item');
+        if ($relatedItemId) {
+            try {
+                /** @var $relatedItem Item */
+                $relatedItem = $itemService->getById($relatedItemId);
+                $item->addRelatedItem($relatedItem, $type);
+                $itemService->persist($item);
+
+                return $this->redirect()->toRoute('default/id', array(
+                    'controller' => 'item',
+                    'action' => 'detail',
+                    'id' => $item->getId(),
+                ));
+            } catch (\Exception $e) {
+                return $this->redirectWithError('Something went wrong while saving that relation', $item->getId(), 'item', 'detail');
+            }
+        }
+
+        return new ViewModel(array(
+            'item' => $item,
+            'items' => $items,
+            'type' => $type,
         ));
     }
 }

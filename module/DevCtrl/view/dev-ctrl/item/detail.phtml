@@ -1,4 +1,5 @@
 <?php use DevCtrl\Domain\Item\Item; ?>
+<?php use DevCtrl\Domain\Item\ItemRelation; ?>
 <?php $item = $this->item; /** @var $item Item */ ?>
 
 <?php echo $this->pageTitle('Item detail', $item->getItemType()->getName()); ?>
@@ -54,28 +55,41 @@
 
 <?php echo $this->pageTitle('Related items', null, array('level' => 3)); ?>
 <div class="btn-group">
-    <a class="btn btn-primary btn-mini" href="<?php echo $this->url('default/id', array(
-        'controller' => 'item',
-        'action' => 'add-relation',
-        'id' => $item->getId()
-    )); ?>">
-        Add new relation
+    <a class="btn dropdown-toggle btn-primary btn-mini" data-toggle="dropdown" href="#">
+        New relation
+        <span class="caret"></span>
     </a>
+    <ul class="dropdown-menu">
+        <?php foreach (array(ItemRelation::TYPE_CHILD => 'child of', ItemRelation::TYPE_PARENT => 'parent of', ItemRelation::TYPE_BLOCKED => 'blocked by', ItemRelation::TYPE_BLOCKING => 'blocking') as $k => $t): ?>
+        <li><a href="<?php echo $this->url('default/id/query', array(
+            'controller' => 'item',
+            'action' => 'add-relation',
+            'id' => $item->getId(),
+            'type' => $k,
+        )); ?>"><?php echo $t; ?></a></li>
+        <?php endforeach; ?>
+    </ul>
 </div>
 
 <p></p>
 <?php if (count($item->getItemRelations())): ?>
 <table class="table table-striped">
     <tr>
-        <th>type</th>
-        <th>id</th>
+        <th width="100">type</th>
         <th>title</th>
     </tr>
     <?php foreach ($item->getItemRelations() as $ir): ?>
     <tr>
         <td><?php echo $ir->getType(); ?></td>
-        <td><?php echo $ir->getItem()->getId(); ?></td>
-        <td><?php echo $ir->getItem()->getTitle(); ?></td>
+        <td>
+            <a href="<?php echo $this->url('default/id', array(
+                'controller' => 'item',
+                'action' => 'detail',
+                'id' => $ir->getRelatedItem()->getId()
+            )); ?>">#<?php echo $ir->getRelatedItem()->getId(); ?>
+                <?php echo $ir->getRelatedItem()->getTitle(); ?>
+            </a>
+        </td>
     </tr>
     <?php endforeach; ?>
 </table>

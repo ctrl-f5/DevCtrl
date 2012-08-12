@@ -344,7 +344,23 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     public function addRelatedItem(Item $item, $relationType)
     {
-        //$this->itemRelations = $itemRelations;
+        if (!in_array($relationType, ItemRelation::getTypes())) {
+            throw new Exception('invalid relation type: '.$relationType);
+        }
+        foreach ($this->getItemRelations() as $rel) {
+            if ($rel->getRelatedItem()->getId() == $item->getId() && $relationType == $rel->getType()) throw new DuplicateItemRelationException();
+        }
+
+        $relation = new ItemRelation();
+        $relation->setItem($this)
+            ->setRelatedItem($item)
+            ->setType($relationType);
+        $this->itemRelations[] = $relation;
+
+        try {
+            $item->addRelatedItem($this, ItemRelation::getOppositeType($relationType));
+        } catch (DuplicateItemRelationException $e) {}
+
         return $this;
     }
 

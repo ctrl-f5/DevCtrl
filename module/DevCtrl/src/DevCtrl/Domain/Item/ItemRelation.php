@@ -12,6 +12,40 @@ use DevCtrl\Domain\Value\Value;
 
 class ItemRelation extends PersistableModel
 {
+    const TYPE_CHILD        = 'child';
+    const TYPE_PARENT       = 'parent';
+    const TYPE_BLOCKING     = 'blocking';
+    const TYPE_BLOCKED      = 'blocked';
+
+    public static function getTypes()
+    {
+        return array(
+            self::TYPE_CHILD,
+            self::TYPE_PARENT,
+            self::TYPE_BLOCKING,
+            self::TYPE_BLOCKED,
+        );
+    }
+
+    public static function getOppositeType($type)
+    {
+        switch ($type) {
+            case self::TYPE_BLOCKED:
+                return self::TYPE_BLOCKING;
+                break;
+            case self::TYPE_BLOCKING:
+                return self::TYPE_BLOCKED;
+                break;
+            case self::TYPE_PARENT:
+                return self::TYPE_CHILD;
+                break;
+            case self::TYPE_CHILD:
+                return self::TYPE_PARENT;
+                break;
+        }
+        throw new Exception('invalid relation type');
+    }
+
     /**
      * @var string
      */
@@ -34,7 +68,7 @@ class ItemRelation extends PersistableModel
 
     /**
      * @param Item $item
-     * @return ItemProperty
+     * @return ItemRelation
      */
     public function setItem($item)
     {
@@ -56,6 +90,7 @@ class ItemRelation extends PersistableModel
     public function setRelatedItem($relatedItem)
     {
         $this->relatedItem = $relatedItem;
+        return $this;
     }
 
     /**
