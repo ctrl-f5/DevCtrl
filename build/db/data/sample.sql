@@ -56,6 +56,8 @@ INSERT INTO `project_backlog` (`project_id`, `item_id`) VALUES
 
 INSERT INTO `dev_ctrl`.`projectmilestone` (`id`, `project_id`, `version_id`, `name`, `description`) VALUES (NULL, '1', '2', 'Setup Entity CRUD', 'First phase of the project, set up all entities as analyzed and add CRUD UI.');
 
+
+
 INSERT INTO `property` (`id`, `name`, `description`, `valuesProvider`, `valuesProviderConfig`, `propertyType`) VALUES
 (3, 'priority', 'how important is it?', 'CustomList', '1', 'select');
 
