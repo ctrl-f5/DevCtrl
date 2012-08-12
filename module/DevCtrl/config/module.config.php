@@ -120,6 +120,7 @@ return array(
         'invokables' => array(
             'DevCtrl\Controller\Index' => 'DevCtrl\Controller\IndexController',
             'DevCtrl\Controller\Project' => 'DevCtrl\Controller\ProjectController',
+            'DevCtrl\Controller\Milestone' => 'DevCtrl\Controller\MilestoneController',
             'DevCtrl\Controller\Item' => 'DevCtrl\Controller\ItemController',
             'DevCtrl\Controller\ItemType' => 'DevCtrl\Controller\ItemTypeController',
             'DevCtrl\Controller\Property' => 'DevCtrl\Controller\PropertyController',
@@ -131,6 +132,7 @@ return array(
         'invokables' => array(
             'Project' => 'DevCtrl\Service\ProjectService',
             'Version' => 'DevCtrl\Service\VersionService',
+            'Milestone' => 'DevCtrl\Service\MilestoneService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
             'ItemTypeProperty' => 'DevCtrl\Service\ItemTypePropertyService',

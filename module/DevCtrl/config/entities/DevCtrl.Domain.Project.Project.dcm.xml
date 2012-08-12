@@ -21,6 +21,15 @@
             </cascade>
         </one-to-many>
 
+        <one-to-many field="milestones" target-entity="DevCtrl\Domain\Project\Milestone" mapped-by="project">
+            <order-by>
+                <order-by-field name="dateCreated" direction="DESC" />
+            </order-by>
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
         <many-to-one field="version" target-entity="DevCtrl\Domain\Project\Version">
             <join-column name="version_id" referenced-column-name="id" />
         </many-to-one>

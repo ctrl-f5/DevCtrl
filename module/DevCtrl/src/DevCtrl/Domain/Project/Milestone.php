@@ -5,12 +5,12 @@ namespace DevCtrl\Domain\Project;
 use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Item\Item;
 
-class Project extends PersistableModel
+class Milestone extends PersistableModel
 {
     /**
      * @var string
      */
-    protected $name;
+    protected $label;
 
     /**
      * @var string
@@ -18,51 +18,59 @@ class Project extends PersistableModel
     protected $description;
 
     /**
+     * @var Project
+     */
+    protected $project;
+
+    /**
      * @var Item[]
      */
     protected $backlog;
 
     /**
-     * @var Version[]|Collection
-     */
-    protected $versionList;
-
-    /**
      * @var Version
      */
-    protected $version;
+    protected $resultingVersion;
 
     /**
-     * @var Milestone[]
+     * @var DateTime
      */
-    protected $milestones;
+    protected $dateCreated;
 
-    public function __construct()
+    /**
+     * @var DateTime|null
+     */
+    protected $dateEnd;
+
+    /**
+     * @var DateTime|null
+     */
+    protected $dateStart;
+
+    public function __construct(Project $project)
     {
         $this->backlog = new \DevCtrl\Domain\Collection();
-        $this->versionList = new \DevCtrl\Domain\Collection();
-        $this->version = new Version($this);
-        $this->version->setVersion('0.0.0')
-            ->setLabel('current');
-        $this->addVersion($this->version);
+        $this->project = $project;
+        $this->dateCreated = new \DateTime();
+        $project->addMilestone($this);
     }
 
     /**
      * @param string $name
      * @return Project
      */
-    public function setName($name)
+    public function setLabel($name)
     {
-        $this->name = $name;
+        $this->label = $name;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getLabel()
     {
-        return $this->name;
+        return $this->label;
     }
 
     /**
@@ -79,7 +87,6 @@ class Project extends PersistableModel
      */
     public function addToBacklog(Item $item)
     {
-        $item->setProject($this);
         $this->backlog[] = $item;
         return $this;
     }
@@ -143,27 +150,45 @@ class Project extends PersistableModel
         return $this->version;
     }
 
-    public function addVersion(Version $version)
+    /**
+     * @return Project
+     */
+    public function getProject()
     {
-        $version->setOrder(count($this->getVersionList()) + 1);
-        $this->versionList[] = $version;
-    }
-
-    public function getVersionList()
-    {
-        return $this->versionList;
-    }
-
-    public function addMilestone(Milestone $milestones)
-    {
-        $this->milestones[] = $milestones;
+        return $this->project;
     }
 
     /**
-     * @return Milestone[]
+     * @param \DevCtrl\Domain\Project\DateTime|null $dateEnd
      */
-    public function getMilestones()
+    public function setDateEnd($dateEnd)
     {
-        return $this->milestones;
+        $this->dateEnd = $dateEnd;
+        return $this;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\Project\DateTime|null
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param \DevCtrl\Domain\Project\DateTime|null $dateStart
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+        return $this;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\Project\DateTime|null
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
     }
 }
