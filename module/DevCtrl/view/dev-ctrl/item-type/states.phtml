@@ -8,7 +8,7 @@
 <?php $this->page = 'states'; ?>
 <?php echo $this->render('dev-ctrl/item-type/partial/item-type-tabs.phtml'); ?>
 
-<?php if ($itemType->hasStates()): ?>
+<?php if ($itemType->supportsStates()): ?>
 <div class="btn-group">
     <a class="btn" data-toggle="dropdown" href="<?php echo $this->url('default/id', array(
         'controller' => 'state-list',

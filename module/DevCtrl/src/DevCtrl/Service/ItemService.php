@@ -7,7 +7,7 @@ use \DevCtrl\Domain\Item\Item;
 use \DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\User\User;
-use DevCtrl\Domain\Project;
+use DevCtrl\Domain\Project\Project;
 use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 use Zend\InputFilter\Factory as FilterFactory;
 use Zend\InputFilter\InputFilter;
@@ -20,7 +20,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
 {
     protected $entity = 'DevCtrl\Domain\Item\Item';
 
-    public function getForm(Item $project = null)
+    public function getForm(Item $version = null)
     {
         throw new Exception('this method is not supported on this service, use the getFormForType() function instead');
     }
@@ -52,7 +52,31 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
             $form->add($input);
         }
 
-        if ($type->hasStates()) {
+        if ($type->supportsVersions()) {
+            $input = new SelectInput();
+            $input->setLabel('version')->setName('version-reported');
+            $versions = array('');//add empty option, since not required
+            if ($item) {
+                foreach ($item->getProject()->getVersionList() as $v) {
+                    $versions[$v->getId()] = $v->getVersion().' '.$v->getLabel();
+                }
+            }
+            $input->setAttribute('options', $versions);
+            if ($item && $item->getVersionReported()) $input->setValue($item->getVersionReported()->getId());
+            elseif ($item && $item->getProject()->getVersion()) $input->setValue($item->getProject()->getVersion()->getId());
+            $form->add($input);
+
+            if ($item) {
+                $input = new SelectInput();
+                $input->setLabel('fixed in version')->setName('version-fixed');
+                $input->setAttribute('options', $versions);
+                if ($item && $item->getVersionFixed()) $input->setValue($item->getVersionFixed()->getId());
+                elseif ($item->getProject()->getVersion()) $input->setValue($item->getProject()->getVersion()->getId());
+                $form->add($input);
+            }
+        }
+
+        if ($type->supportsStates()) {
             $states = array();
             $input = new SelectInput();
             $input->setLabel('state')->setName('state');
@@ -134,7 +158,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
             )));
         }
 
-        if ($type->hasStates()) {
+        if ($type->supportsStates()) {
             $filter->add($factory->createInput(array(
                 'name'     => 'state',
                 'required' => true,
@@ -163,6 +187,24 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
             $qb->join('i.project', 'p')
                 ->andWhere('p.id = :projectid')
                 ->setParameter('projectid', $project->getId());
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getLastUpdatedItems(Project $project = null, $maxResults = 0)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('i')
+            ->from('DevCtrl\Domain\Item\Item', 'i')
+            ->orderBy('i.dateUpdate', 'DESC');
+        if ($project) {
+            $qb->join('i.project', 'p')
+                ->andWhere('p.id = :projectid')
+                ->setParameter('projectid', $project->getId());
+        }
+        if ($maxResults) {
+            $qb->setMaxResults($maxResults);
         }
 
         return $qb->getQuery()->getResult();

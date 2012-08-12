@@ -22,8 +22,8 @@
     </tr>
     <tr>
         <th>has state</th>
-        <td><?php echo $type->hasStates() ? 'yes' : 'no' ?></td>
+        <td><?php echo $type->supportsStates() ? 'yes' : 'no' ?></td>
         <th>state set</th>
-        <td><?php if ($type->hasStates()) $type->getStates()->getName() ?></td>
+        <td><?php if ($type->supportsStates()) $type->getStates()->getName() ?></td>
     </tr>
 </table>

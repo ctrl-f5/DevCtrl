@@ -3,13 +3,14 @@
 namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
-use DevCtrl\Domain\Project;
+use DevCtrl\Domain\Project\Project;
 use DevCtrl\Domain\Item\ItemRelation;
 use DevCtrl\Domain\User\User;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\State\State;
 use \DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\Item\Timing\Counter;
+use DevCtrl\Domain\Project\Version;
 use DateTime;
 
 class Item extends \Ctrl\Domain\PersistableModel
@@ -55,6 +56,11 @@ class Item extends \Ctrl\Domain\PersistableModel
     protected $dateCreated;
 
     /**
+     * @var DateTime
+     */
+    protected $dateUpdate;
+
+    /**
      * @var User[]
      */
     protected $assignedUsers;
@@ -69,6 +75,16 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     protected $createdBy;
 
+    /**
+     * @var Version
+     */
+    protected $versionReported;
+
+    /**
+     * @var Version
+     */
+    protected $versionFixed;
+
     public function __construct(Type $type, User $createdBy)
     {
         $this->itemProperties = new \DevCtrl\Domain\Collection();
@@ -77,6 +93,12 @@ class Item extends \Ctrl\Domain\PersistableModel
         $this->itemType = $type;
         $this->createdBy = $createdBy;
         $this->dateCreated = new DateTime();
+        $this->touch();
+    }
+
+    public function touch()
+    {
+        $this->dateUpdate = new DateTime();
     }
 
     /**
@@ -123,7 +145,7 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     public function getState()
     {
-        if ($this->getItemType()->hasStates())
+        if ($this->getItemType()->supportsStates())
             return $this->state;
         return null;
     }
@@ -246,7 +268,7 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function getProgress()
     {
         if ($this->getItemType()->supportsTiming()) {
-            if ($this->getItemType()->hasStates() && $this->getState()->getNativeState() == State::STATE_CLOSED) {
+            if ($this->getItemType()->supportsStates() && $this->getState()->getNativeState() == State::STATE_CLOSED) {
                 return 100;
             } else {
                 $est = $this->getTimeCounter()->getEstimated();
@@ -325,5 +347,39 @@ class Item extends \Ctrl\Domain\PersistableModel
     public function getItemRelations()
     {
         return $this->itemRelations;
+    }
+
+    /**
+     * @param \DevCtrl\Domain\Project\Version $versionFixed
+     */
+    public function setVersionFixed($versionFixed = null)
+    {
+        $this->versionFixed = $versionFixed;
+        return $this;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\Project\Version
+     */
+    public function getVersionFixed()
+    {
+        return $this->versionFixed;
+    }
+
+    /**
+     * @param \DevCtrl\Domain\Project\Version $versionReported
+     */
+    public function setVersionReported($versionReported = null)
+    {
+        $this->versionReported = $versionReported;
+        return $this;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\Project\Version
+     */
+    public function getVersionReported()
+    {
+        return $this->versionReported;
     }
 }

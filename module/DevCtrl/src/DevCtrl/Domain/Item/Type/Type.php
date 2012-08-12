@@ -28,6 +28,11 @@ class Type extends \Ctrl\Domain\PersistableModel
     protected $supportsTiming = false;
 
     /**
+     * @var bool
+     */
+    protected $supportsVersions = false;
+
+    /**
      * @var Collection|TypeProperty[]
      */
     protected $typeProperties;
@@ -37,9 +42,10 @@ class Type extends \Ctrl\Domain\PersistableModel
      */
     protected $states;
 
-    public function __construct($supportsTiming)
+    public function __construct($supportsTiming, $supportsVersions)
     {
         $this->supportsTiming = (bool)$supportsTiming;
+        $this->supportsVersions = (bool)$supportsVersions;
 
         $this->typeProperties = new Collection();
     }
@@ -142,6 +148,14 @@ class Type extends \Ctrl\Domain\PersistableModel
     }
 
     /**
+     * @return boolean
+     */
+    public function supportsVersions()
+    {
+        return (bool)$this->supportsVersions;
+    }
+
+    /**
      * @param \DevCtrl\Domain\Item\State\StateList $list
      * @return Type
      */
@@ -154,7 +168,7 @@ class Type extends \Ctrl\Domain\PersistableModel
     /**
      * @return bool
      */
-    public function hasStates()
+    public function supportsStates()
     {
         return $this->states instanceof StateList;
     }

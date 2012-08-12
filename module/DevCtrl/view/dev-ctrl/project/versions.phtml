@@ -1,0 +1,68 @@
+<?php /** @var $this \Ctrl\View\PhpView */ ?>
+<?php /** @var $project \DevCtrl\Domain\Project\Project */ ?>
+<?php $project = $this->project ?>
+<?php echo $this->pageTitle('Project', $project->getName()); ?>
+<?php $this->page = 'versions'; ?>
+<?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
+
+<div class="btn-group">
+    <?php echo $this->ctrlButton('link', array('value' => 'Add version',
+    'href' => $this->url('default/id', array(
+        'controller' => 'project',
+        'action' => 'add-version',
+        'id' => $project->getId(),
+    ))), 'primary') ?>
+</div>
+
+<p></p>
+
+<table class="table table-striped">
+    <tr>
+        <th width="10"></th>
+        <th>version</th>
+        <th>label</th>
+        <th>released</th>
+        <th width="90">order</th>
+        <th>actions</th>
+    </tr>
+    <?php foreach ($project->getVersionList() as $v): ?>
+    <tr>
+        <td><?php if ($project->getVersion()->getId() == $v->getId()): ?><span class="icon icon-star" title="current version"></span><?php endif; ?></td>
+        <td><?php echo $v->getVersion(); ?></td>
+        <td><?php echo $v->getLabel(); ?></td>
+        <td><?php echo ($v->getReleased()) ? 'yes': 'no'; ?></td>
+        <td>
+            <?php echo $this->orderControls('default/query', array(
+                'controller' => 'project',
+                'action' => 'change-version-order',
+                'id' => $v->getProject()->getId(),
+                'version' => $v->getId(),
+            )); ?>
+        </td>
+        <td>
+            <?php if (!$project->getVersion()->getReleased()): ?>
+            <?php echo $this->ctrlButton('link', array('value' => 'mark as released',
+                'href' => $this->url('default/id', array(
+                    'controller' => 'project',
+                    'action' => 'delete-version',
+                    'id' => $v->getId()
+                ))), 'grant') ?>
+            <?php endif; ?>
+            <?php if ($project->getVersion()->getId() != $v->getId()): ?>
+            <?php echo $this->ctrlButton('link', array('value' => 'mark as current',
+            'href' => $this->url('default/id', array(
+            'controller' => 'project',
+            'action' => 'delete-version',
+            'id' => $v->getId()
+            ))), 'primary') ?>
+            <?php echo $this->ctrlButton('link', array('value' => 'delete', 'confirm' => true,
+            'href' => $this->url('default/id', array(
+            'controller' => 'project',
+            'action' => 'delete-version',
+            'id' => $v->getId()
+            ))), 'danger') ?>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

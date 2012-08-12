@@ -10,9 +10,9 @@
         'id' => $this->project->getId()
     )); ?>">Backlog  <span class="label label-info"><?php echo count($this->project->getBacklog()); ?></span></a></li>
     <li<?php if ($this->page == 'milestones') echo ' class="active"'; ?>><a href="#">Milestones  <span class="label">0<?php //echo count($this->item->getAssignedUsers()); ?></span></a></li>
-    <li<?php if ($this->page == 'users') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
+    <li<?php if ($this->page == 'versions') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'project',
         'action' => 'versions',
         'id' => $this->project->getId()
-    )); ?>">Versions  <span class="label">0<?php //echo count($this->item->getAssignedUsers()); ?></span></a></li>
+    )); ?>">Versions  <span class="label label-info"><?php echo count($this->project->getVersionList()); ?></span></a></li>
 </ul>

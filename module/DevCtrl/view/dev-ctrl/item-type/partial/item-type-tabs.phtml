@@ -9,7 +9,7 @@
         'action' => 'properties',
         'id' => $this->itemType->getId()
     )); ?>">Properties</a></li>
-    <?php if ($this->itemType->hasStates()): ?>
+    <?php if ($this->itemType->supportsStates()): ?>
     <li<?php if ($this->page == 'states') echo ' class="active"'; ?>><a href="<?php echo $this->url('default/id', array(
         'controller' => 'item-type',
         'action' => 'states',

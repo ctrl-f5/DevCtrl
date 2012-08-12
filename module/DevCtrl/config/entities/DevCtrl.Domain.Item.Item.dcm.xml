@@ -12,6 +12,15 @@
         <field name="title" column="title" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
         <field name="dateCreated" column="dateCreated" type="datetime" nullable="false" unique="false" />
+        <field name="dateUpdate" column="dateUpdate" type="datetime" nullable="false" unique="false" />
+
+        <many-to-one field="versionReported" target-entity="DevCtrl\Domain\Project\Version">
+            <join-column name="versionReported_id" referenced-column-name="id" />
+        </many-to-one>
+
+        <many-to-one field="versionFixed" target-entity="DevCtrl\Domain\Project\Version">
+            <join-column name="versionFixed_id" referenced-column-name="id" />
+        </many-to-one>
 
         <many-to-one field="createdBy" target-entity="DevCtrl\Domain\User\User" inversed-by="itemsCreated">
             <join-column name="createdByUser_id" referenced-column-name="id" />
@@ -31,7 +40,7 @@
             </cascade>
         </one-to-one>
 
-        <many-to-one field="project" target-entity="DevCtrl\Domain\Project">
+        <many-to-one field="project" target-entity="DevCtrl\Domain\Project\Project">
             <cascade>
                 <cascade-persist/>
             </cascade>

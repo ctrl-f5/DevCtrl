@@ -32,7 +32,12 @@ class ItemTypeService extends \Ctrl\Service\AbstractDomainModelService
 
         $input = new CheckboxInput('supports-timing');
         $input->setLabel('supports timing');
-        $input->setValue(1);
+        if ($type) $input->setValue($type->supportsTiming());
+        $form->add($input);
+
+        $input = new CheckboxInput('supports-versions');
+        $input->setLabel('version aware');
+        if ($type) $input->setValue($type->supportsVersions());
         $form->add($input);
 
         $input = new SelectInput('state-list');
@@ -41,7 +46,7 @@ class ItemTypeService extends \Ctrl\Service\AbstractDomainModelService
         $states = $this->getDomainService('StateList')->getAll();
         $stateOptions = array('');//add empty first selection
         if (count($states)) {
-            if ($type && $type->hasStates()) $input->setValue($type->getStates()->getId());
+            if ($type && $type->supportsStates()) $input->setValue($type->getStates()->getId());
             foreach ($states as $s) {
                 $stateOptions[$s->getId()] = $s->getName();
             }
@@ -66,6 +71,9 @@ class ItemTypeService extends \Ctrl\Service\AbstractDomainModelService
             'required' => false,
         )))->add($factory->createInput(array(
             'name'     => 'supports-timing',
+            'required' => false,
+        )))->add($factory->createInput(array(
+            'name'     => 'supports-versions',
             'required' => false,
         )));
 

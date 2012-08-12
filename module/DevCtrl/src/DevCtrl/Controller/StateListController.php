@@ -91,9 +91,9 @@ class StateListController extends AbstractController
 
     public function addStateAction()
     {
-        /** @var $listService StateListService */
-        $listService = $this->getDomainService('StateList');
         try {
+            /** @var $listService StateListService */
+            $listService = $this->getDomainService('StateList');
             /** @var $list StateList */
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {

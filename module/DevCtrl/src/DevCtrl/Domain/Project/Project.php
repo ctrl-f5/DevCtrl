@@ -1,6 +1,6 @@
 <?php
 
-namespace DevCtrl\Domain;
+namespace DevCtrl\Domain\Project;
 
 use Ctrl\Domain\PersistableModel;
 use DevCtrl\Domain\Item\Item;
@@ -25,11 +25,21 @@ class Project extends PersistableModel
     /**
      * @var Version[]|Collection
      */
-    protected $versions;
+    protected $versionList;
+
+    /**
+     * @var Version
+     */
+    protected $version;
 
     public function __construct()
     {
-        $this->backlog = new Collection();
+        $this->backlog = new \DevCtrl\Domain\Collection();
+        $this->versionList = new \DevCtrl\Domain\Collection();
+        $this->version = new Version($this);
+        $this->version->setVersion('0.0.0')
+            ->setLabel('current');
+        $this->addVersion($this->version);
     }
 
     /**
@@ -79,7 +89,7 @@ class Project extends PersistableModel
         foreach ($this->getBacklog() as $i) {
             if ($i->getItemType()->supportsTiming()) {
                 $estimated += $i->getTimeCounter()->getEstimated();
-                if ($i->getItemType()->hasStates()
+                if ($i->getItemType()->supportsStates()
                     && $i->getState()->getNativeState() == \DevCtrl\Domain\Item\State\State::STATE_CLOSED) {
                     $estimated += $i->getTimeCounter()->getEstimated();
                 } else {
@@ -110,5 +120,32 @@ class Project extends PersistableModel
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param \DevCtrl\Domain\Project\Version $version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+    }
+
+    /**
+     * @return \DevCtrl\Domain\Project\Version
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    public function addVersion(Version $version)
+    {
+        $version->setOrder(count($this->getVersionList()) + 1);
+        $this->versionList[] = $version;
+    }
+
+    public function getVersionList()
+    {
+        return $this->versionList;
     }
 }

@@ -12,6 +12,7 @@
         <field name="name" column="name" type="string" length="255" nullable="false" unique="false" />
         <field name="description" column="description" type="text" nullable="true" unique="false" />
         <field name="supportsTiming" column="supportsTiming" type="boolean" nullable="false" unique="false" />
+        <field name="supportsVersions" column="supportsVersions" type="boolean" nullable="false" unique="false" />
 
         <one-to-many field="typeProperties" target-entity="DevCtrl\Domain\Item\Type\TypeProperty" mapped-by="itemType">
             <cascade>

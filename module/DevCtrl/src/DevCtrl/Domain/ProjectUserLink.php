@@ -60,7 +60,7 @@ class ProjectUserLink
     }
 
     /**
-     * @param \DevCtrl\Domain\Project $project
+     * @param \DevCtrl\Domain\Project\Project $project
      * @return ProjectUserLink
      */
     public function setProject($project)
@@ -70,7 +70,7 @@ class ProjectUserLink
     }
 
     /**
-     * @return \DevCtrl\Domain\Project
+     * @return \DevCtrl\Domain\Project\Project
      */
     public function getProject()
     {

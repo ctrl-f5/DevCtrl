@@ -130,6 +130,7 @@ return array(
     'domain_services' => array(
         'invokables' => array(
             'Project' => 'DevCtrl\Service\ProjectService',
+            'Version' => 'DevCtrl\Service\VersionService',
             'Item' => 'DevCtrl\Service\ItemService',
             'ItemType' => 'DevCtrl\Service\ItemTypeService',
             'ItemTypeProperty' => 'DevCtrl\Service\ItemTypePropertyService',
@@ -176,6 +177,7 @@ return array(
             'error/index'         => __DIR__ . '/../view/error/index.phtml',
             'error/index'         => __DIR__ . '/../view/error/index.phtml',
             'dev-ctrl/custom-error'     => __DIR__ . '/../view/dev-ctrl/error/custom-error.phtml',
+            'dev-ctrl/item-widget-row'  => __DIR__ . '/../view/dev-ctrl/item/partial/widget-row.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

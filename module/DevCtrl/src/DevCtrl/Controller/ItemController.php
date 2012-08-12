@@ -8,7 +8,7 @@ use DevCtrl\Service\ItemTypeService;
 use DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Item;
 use DevCtrl\Domain\Item\ItemProperty;
-use DevCtrl\Domain\Project;
+use DevCtrl\Domain\Project\Project;
 
 class ItemController extends AbstractController
 {
@@ -82,7 +82,7 @@ class ItemController extends AbstractController
                         ->setExecuted($elements['timing-executed']->getValue());
                     $itemService->getEntityManager()->persist($counter);
                 }
-                if ($itemType->hasStates()) {
+                if ($itemType->supportsStates()) {
                     $item->setStateById($elements['state']->getValue());
                 }
 
@@ -109,11 +109,6 @@ class ItemController extends AbstractController
 
     public function editAction()
     {
-        $logger = new \Zend\Log\Logger;
-        $writer = new \Zend\Log\Writer\Stream('php://stderr');
-
-        $logger->addWriter($writer);
-        $logger->log(\Zend\Log\Logger::CRIT, 'test');
         try {
             /** @var $itemService \DevCtrl\Service\ItemService */
             $itemService = $this->getDomainService('Item');
@@ -123,17 +118,23 @@ class ItemController extends AbstractController
             return $this->renderErrorPage('Item cound not be found.');
         }
 
-        $form = $itemService->getFormForType($item->getItemType(), $item);
-        $form->setAttribute('action', $this->url()->fromRoute('default/id', array(
-            'controller' => 'item',
-            'action' => 'edit',
-            'id' => $item->getId(),
-        )));
-        $form->setReturnUrl($this->url()->fromRoute('default/id', array(
-            'controller' => 'item',
-            'action' => 'detail',
-            'id' => $item->getId(),
-        )));
+        try {
+            $form = $itemService->getFormForType($item->getItemType(), $item);
+            $form->setAttribute('action', $this->url()->fromRoute('default/id', array(
+                'controller' => 'item',
+                'action' => 'edit',
+                'id' => $item->getId(),
+            )));
+            $form->setReturnUrl($this->url()->fromRoute('default/id', array(
+                'controller' => 'item',
+                'action' => 'detail',
+                'id' => $item->getId(),
+            )));
+        } catch (\Exception $e) {
+            return $this->redirectWithError(
+                'Something went wrong while opening your item',
+                $item->getId(), 'item', 'detail');
+        }
 
         if ($this->getRequest()->isPost()) {
 
@@ -151,8 +152,33 @@ class ItemController extends AbstractController
                             ->setEstimated($elements['timing-estimated']->getValue())
                             ->setExecuted($elements['timing-executed']->getValue());
                     }
-                    if ($item->getItemType()->hasStates() && $item->getState()->getId() != $elements['state']->getValue()) {
+                    if ($item->getItemType()->supportsStates() && $item->getState()->getId() != $elements['state']->getValue()) {
                         $item->setStateById($elements['state']->getValue());
+                    }
+
+                    if ($item->getItemType()->supportsVersions()) {
+                        $version = $elements['version-reported']->getValue();
+                        if ($version) {
+                            foreach ($item->getProject()->getVersionList() as $v)
+                                if ($v->getId() == $version) {
+                                    $item->setVersionReported($v);
+                                    break;
+                                }
+                        } else {
+                            $item->setVersionReported(null);
+                        }
+                        if (isset($elements['version-fixed'])) {
+                            $version = $elements['version-fixed']->getValue();
+                            if ($version) {
+                                foreach ($item->getProject()->getVersionList() as $v)
+                                    if ($v->getId() == $version) {
+                                        $item->setVersionFixed($v);
+                                        break;
+                                    }
+                            } else {
+                                $item->setVersionFixed(null);
+                            }
+                        }
                     }
 
                     foreach ($item->getItemType()->getTypeProperties() as $tp) {
@@ -162,14 +188,13 @@ class ItemController extends AbstractController
                         }
                     }
 
+                    $item->touch();
                     $itemService->persist($item);
 
                 } catch (\Exception $e) {
-
-                    return $this->redirectWithError(
-                        'Something went wrong while saving your item.<br />'.
-                        $e->getMessage(),
-                        $item->getId(), 'item', 'detail');
+                    $this->flashMessenger()->setNamespace('error')->addMessage(
+                        'Something went wrong while saving your item.'
+                    );
                 }
 
                 return $this->redirect()->toUrl($form->getReturnurl());

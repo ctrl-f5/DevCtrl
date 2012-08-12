@@ -9,24 +9,34 @@
 <table class="table table-bordered">
     <tr>
         <th width="200">title</th>
-        <td><?php echo $item->getTitle(); ?></td>
+        <td colspan="3"><?php echo $item->getTitle(); ?></td>
+    </tr>
+    <tr>
         <th width="200">state</th>
         <td>
-            <?php if ($item->getItemType()->hasStates()): ?>
+            <?php if ($item->getItemType()->supportsStates()): ?>
             <span class="label label-<?php
                 echo ($item->getState()->getNativeState() == $item->getState()->getNativeStates(\DevCtrl\Domain\Item\State\State::STATE_CLOSED)) ?
                     'inverse': 'success'; ?>"><?php echo $item->getState()->getLabel() ?></span>
             <?php endif; ?>
         </td>
-    </tr>
-    <?php if ($item->getItemType()->supportsTiming()): ?>
-    <tr>
-        <th>timing</th>
-        <td><?php echo $item->getTimeCounter()->getEstimated(); ?> / <?php echo $item->getTimeCounter()->getExecuted(); ?></td>
         <th>created by</th>
         <td>
             <a href="#"><?php echo $item->getCreatedBy()->getUsername(); ?></a>
         </td>
+    </tr>
+    <?php if ($item->getItemType()->supportsVersions()): ?>
+    <tr>
+        <th>version reported</th>
+        <td><?php if ($item->getVersionReported()) echo $item->getVersionReported()->getVersion().' '.$item->getVersionReported()->getLabel(); ?></td>
+        <th>version fixed</th>
+        <td><?php if ($item->getVersionFixed()) echo $item->getVersionFixed()->getVersion().' '.$item->getVersionFixed()->getLabel(); ?></td>
+    </tr>
+    <?php endif; ?>
+    <?php if ($item->getItemType()->supportsTiming()): ?>
+    <tr>
+        <th>timing</th>
+        <td colspan="3"><span class="icon-time"></span> <?php echo $item->getTimeCounter()->getEstimated(); ?> / <?php echo $item->getTimeCounter()->getExecuted(); ?></td>
     </tr>
     <?php endif; ?>
     <tr>

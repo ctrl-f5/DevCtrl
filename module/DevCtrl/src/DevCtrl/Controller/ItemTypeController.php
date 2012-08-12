@@ -71,7 +71,8 @@ class ItemTypeController extends AbstractController
         if ($this->getRequest()->isPost()) {
 
             $itemType = new Type(
-                $this->params()->fromPost('supports-timing')
+                $this->params()->fromPost('supports-timing'),
+                $this->params()->fromPost('supports-versions')
             );
             $itemType->setName($this->params()->fromPost('name'))
                 ->setDescription($this->params()->fromPost('description'));
