@@ -29,6 +29,12 @@ in the previous step
     cd /my/project/dir/build
     php create-phing-props-from-zf.php
 
+to create a database without sample data execute the following task:
+
+    phing db-reset
+
+the is also a sample data file available, but this requires that the mysql option
+    lower_case_table_names=1
 to create a database with sample data execute the following task:
 
     phing db-reload
