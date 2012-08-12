@@ -4,7 +4,7 @@
 <?php echo $this->render('dev-ctrl/project/partial/project-tabs.phtml'); ?>
 <p></p>
 <div class="btn-group">
-    <?php echo $this->ctrlButton('link', array('value' => 'Add new project',
+    <?php echo $this->ctrlButton('link', array('value' => 'Add new milestone',
     'href' => $this->url('default', array(
         'controller' => 'project',
         'action' => 'create',
@@ -16,14 +16,16 @@
         <tr>
             <th>name</th>
             <th>description</th>
+            <th>items</th>
             <th>actions</th>
         </tr>
         <?php foreach ($project->getMilestones() as $ms): ?>
         <tr>
             <td><?php echo $ms->getLabel(); ?></td>
             <td><?php echo $ms->getDescription(); ?></td>
+            <td><?php echo count($ms->getBacklog()); ?></td>
             <td><a class="btn btn-info" href="<?php echo $this->url('default/id', array(
-                'controller' => 'milstone',
+                'controller' => 'milestone',
                 'action' => 'detail',
                 'id' => $ms->getId()
             )); ?>">detail</a></td>

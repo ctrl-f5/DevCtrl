@@ -1,0 +1,35 @@
+<?php /** @var $this \Ctrl\View\PhpView */ ?>
+<?php /** @var $milestone \DevCtrl\Domain\Project\Milestone */ ?>
+<?php echo $this->pageTitle('Add item to milestone', $milestone->getLabel()); ?>
+
+<div class="btn-group">
+    <?php echo $this->ctrlButton('link', array('value' => 'cancel',
+    'href' => $this->url('default/id', array(
+        'controller' => 'milestone',
+        'action' => 'detail',
+        'id' => $milestone->getId(),
+    )))) ?>
+</div>
+<p></p>
+<table class="table table-striped">
+    <tr>
+        <th>title</th>
+        <th>description</th>
+        <th>actions</th>
+    </tr>
+    <?php foreach ($milestone->getProject()->getBacklog() as $i): ?>
+    <tr>
+        <td><?php echo $i->getTitle(); ?></td>
+        <td><?php echo $i->getDescription(); ?></td>
+        <td>
+            <?php echo $this->ctrlButton('link', array('value' => 'add',
+            'href' => $this->url('default/id/query', array(
+                'controller' => 'milestone',
+                'action' => 'add-item',
+                'id' => $milestone->getId(),
+                'item' => $i->getId(),
+            ))), 'primary') ?>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

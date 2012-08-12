@@ -38,7 +38,7 @@ class Milestone extends PersistableModel
     protected $dateCreated;
 
     /**
-     * @var DateTime|null
+     * @var \DateTime|null
      */
     protected $dateEnd;
 
@@ -135,19 +135,19 @@ class Milestone extends PersistableModel
     }
 
     /**
-     * @param \DevCtrl\Domain\Project\Version $version
+     * @param Version $version
      */
-    public function setVersion($version)
+    public function setResultingVersion($version)
     {
-        $this->version = $version;
+        $this->resultingVersion = $version;
     }
 
     /**
-     * @return \DevCtrl\Domain\Project\Version
+     * @return Version
      */
-    public function getVersion()
+    public function getResultingVersion()
     {
-        return $this->version;
+        return $this->resultingVersion;
     }
 
     /**
@@ -159,7 +159,7 @@ class Milestone extends PersistableModel
     }
 
     /**
-     * @param \DevCtrl\Domain\Project\DateTime|null $dateEnd
+     * @param DateTime|null $dateEnd
      */
     public function setDateEnd($dateEnd)
     {
@@ -168,7 +168,7 @@ class Milestone extends PersistableModel
     }
 
     /**
-     * @return \DevCtrl\Domain\Project\DateTime|null
+     * @return DateTime|null
      */
     public function getDateEnd()
     {
@@ -176,7 +176,7 @@ class Milestone extends PersistableModel
     }
 
     /**
-     * @param \DevCtrl\Domain\Project\DateTime|null $dateStart
+     * @param DateTime|null $dateStart
      */
     public function setDateStart($dateStart)
     {
@@ -185,7 +185,7 @@ class Milestone extends PersistableModel
     }
 
     /**
-     * @return \DevCtrl\Domain\Project\DateTime|null
+     * @return DateTime|null
      */
     public function getDateStart()
     {

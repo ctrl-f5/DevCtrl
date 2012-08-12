@@ -8,6 +8,7 @@ use \DevCtrl\Domain\Item\Type\Type;
 use DevCtrl\Domain\Item\Property\Property;
 use DevCtrl\Domain\User\User;
 use DevCtrl\Domain\Project\Project;
+use DevCtrl\Domain\Project\Milestone;
 use DevCtrl\Domain\Item\Property\Type\TypeInterface;
 use Zend\InputFilter\Factory as FilterFactory;
 use Zend\InputFilter\InputFilter;
@@ -175,7 +176,12 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         return $filter;
     }
 
-    public function getItemsAssignedToUser(User $user, Project $project = null)
+    /**
+     * @param \DevCtrl\Domain\User\User $user
+     * @param null|Project|Milestone $context
+     * @return array
+     */
+    public function getItemsAssignedToUser(User $user, $context = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('i')
@@ -183,25 +189,37 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
             ->join('i.assignedUsers', 'iu')
             ->where('iu.id = :userid')
             ->setParameter('userid', $user->getId());
-        if ($project) {
+
+        if ($context instanceof Project) {
             $qb->join('i.project', 'p')
                 ->andWhere('p.id = :projectid')
-                ->setParameter('projectid', $project->getId());
+                ->setParameter('projectid', $context->getId());
+        }
+        if ($context instanceof Milestone) {
+            $qb->join('i.milestones', 'm')
+                ->andWhere('m.id = :milestoneid')
+                ->setParameter('milestoneid', $context->getId());
         }
 
         return $qb->getQuery()->getResult();
     }
 
-    public function getLastUpdatedItems(Project $project = null, $maxResults = 0)
+    public function getLastUpdatedItems($context = null, $maxResults = 0)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('i')
             ->from('DevCtrl\Domain\Item\Item', 'i')
             ->orderBy('i.dateUpdate', 'DESC');
-        if ($project) {
+
+        if ($context instanceof Project) {
             $qb->join('i.project', 'p')
                 ->andWhere('p.id = :projectid')
-                ->setParameter('projectid', $project->getId());
+                ->setParameter('projectid', $context->getId());
+        }
+        if ($context instanceof Milestone) {
+            $qb->join('i.milestones', 'm')
+                ->andWhere('m.id = :milestoneid')
+                ->setParameter('milestoneid', $context->getId());
         }
         if ($maxResults) {
             $qb->setMaxResults($maxResults);

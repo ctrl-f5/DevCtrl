@@ -4,6 +4,7 @@ namespace DevCtrl\Domain\Item;
 
 use \DevCtrl\Domain;
 use DevCtrl\Domain\Project\Project;
+use DevCtrl\Domain\Project\Milestone;
 use DevCtrl\Domain\Item\ItemRelation;
 use DevCtrl\Domain\User\User;
 use DevCtrl\Domain\Item\Type\Type;
@@ -85,11 +86,17 @@ class Item extends \Ctrl\Domain\PersistableModel
      */
     protected $versionFixed;
 
+    /**
+     * @var Milestone[]
+     */
+    protected $milestones;
+
     public function __construct(Type $type, User $createdBy)
     {
         $this->itemProperties = new \DevCtrl\Domain\Collection();
         $this->itemRelations = new \DevCtrl\Domain\Collection();
         $this->assignedUsers = new \DevCtrl\Domain\Collection();
+        $this->milestones = new \DevCtrl\Domain\Collection();
         $this->itemType = $type;
         $this->createdBy = $createdBy;
         $this->dateCreated = new DateTime();
