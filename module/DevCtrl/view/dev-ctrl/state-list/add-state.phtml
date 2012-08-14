@@ -1,15 +1,5 @@
 <?php /** @var $this \Ctrl\View\PhpView */
-/** @var $list \DevCtrl\Domain\Item\State\StateList */
-$list = $this->list;
-/** @var $form \Ctrl\Form\Form */
-$form = $this->form;
 
 echo $this->pageTitle('Add a state', $list->getName());
 
-echo $this->ctrlForm()->createForm(
-    $form->setLabel('please provide some info'),
-    array(
-        $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
-        $this->ctrlButton('link', array('value' => 'cancel', 'href' => $this->form->getReturnUrl()))
-    )
-);
+echo $this->ctrlForm()->createForm($form->setLabel('please provide some info'), true);

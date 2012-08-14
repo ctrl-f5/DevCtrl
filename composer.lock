@@ -4,20 +4,20 @@
         {
             "package": "composer/installers",
             "version": "dev-master",
-            "source-reference": "2cc9ad106e2a617adba8fd0f948e8873297efd3b",
-            "commit-date": "1344721334"
+            "source-reference": "61ddaea1fed669374e3913161bcc968895a4fedc",
+            "commit-date": "1344899537"
         },
         {
             "package": "ctrl-f5/ctrljs",
             "version": "dev-master",
-            "source-reference": "4e917f6c4193fb93dcd9f77405e3001eabd444c8",
-            "commit-date": "1344705422"
+            "source-reference": "5f8dee73a9da2deff5c2acfb12349f6375d6c65f",
+            "commit-date": "1344913192"
         },
         {
             "package": "ctrl-f5/ctrllib",
             "version": "dev-master",
-            "source-reference": "484a5f81d9959a8686d94afc3b8b28bd71678c9a",
-            "commit-date": "1344802271"
+            "source-reference": "76a446c8b439a2c6c2487e692bd336c49494f70b",
+            "commit-date": "1344914052"
         },
         {
             "package": "doctrine/common",
@@ -46,8 +46,8 @@
         {
             "package": "doctrine/doctrine-orm-module",
             "version": "dev-master",
-            "source-reference": "c4d2d1a2e9f75b09d61f0ac888a5f50bcacc5435",
-            "commit-date": "1344540284"
+            "source-reference": "c26e7dbfff673136be03d58cd2febc292f32306a",
+            "commit-date": "1344860253"
         },
         {
             "package": "doctrine/migrations",

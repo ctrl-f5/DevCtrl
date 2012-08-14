@@ -40,7 +40,7 @@ class ItemService extends \Ctrl\Service\AbstractDomainModelService
         if ($item) $input->setValue($item->getDescription());
         $form->add($input);
 
-        if ($type->supportsTiming() && $item->getTimeCounter()) {
+        if ($type->supportsTiming()) {
             $input = new TextInput('timing-estimated');
             $input->setLabel('estimated time');
             if ($item) $input->setValue($item->getTimeCounter()->getEstimated());

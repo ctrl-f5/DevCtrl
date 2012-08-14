@@ -1,20 +1,7 @@
 <?php
-/** @var $this \Ctrl\View\PhpView
- * @var $itemType \DevCtrl\Domain\Item\Type\Type
- * @var $form \Ctrl\Form\Form */
-use DevCtrl\Domain\Item\Property\Property;
-echo $this->pageTitle('New item');
+echo $this->pageTitle('New item', $project->getName());
 
-$form->setLabel('Please provide some info');
-echo $this->ctrlForm()->start($form);
-
-foreach ($form->getElements() as $e) {
-    echo $this->ctrlFormInput($e);
-}
-
-echo $this->ctrlFormActions(array(
-    $this->ctrlButton('submit', array('value' => 'save'), 'primary'),
-    $this->ctrlButton('link', array('value' => 'cancel', 'href' => $form->getReturnUrl()))
-));
-
-echo $this->ctrlForm()->end($form);
+echo $this->ctrlForm()->createForm(
+    $form->setLabel('please provide some info'),
+    true
+);
