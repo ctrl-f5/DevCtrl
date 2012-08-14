@@ -2,7 +2,7 @@
 
 namespace Devctrl;
 
-class Exception extends \Exception
+class Exception extends \Ctrl\Exception
 {
 
 }

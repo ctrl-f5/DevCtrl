@@ -30,7 +30,7 @@ class StateListController extends AbstractController
         /** @var $listService StateListService */
         $listService = $this->getDomainService('StateList');
 
-        $form = $listService->getForm(new StateList());
+        $form = $listService->getForm();
         $form->setAttribute('action', $this->url()->fromRoute('default', array(
             'controller' => 'state-list',
             'action' => 'create',
@@ -44,11 +44,22 @@ class StateListController extends AbstractController
 
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $list = new StateList();
-                $list->setName($this->params()->fromPost('name'));
+                try {
 
-                $listService->persist($list);
-                return $this->redirect()->toUrl($form->getReturnurl());
+                    $list = new StateList();
+                    $list->setName($this->params()->fromPost('name'));
+
+                    $listService->persist($list);
+                    $this->flashMessenger()->setNamespace('success')->addMessage(
+                        'Your list was created.'
+                    );
+                    return $this->redirect()->toUrl($form->getReturnurl());
+
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->setNamespace('error')->addMessage(
+                        'Something went wrong while saving your item.'
+                    );
+                }
             }
         }
 
@@ -59,14 +70,17 @@ class StateListController extends AbstractController
     {
         /** @var $listService StateListService */
         $listService = $this->getDomainService('StateList');
-        try {
-            $list = $listService->getById($this->params()->fromRoute('id'));
-        } catch (\Exception $e) {
-            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
-        }
+        $list = $listService->getById($this->params()->fromRoute('id'));
 
-        if ($listService->canRemove($list)) {
+        try {
             $listService->remove($list);
+        } catch (\Exception $e) {
+            throw $e;// <-- remove after logging
+            //TODO: log
+
+            $this->flashMessenger()->setNamespace('error')->addMessage(
+                'devctrl.domain.statelist.delete.error'
+            );
         }
 
         return $this->redirect()->toRoute('default', array(
