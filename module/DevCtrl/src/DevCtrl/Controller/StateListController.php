@@ -53,9 +53,13 @@ class StateListController extends AbstractController
                     $this->flashMessenger()->setNamespace('success')->addMessage(
                         'Your list was created.'
                     );
+                    $this->flashMessenger()->setNamespace('success')->addMessage(
+                        'Your list was created.'
+                    );
                     return $this->redirect()->toUrl($form->getReturnurl());
 
                 } catch (\Exception $e) {
+                    $this->getLogger()->logException($e);
                     $this->flashMessenger()->setNamespace('error')->addMessage(
                         'Something went wrong while saving your item.'
                     );
@@ -75,9 +79,7 @@ class StateListController extends AbstractController
         try {
             $listService->remove($list);
         } catch (\Exception $e) {
-            throw $e;// <-- remove after logging
-            //TODO: log
-
+            $this->getLogger()->logException($e);
             $this->flashMessenger()->setNamespace('error')->addMessage(
                 'devctrl.domain.statelist.delete.error'
             );
@@ -95,7 +97,8 @@ class StateListController extends AbstractController
             $listService = $this->getDomainService('StateList');
             $list = $listService->getById($this->params()->fromRoute('id'));
         } catch (\Exception $e) {
-            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
+            $this->getLogger()->logException($e, \Ctrl\Log\Logger::DEBUG);
+            return $this->redirectWithError('devctrl.domain.statelist.find.error');
         }
 
         return new ViewModel(array(
@@ -110,23 +113,24 @@ class StateListController extends AbstractController
             $listService = $this->getDomainService('StateList');
             /** @var $list StateList */
             $list = $listService->getById($this->params()->fromRoute('id'));
-        } catch (\Exception $e) {
-            return $this->redirectWithError('Looks like we couldn\'nt find that list...');
-        }
 
-        /** @var $stateService StateService */
-        $stateService = $this->getDomainService('State');
-        $form = $stateService->getForm();
-        $form->setAttribute('action', $this->url()->fromRoute('default/id', array(
-            'controller' => 'state-list',
-            'action' => 'add-state',
-            'id' => $list->getId()
-        )));
-        $form->setReturnUrl($this->url()->fromRoute('default/id', array(
-            'controller' => 'state-list',
-            'action' => 'detail',
-            'id' => $list->getId()
-        )));
+            /** @var $stateService StateService */
+            $stateService = $this->getDomainService('State');
+            $form = $stateService->getForm();
+            $form->setAttribute('action', $this->url()->fromRoute('default/id', array(
+                'controller' => 'state-list',
+                'action' => 'add-state',
+                'id' => $list->getId()
+            )));
+            $form->setReturnUrl($this->url()->fromRoute('default/id', array(
+                'controller' => 'state-list',
+                'action' => 'detail',
+                'id' => $list->getId()
+            )));
+        } catch (\Exception $e) {
+            $this->getLogger()->logException($e, \Ctrl\Log\Logger::DEBUG);
+            return $this->redirectWithError('devctrl.domain.statelist.add.state.load.error');
+        }
 
         if ($this->getRequest()->isPost()) {
 

@@ -2,6 +2,8 @@
 
 namespace DevCtrl;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\EventManager\EventManager;
 use Zend\Mvc\ModuleRouteListener;
 use Ctrl\EntityManager\PostLoadSubscriber;
 use DevCtrl\EntityManager\ProviderToStringSubscriber;
@@ -17,25 +19,43 @@ class Module
      */
     public function onBootstrap($e)
     {
-        /** @var $eventManager \Zend\EventManager\EventManager */
+        /** @var $eventManager EventManager */
         $eventManager           = $e->getApplication()->getEventManager();
         $serviceManager         = $e->getApplication()->getServiceManager();
         $moduleRouteListener    = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        $this->initDoctrine($serviceManager);
         $this->setViewHelpers($serviceManager);
+        $this->initLayout($serviceManager, $eventManager);
+    }
 
+    protected function setViewHelpers(ServiceLocatorInterface $serviceManager)
+    {
+        /** @var $viewManager \Zend\Mvc\View\Http\ViewManager */
+        $viewManager = $serviceManager->get('ViewManager');
+        if (method_exists($viewManager, 'getHelperManager')) {
+            $viewManager->getHelperManager()
+                ->setInvokableClass('ItemState', 'DevCtrl\View\Helper\ItemState');
+        }
+    }
+
+    protected function initDoctrine(ServiceLocatorInterface $serviceManager)
+    {
         /** @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $serviceManager->get('doctrine.entitymanager.orm_default');
         $entityManager->getEventManager()->addEventListener(
             array(\Doctrine\ORM\Events::postLoad),
-            new PostLoadSubscriber($e->getApplication()->getServiceManager())
+            new PostLoadSubscriber($serviceManager)
         );
         $entityManager->getEventManager()->addEventListener(
             array(\Doctrine\ORM\Events::prePersist),
-            new ProviderToStringSubscriber($e->getApplication()->getServiceManager())
+            new ProviderToStringSubscriber($serviceManager)
         );
+    }
 
+    protected function initLayout(ServiceLocatorInterface $serviceManager, EventManager $eventManager)
+    {
         //feed the flashMessenger vars into the layout
         $eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, function ($e) {
             $serviceManager = $e->getApplication()->getServiceManager();
@@ -60,16 +80,6 @@ class Module
                 $view->appCurrentUser = $serviceManager->get('DomainServiceLoader')->get('User')->getCurrentUser();
             }
         });
-    }
-
-    protected function setViewHelpers($serviceManager)
-    {
-        /** @var $viewManager \Zend\Mvc\View\Http\ViewManager */
-        $viewManager = $serviceManager->get('ViewManager');
-        if (method_exists($viewManager, 'getHelperManager')) {
-            $viewManager->getHelperManager()
-                ->setInvokableClass('ItemState', 'DevCtrl\View\Helper\ItemState');
-        }
     }
 
     public function getConfig()

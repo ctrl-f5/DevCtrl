@@ -3,7 +3,7 @@ return array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
-        'Auth',
+        'Ctrl\Module\Auth',
         'DevCtrl',
         'Ctrl'
     ),
@@ -14,7 +14,8 @@ return array(
         'module_paths' => array(
             './module',
             './vendor',
-            'Ctrl' => './vendor/ctrl-f5/ctrllib/'
+            'Ctrl\Module\Auth' => './vendor/ctrl-f5/ctrlAuth/',
+            'Ctrl' => './vendor/ctrl-f5/ctrllib/',
         ),
     ),
     'view_manager' => array(
